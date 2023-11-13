@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 import alexanderbardhZi from "../img/alexander_bardhzi.jpg";
@@ -10,6 +10,17 @@ import ReactImageMagnify from "react-image-magnify";
 import "./ShoeDetails.css";
 
 const ShoeDetails = () => {
+  const [isImageHovered, setImageHovered] = useState(false);
+
+  const hideDetailsStyle = {
+    display: isImageHovered ? "none" : "block",
+  };
+
+  const handleMouseHover = (isHovered) => {
+    if (window.innerWidth > 768) {
+      setImageHovered(isHovered);
+    }
+  };
   const product = {
     id: 1,
     name: "Luxury Fashion Brand",
@@ -26,7 +37,11 @@ const ShoeDetails = () => {
       <div className="container">
         <div className="columns is-multiline">
           <div className="column is-full-mobile is-three-fifths-tablet is-three-fifths-desktop">
-            <div className="image-container mb-5 mt-2">
+            <div
+              className="image-container mb-5 mt-2"
+              onMouseEnter={() => handleMouseHover(true)}
+              onMouseLeave={() => handleMouseHover(false)}
+            >
               <ReactImageMagnify
                 {...{
                   smallImage: {
@@ -48,7 +63,6 @@ const ShoeDetails = () => {
                     width: "150%",
                     height: "100%",
                   },
-
                   isHintEnabled: true,
                   shouldHideHintAfterFirstActivation: false,
                   // Add any additional configurations
@@ -56,9 +70,30 @@ const ShoeDetails = () => {
               />
             </div>
           </div>
-          <div className="column is-full-mobile is-two-fifths-tablet is-two-fifths-desktop product-details">
+
+          {/* product details */}
+          <div
+            className="column is-full-mobile is-two-fifths-tablet is-two-fifths-desktop product-details"
+            style={hideDetailsStyle}
+          >
             <h1 className="title">{product.name}</h1>
-            {/* Display other product details here */}
+            <p className="price">
+              <span className="original-price">{product.originalPrice}€</span>
+              <span className="discount-price">{product.discountPrice}€</span>
+              <span className="discount-percentage">
+                {/* {product.discountPercentage} OFF */}
+              </span>
+            </p>
+            <p className="description">{product.description}</p>
+            <p className="size">Size: {product.size}</p>
+            <p className="availability">
+              {product.availability ? "In Stock" : "Out of Stock"}
+            </p>
+            <p className="shipping-info">{product.shippingInfo}</p>
+            {/* Add to cart button */}
+            <button className="button is-primary add-to-cart">
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

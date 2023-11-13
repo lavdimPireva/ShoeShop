@@ -18,3 +18,9 @@
     max-width: none;
   }
 }
+
+.product-details {
+  background-color: #fafbfc;
+  border-radius: 4px;
+  padding: 24px;
+}
