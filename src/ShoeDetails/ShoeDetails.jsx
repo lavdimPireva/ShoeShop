@@ -2,6 +2,8 @@ import React from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 import alexanderbardhZi from "../img/alexander_bardhzi.jpg";
+import dragonclassic33 from "../img/dragonclassic33.jpg";
+
 import ReactImageMagnify from "react-image-magnify";
 
 // css
@@ -11,7 +13,7 @@ const ShoeDetails = () => {
   const product = {
     id: 1,
     name: "Luxury Fashion Brand",
-    imageUrl: alexanderbardhZi,
+    imageUrl: dragonclassic33,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
@@ -24,7 +26,7 @@ const ShoeDetails = () => {
       <div className="container">
         <div className="columns is-multiline">
           <div className="column is-full-mobile is-three-fifths-tablet is-three-fifths-desktop">
-            <div className="image-container">
+            <div className="image-container mb-5 mt-2">
               <ReactImageMagnify
                 {...{
                   smallImage: {
@@ -43,7 +45,7 @@ const ShoeDetails = () => {
                   lensStyle: { backgroundColor: "rgba(0,0,0,.6)" },
                   enlargedImagePosition: "beside",
                   enlargedImageContainerDimensions: {
-                    width: "100%",
+                    width: "150%",
                     height: "100%",
                   },
 
