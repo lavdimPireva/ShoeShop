@@ -8,6 +8,12 @@ import ReactImageMagnify from "react-image-magnify";
 
 // css
 import "./ShoeDetails.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faShoePrints,
+  faTags,
+  faTruck,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ShoeDetails = () => {
   const [isImageHovered, setImageHovered] = useState(false);
@@ -23,7 +29,7 @@ const ShoeDetails = () => {
   };
   const product = {
     id: 1,
-    name: "Luxury Fashion Brand",
+    name: "Dragon e zeze pa toja",
     imageUrl: dragonclassic33,
     originalPrice: "69.99",
     discountPrice: "19.99",
@@ -65,35 +71,85 @@ const ShoeDetails = () => {
                   },
                   isHintEnabled: true,
                   shouldHideHintAfterFirstActivation: false,
-                  // Add any additional configurations
                 }}
               />
             </div>
           </div>
-
           {/* product details */}
-          <div
-            className="column is-full-mobile is-two-fifths-tablet is-two-fifths-desktop product-details"
-            style={hideDetailsStyle}
-          >
-            <h1 className="title">{product.name}</h1>
-            <p className="price">
-              <span className="original-price">{product.originalPrice}€</span>
-              <span className="discount-price">{product.discountPrice}€</span>
-              <span className="discount-percentage">
-                {/* {product.discountPercentage} OFF */}
-              </span>
-            </p>
-            <p className="description">{product.description}</p>
-            <p className="size">Size: {product.size}</p>
-            <p className="availability">
-              {product.availability ? "In Stock" : "Out of Stock"}
-            </p>
-            <p className="shipping-info">{product.shippingInfo}</p>
-            {/* Add to cart button */}
-            <button className="button is-primary add-to-cart">
-              Add to Cart
-            </button>
+          <div className="column is-full-mobile mb-5" style={hideDetailsStyle}>
+            <div className="box">
+              {/* Box Title */}
+              <h2 className="title is-4 m-2">Detajet e Produktit</h2>
+
+              <div className="is-flex is-align-items-center m-3">
+                <span className="icon is-large">
+                  <FontAwesomeIcon
+                    style={{ color: "#781200" }}
+                    icon={faShoePrints}
+                    size="2x"
+                  />
+                </span>
+                <span className="ml-2">Dragon e zeze pa toja</span>
+              </div>
+
+              <div className="is-flex is-align-items-center mb-2 m-3">
+                <span className="icon is-large">
+                  <FontAwesomeIcon
+                    style={{ color: "#781200" }}
+                    icon={faTags}
+                    size="2x"
+                  />
+                </span>
+                <span className="ml-2">Price: 19.99€</span>
+              </div>
+
+              <div className="is-flex is-align-items-center mb-2 m-3">
+                <span className="icon is-large">
+                  <FontAwesomeIcon
+                    icon={faTruck}
+                    style={{ color: "#781200" }}
+                    size="2x"
+                  />
+                </span>
+                <span className="ml-2">Albania - Transport 5€</span>
+              </div>
+
+              <div className="is-flex is-align-items-center mb-2 m-3">
+                <span className="icon is-large">
+                  <FontAwesomeIcon
+                    icon={faTruck}
+                    style={{ color: "#781200" }}
+                    size="2x"
+                  />
+                </span>
+                <span className="ml-2 ">Maqedoni - Transport 5€ </span>
+              </div>
+
+              <div className="is-flex is-align-items-center mb-2 m-3">
+                <span className="icon is-large">
+                  <FontAwesomeIcon
+                    style={{ color: "#781200" }}
+                    icon={faTruck}
+                    size="2x"
+                  />
+                </span>
+                <span className="ml-2">Kosovo - Transporti FREE</span>
+              </div>
+
+              {/* Numeration Label */}
+              <h3 className="subtitle is-5 m-3">Numeracioni</h3>
+
+              {/* Numeration */}
+              <div className="tags m-3">
+                {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
+                  (size) => (
+                    <span key={size} className="tag is-light">
+                      {size}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
