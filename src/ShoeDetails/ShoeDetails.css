@@ -3,6 +3,7 @@
   max-width: 530px; /* Maximum size on large screens */
   height: auto; /* Height is automatic to maintain aspect ratio */
   margin: auto; /* Center the container if it's smaller than the parent */
+  /* overflow: hidden; */
 }
 
 /* Adjusts the image within the container */

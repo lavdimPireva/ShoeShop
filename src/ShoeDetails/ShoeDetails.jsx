@@ -10,12 +10,16 @@ import ReactImageMagnify from "react-image-magnify";
 import "./ShoeDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCartPlus,
   faShoePrints,
   faTags,
+  faTimes,
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 
 const ShoeDetails = () => {
+  const [selectedSizes, setSelectedSizes] = useState([]);
+
   const [isImageHovered, setImageHovered] = useState(false);
 
   const hideDetailsStyle = {
@@ -27,6 +31,24 @@ const ShoeDetails = () => {
       setImageHovered(isHovered);
     }
   };
+
+  // Function to remove selected size
+  const handleRemoveSize = (size) => {
+    setSelectedSizes((prevSelectedSizes) =>
+      prevSelectedSizes.filter((s) => s !== size)
+    );
+  };
+
+  const handleSelectSize = (size) => {
+    setSelectedSizes((prevSelectedSizes) => {
+      if (prevSelectedSizes.includes(size)) {
+        return prevSelectedSizes.filter((s) => s !== size);
+      } else {
+        return [...prevSelectedSizes, size];
+      }
+    });
+  };
+
   const product = {
     id: 1,
     name: "Dragon e zeze pa toja",
@@ -100,7 +122,7 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Price: 19.99€</span>
+                <span className="ml-2">Çmimi: 19.99€</span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
@@ -133,21 +155,64 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Kosovo - Transporti FREE</span>
+                <span className="ml-2">Kosovo - Transporti FALAS!</span>
               </div>
 
               {/* Numeration Label */}
-              <h3 className="subtitle is-5 m-3">Numeracioni</h3>
+              <h3 className="subtitle is-5 m-3">
+                Zgjedh numrin ose numrat qe deshironi t'i porositni
+              </h3>
 
               {/* Numeration */}
-              <div className="tags m-3">
+              <div
+                className="tags are-medium m-3 "
+                style={{ cursor: "pointer" }}
+              >
                 {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
                   (size) => (
-                    <span key={size} className="tag is-light">
+                    <span
+                      key={size}
+                      className={`tag ${
+                        selectedSizes.includes(size) ? "is-primary" : "is-light"
+                      }`}
+                      onClick={() => handleSelectSize(size)}
+                    >
                       {size}
                     </span>
                   )
                 )}
+              </div>
+
+              {selectedSizes.length > 0 && (
+                <div className="tags m-3 are-medium">
+                  <p>Ju keni zgjedhur keta numra per porosi:</p>
+                  {selectedSizes.map((size) => (
+                    <span
+                      key={size}
+                      className="tag is-deleteable is-primary m-2"
+                    >
+                      {size}
+                      <button
+                        className="delete is-small"
+                        onClick={() => handleRemoveSize(size)}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div
+                className="button is-primary m-3"
+                onClick={() => {
+                  console.log("Add to cart");
+                }}
+              >
+                <span className="icon">
+                  <FontAwesomeIcon icon={faCartPlus} />
+                </span>
+                <span>Add to Cart</span>
               </div>
             </div>
           </div>
