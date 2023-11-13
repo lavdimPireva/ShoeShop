@@ -1,0 +1,174 @@
+/* For desktop screens */
+.responsive-image {
+  width: 1300px; /* fixed width for desktop */
+  height: 400px; /* fixed height for desktop */
+  object-fit: cover; /* this will cover the area without stretching the image */
+}
+
+.category-image {
+  display: block; /* Make sure the image is a block element to fill the width of its container */
+  width: 250px; /* Set a fixed width */
+  height: 200px; /* Set a fixed height */
+  object-fit: cover; /* Cover the area without stretching the image */
+  object-position: center; /* Center the image within the element bounds */
+  margin: 10px;
+  border-radius: 8px; /* Rounded corners, adjust as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+.brand-image {
+  display: block; /* Make sure the image is a block element to fill the width of its container */
+  max-width: 120px; /* Maximum width for the brand image */
+  max-height: 55px; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensures the image is fully visible */
+  margin: 10px;
+  border-radius: 8px; /* Rounded corners, adjust as needed */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+  .responsive-image {
+    width: 100%; /* full width on mobile */
+    height: auto; /* height will adjust to maintain aspect ratio */
+    object-fit: cover; /* maintain aspect ratio without stretching */
+  }
+}
+
+.is-size-6 {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  height: auto;
+}
+
+.scroll-arrows {
+  display: inline-block;
+  position: absolute;
+  top: 50%; /* Adjust as necessary */
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: #fff; /* or any color you prefer */
+  border: none; /* Remove default button border */
+  /* Other styles as needed */
+}
+
+.scroll-arrows button {
+  font-size: 1.5rem;
+  /* Other styles as needed */
+}
+
+/* Apply truncation only on mobile screens */
+@media screen and (max-width: 768px) {
+  .is-size-6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px; /* or 100% if you want it to fill the card */
+  }
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 25;
+  font-size: 0;
+  color: transparent;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 24px;
+  color: white;
+  opacity: 1;
+}
+
+.slick-prev {
+  left: 30px;
+}
+
+.slick-next {
+  right: 120px;
+}
+
+@media (max-width: 1407px) {
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 20px; /* Smaller size for mobile */
+    color: white; /* Change the color for mobile if needed */
+    /* You can add more styles specific to mobile here */
+  }
+
+  .slick-prev {
+    left: 10px; /* Adjust the position for mobile */
+  }
+
+  .slick-next {
+    right: 10px; /* Adjust the position for mobile */
+  }
+}
+
+.horizontal-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap; /* Prevent wrapping to a new line */
+}
+
+.horizontal-scroll-item {
+  display: inline-block; /* Inline-block for horizontal layout */
+  white-space: normal; /* Reset white-space for children */
+  vertical-align: top; /* Align items to the top */
+  margin-right: 10px; /* Adjust spacing between items */
+}
+
+/* Optional: Style to remove scrollbar visibility */
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll-wrapper {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.footer {
+  background-color: #f8f8f8; /* Footer background color */
+}
+
+.footer .heading {
+  font-weight: bold;
+}
+
+.footer ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer .partners {
+  display: flex;
+  justify-content: center; /* Center logos horizontally */
+  align-items: center; /* Center logos vertically */
+  gap: 20px; /*
+}
+
+.footer .social-media {
+  /* Styles for the social media icons */
+}
+
+.footer,
+.footer .bottom-bar {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.footer .bottom-bar {
+  background-color: #ffc107; /* The yellow bar at the bottom */
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.partner-image {
+  max-width: 100px; /* Maximum logo width, adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  /* Additional styles if necessary */
+}
