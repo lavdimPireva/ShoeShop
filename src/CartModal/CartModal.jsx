@@ -33,7 +33,9 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
         }`}
       >
         <div className="cart-header">
-          <h2 className="cart-title">Kepucet ne shporten tuaj:</h2>
+          <h2 className="cart-title is-size-5-fullhd ">
+            Kepucet ne shporten tuaj:
+          </h2>
 
           <button className="close-button" onClick={handleClose}>
             <FontAwesomeIcon icon={faTimes} />
@@ -54,18 +56,21 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                 </div>
                 <div className="media-content cart-item-details">
                   <div className="content">
-                    <p className="cart-item-name is-size-6 has-text-weight-semibold">
+                    <p className="cart-item-name is-size-6-fullhd has-text-weight-semibold">
                       {item.name}
                     </p>
                     <p className="cart-item-price">
-                      <span className="has-text-weight-semibold is-size-6">
+                      <span className="has-text-weight-semibold is-size-6-fullhd">
                         Çmimi:
                       </span>{" "}
-                      {item.discountPrice
-                        ? `${item.discountPrice}`
-                        : item.originalPrice}
+                      <span className="has-text-weight-bold">
+                        {item.discountPrice
+                          ? `${item.discountPrice}`
+                          : item.originalPrice}
+                        €
+                      </span>
                     </p>
-                    <p className="cart-item-sizes">
+                    <p className="cart-item-sizes has-text-weight-normal is-size-6-fullhd">
                       Madhesia e zgjedhur: {item.selectedSizes.join(", ")}
                     </p>
                   </div>

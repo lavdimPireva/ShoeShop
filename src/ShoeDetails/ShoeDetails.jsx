@@ -96,7 +96,7 @@ const ShoeDetails = () => {
           <div className="column is-full-mobile mb-5" style={hideDetailsStyle}>
             <div className="box">
               {/* Box Title */}
-              <h2 className="title is-4 m-2">Detajet e Produktit</h2>
+              <h2 className="title is-4-fullhd m-2">Detajet e Produktit</h2>
 
               <div className="is-flex is-align-items-center m-3">
                 <span className="icon is-large">
@@ -106,18 +106,18 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">{shoeDetails.name}</span>
+                <span className="ml-2 is-6-fullhd">{shoeDetails.name}</span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
-                <span className="icon is-large">
+                <span className="icon is-large ">
                   <FontAwesomeIcon
                     style={{ color: "#781200" }}
                     icon={faTags}
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">
+                <span className="ml-2 is-6-fullhd">
                   Çmimi: {shoeDetails.discountPrice}€
                 </span>
               </div>
@@ -130,7 +130,7 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Albania - Transport 5€</span>
+                <span className="ml-2 is-6-fullhd">Albania - Transport 5€</span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
@@ -141,7 +141,9 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2 ">Maqedoni - Transport 5€ </span>
+                <span className="ml-2 is-6-fullhd  ">
+                  Maqedoni - Transport 5€{" "}
+                </span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
@@ -152,11 +154,13 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Kosovo - Transporti FALAS!</span>
+                <span className="ml-2 is-6-fullhd">
+                  Kosovo - Transporti FALAS!
+                </span>
               </div>
 
               {/* Numeration Label */}
-              <h3 className="subtitle is-5 m-3">
+              <h3 className="subtitle is-5 m-3 is-6-fullhd">
                 Zgjedh numrin ose numrat qe deshironi t'i porositni
               </h3>
 
@@ -168,16 +172,16 @@ const ShoeDetails = () => {
               />
 
               {selectedSizes.length > 0 && (
-                <div className="tags m-3 are-medium">
+                <div className="tags m-3 are-medium is-6-fullhd">
                   <p>Ju keni zgjedhur keta numra per porosi:</p>
                   {selectedSizes.map((size) => (
                     <span
                       key={size}
-                      className="tag is-deleteable is-primary m-2"
+                      className="tag is-deleteable is-primary m-2 is-6-fullhd"
                     >
                       {size}
                       <button
-                        className="delete is-small"
+                        className="delete is-small "
                         onClick={() => handleRemoveSize(size)}
                       >
                         <FontAwesomeIcon icon={faTimes} />
