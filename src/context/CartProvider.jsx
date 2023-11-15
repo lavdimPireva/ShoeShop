@@ -7,20 +7,41 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  // Initialize cartItems from localStorage if available
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const items = localStorage.getItem("cartItems");
+      return items ? JSON.parse(items) : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [isCartOpen, setCartOpen] = useState(false);
 
+  // ... other state and functions ...
+
   const addToCart = (product) => {
-    // Implement logic to add product to cart
-    setCartItems((currentItems) => [...currentItems, product]);
-    setCartOpen(true); // Open cart modal when item is added
+    setCartItems((currentItems) => {
+      const productToAdd = {
+        ...product,
+        cartItemId: Date.now(), // Using a timestamp for simplicity
+      };
+      const updatedItems = [...currentItems, productToAdd];
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+    setCartOpen(true);
   };
 
-  const removeFromCart = (productId) => {
-    // Implement logic to remove product from cart by id
-    setCartItems((currentItems) =>
-      currentItems.filter((item) => item.id !== productId)
-    );
+  const removeFromCart = (cartItemId) => {
+    setCartItems((currentItems) => {
+      const updatedItems = currentItems.filter(
+        (item) => item.cartItemId !== cartItemId
+      );
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
   };
 
   const toggleCart = () => {
@@ -28,14 +49,15 @@ export const CartProvider = ({ children }) => {
     setCartOpen(!isCartOpen);
   };
 
-  // The value object includes everything you want to provide through this context
   const value = {
     cartItems,
-    isCartOpen,
     addToCart,
     removeFromCart,
+    isCartOpen,
     toggleCart,
   };
+
+  // ... rest of your context provider ...
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

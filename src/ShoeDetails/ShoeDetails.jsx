@@ -18,13 +18,14 @@ import { useParams } from "react-router-dom";
 import ShoeSizeSelector from "./ShoeSizeSelector";
 import ShoeImage from "./ShoeImage";
 import { generateSlug } from "../helpers/slugUtils";
+import { Helmet } from "react-helmet";
+import { useCart } from "../context/CartProvider";
 
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [isImageHovered, setImageHovered] = useState(false);
-  const [isCartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
 
+  const { addToCart, isCartOpen, toggleCart, cartItems } = useCart();
   // get the slug from URL
   const { slug } = useParams();
 
@@ -34,28 +35,15 @@ const ShoeDetails = () => {
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
   );
 
-  const openCart = () => {
-    setCartOpen(true);
-
+  const handleAddToCart = () => {
+    // Create a product object with the necessary properties
     const productToAdd = {
       ...shoeDetails,
       selectedSizes: selectedSizes,
     };
 
-    setCartItems([productToAdd]);
-  };
-
-  // Function to close the cart modal
-  const closeCart = () => {
-    setCartOpen(false);
-  };
-
-  const addToCart = () => {
-    console.log("Add to cart");
-
-    // Logic to add the item to the cart
-    // Then open the cart sidebar
-    openCart();
+    // Call the addToCart function from your context
+    addToCart(productToAdd);
   };
 
   const hideDetailsStyle = {
@@ -87,6 +75,13 @@ const ShoeDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`Buy ${shoeDetails.name} - Atletja ime`}</title>
+        <meta
+          name="description"
+          content={`Purchase ${shoeDetails.name}. ${shoeDetails.description}`}
+        />
+      </Helmet>
       <Navbar />
       <div className="container">
         <div className="columns is-multiline">
@@ -192,7 +187,7 @@ const ShoeDetails = () => {
                 </div>
               )}
 
-              <div className="button is-primary m-3" onClick={addToCart}>
+              <div className="button is-primary m-3" onClick={handleAddToCart}>
                 <span className="icon">
                   <FontAwesomeIcon icon={faCartPlus} />
                 </span>
@@ -200,7 +195,7 @@ const ShoeDetails = () => {
               </div>
               <CartModal
                 isCartOpen={isCartOpen}
-                closeCart={closeCart}
+                closeCart={toggleCart}
                 cartItems={cartItems}
               />
             </div>

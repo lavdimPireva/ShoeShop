@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import "./CartModal.css"; // Make sure to import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useCart } from "../context/CartProvider";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
+
+  const { removeFromCart } = useCart();
 
   const handleClose = () => {
     setClosing(true);
@@ -37,7 +40,7 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
           </button>
         </div>
         <div className="cart-content">
-          {cartItems?.map((item) => (
+          {cartItems.map((item) => (
             <div key={item.id} className="box cart-item">
               <article className="media">
                 <div className="media-left">
@@ -56,21 +59,21 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                     </p>
                     <p className="cart-item-price">
                       <span className="has-text-weight-semibold is-size-6">
-                        Price:
+                        Çmimi:
                       </span>{" "}
                       {item.discountPrice
-                        ? `${item.discountPrice} (Discounted)`
+                        ? `${item.discountPrice}`
                         : item.originalPrice}
                     </p>
                     <p className="cart-item-sizes">
-                      Sizes: {item.selectedSizes.join(", ")}
+                      Madhesia e zgjedhur: {item.selectedSizes.join(", ")}
                     </p>
                   </div>
                 </div>
                 <div className="media-right">
                   <button
                     className="delete"
-                    // onClick={() => removeItemFromCart(item.id)}
+                    onClick={() => removeFromCart(item.cartItemId)}
                   ></button>
                 </div>
               </article>
