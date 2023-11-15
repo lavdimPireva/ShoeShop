@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./CartModal.css"; // Make sure to import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
-  if (!isCartOpen) return null;
+  const [isClosing, setClosing] = useState(false);
+
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => {
+      setClosing(false);
+      closeCart();
+    }, 300);
+  };
+
+  if (!isCartOpen && !isClosing) return null;
 
   return (
     <>
       <div
-        className={`modal-overlay ${isCartOpen ? "is-active" : ""}`}
-        onClick={closeCart}
+        className={`modal-overlay ${
+          isCartOpen || isClosing ? "is-active" : ""
+        } ${isClosing ? "closing" : ""}`}
+        onClick={handleClose}
       ></div>
-
-      <div className={`cart-modal ${isCartOpen ? "open" : ""}`}>
+      <div
+        className={`cart-modal ${isCartOpen ? "open" : ""} ${
+          isClosing ? "closing" : ""
+        }`}
+      >
         <div className="cart-header">
           <h2 className="cart-title">Kepucet ne shporten tuaj:</h2>
-          <button className="close-button" onClick={closeCart}>
+
+          <button className="close-button" onClick={handleClose}>
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
@@ -45,6 +61,9 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                       {item.discountPrice
                         ? `${item.discountPrice} (Discounted)`
                         : item.originalPrice}
+                    </p>
+                    <p className="cart-item-sizes">
+                      Sizes: {item.selectedSizes.join(", ")}
                     </p>
                   </div>
                 </div>

@@ -34,6 +34,7 @@ const ShoeDetails = () => {
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    selectedSizes: selectedSizes,
   };
 
   const openCart = () => {
