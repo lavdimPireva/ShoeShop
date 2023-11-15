@@ -16,11 +16,43 @@ import {
   faTimes,
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
+import CartModal from "../CartModal/CartModal";
 
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
 
   const [isImageHovered, setImageHovered] = useState(false);
+
+  const [isCartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+
+  const product = {
+    id: 1,
+    name: "Dragon e zeze pa toja",
+    imageUrl: dragonclassic33,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+  };
+
+  const openCart = () => {
+    setCartOpen(true);
+    setCartItems([product]);
+  };
+
+  // Function to close the cart modal
+  const closeCart = () => {
+    setCartOpen(false);
+  };
+
+  const addToCart = () => {
+    console.log("Add to cart");
+
+    // Logic to add the item to the cart
+    // Then open the cart sidebar
+    openCart();
+  };
 
   const hideDetailsStyle = {
     display: isImageHovered ? "none" : "block",
@@ -47,16 +79,6 @@ const ShoeDetails = () => {
         return [...prevSelectedSizes, size];
       }
     });
-  };
-
-  const product = {
-    id: 1,
-    name: "Dragon e zeze pa toja",
-    imageUrl: dragonclassic33,
-    originalPrice: "69.99",
-    discountPrice: "19.99",
-    description:
-      "Comfortable running shoes with great traction and durability.",
   };
 
   return (
@@ -203,17 +225,17 @@ const ShoeDetails = () => {
                 </div>
               )}
 
-              <div
-                className="button is-primary m-3"
-                onClick={() => {
-                  console.log("Add to cart");
-                }}
-              >
+              <div className="button is-primary m-3" onClick={addToCart}>
                 <span className="icon">
                   <FontAwesomeIcon icon={faCartPlus} />
                 </span>
                 <span>Add to Cart</span>
               </div>
+              <CartModal
+                isCartOpen={isCartOpen}
+                closeCart={closeCart}
+                cartItems={cartItems}
+              />
             </div>
           </div>
         </div>
