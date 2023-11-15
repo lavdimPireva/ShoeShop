@@ -20,6 +20,8 @@ import ShoeProduct from "./ShoeProduct";
 import { classicShoes, products } from "../ImagesModule/ModelsImage";
 
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
+import { generateSlug } from "../helpers/slugUtils";
 
 const HomePage = () => {
   const settings = {
@@ -33,7 +35,15 @@ const HomePage = () => {
     arrows: true,
   };
 
-  const productsList = products;
+  // Assuming this is in a file named `slugUils.js`
+
+  const productsList = products.map((product) => ({
+    ...product,
+    slug: generateSlug(product.name, product.id),
+  }));
+
+  console.log("productList", productsList);
+
   const classicList = classicShoes;
 
   return (
@@ -91,23 +101,29 @@ const HomePage = () => {
             style={{ overflowX: "auto", whiteSpace: "nowrap" }}
           >
             {productsList.slice(0, 13).map((product) => (
-              <div
-                className="card"
-                style={{
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  width: "210px",
-                  margin: "0 10px",
-                  height: "fit-content", // This makes the card height fit its content
-                  boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
-                  borderRadius: "10px", // Rounded corners for the card
-                  overflow: "hidden",
-                  marginBottom: "10px",
-                  cursor: "pointer",
-                }}
+              <Link
+                to={`/shoe/${product.slug}`}
+                key={product.id}
+                style={{ textDecoration: "none" }}
               >
-                <ShoeProduct {...product} />
-              </div>
+                <div
+                  className="card"
+                  style={{
+                    display: "inline-flex",
+                    flexDirection: "column",
+                    width: "210px",
+                    margin: "0 10px",
+                    height: "fit-content", // This makes the card height fit its content
+                    boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
+                    borderRadius: "10px", // Rounded corners for the card
+                    overflow: "hidden",
+                    marginBottom: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <ShoeProduct {...product} />
+                </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -5,10 +5,14 @@ import App from "./App";
 
 // bulma framework css
 import "bulma/css/bulma.min.css";
+import { CartProvider } from "./context/CartProvider";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <BrowserRouter>
+    <CartProvider>
+      <App />
+    </CartProvider>
+  </BrowserRouter>
 );

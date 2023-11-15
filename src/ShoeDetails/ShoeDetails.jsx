@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
-import alexanderbardhZi from "../img/alexander_bardhzi.jpg";
-import dragonclassic33 from "../img/dragonclassic33.jpg";
-
-import ReactImageMagnify from "react-image-magnify";
 
 // css
 import "./ShoeDetails.css";
@@ -17,29 +13,36 @@ import {
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 import CartModal from "../CartModal/CartModal";
+import { products } from "../ImagesModule/ModelsImage";
+import { useParams } from "react-router-dom";
+import ShoeSizeSelector from "./ShoeSizeSelector";
+import ShoeImage from "./ShoeImage";
+import { generateSlug } from "../helpers/slugUtils";
 
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
-
   const [isImageHovered, setImageHovered] = useState(false);
-
   const [isCartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
-  const product = {
-    id: 1,
-    name: "Dragon e zeze pa toja",
-    imageUrl: dragonclassic33,
-    originalPrice: "69.99",
-    discountPrice: "19.99",
-    description:
-      "Comfortable running shoes with great traction and durability.",
-    selectedSizes: selectedSizes,
-  };
+  // get the slug from URL
+  const { slug } = useParams();
+
+  console.log("slug", slug);
+
+  const shoeDetails = products.find(
+    (shoe) => generateSlug(shoe.name, shoe.id) === slug
+  );
 
   const openCart = () => {
     setCartOpen(true);
-    setCartItems([product]);
+
+    const productToAdd = {
+      ...shoeDetails,
+      selectedSizes: selectedSizes,
+    };
+
+    setCartItems([productToAdd]);
   };
 
   // Function to close the cart modal
@@ -88,37 +91,11 @@ const ShoeDetails = () => {
       <div className="container">
         <div className="columns is-multiline">
           <div className="column is-full-mobile is-three-fifths-tablet is-three-fifths-desktop">
-            <div
-              className="image-container mb-5 mt-2"
+            <ShoeImage
+              shoe={shoeDetails}
               onMouseEnter={() => handleMouseHover(true)}
               onMouseLeave={() => handleMouseHover(false)}
-            >
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: product.name,
-                    isFluidWidth: true,
-                    src: product.imageUrl,
-                    width: 620,
-                    height: 560,
-                    sizes: "(min-width: 1024px) 620px, 100vw",
-                  },
-                  largeImage: {
-                    src: product.imageUrl,
-                    width: 1000,
-                    height: 1500,
-                  },
-                  lensStyle: { backgroundColor: "rgba(0,0,0,.6)" },
-                  enlargedImagePosition: "beside",
-                  enlargedImageContainerDimensions: {
-                    width: "150%",
-                    height: "100%",
-                  },
-                  isHintEnabled: true,
-                  shouldHideHintAfterFirstActivation: false,
-                }}
-              />
-            </div>
+            />
           </div>
           {/* product details */}
           <div className="column is-full-mobile mb-5" style={hideDetailsStyle}>
@@ -134,7 +111,7 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Dragon e zeze pa toja</span>
+                <span className="ml-2">{shoeDetails.name}</span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
@@ -145,7 +122,9 @@ const ShoeDetails = () => {
                     size="2x"
                   />
                 </span>
-                <span className="ml-2">Çmimi: 19.99€</span>
+                <span className="ml-2">
+                  Çmimi: {shoeDetails.discountPrice}€
+                </span>
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
@@ -187,24 +166,11 @@ const ShoeDetails = () => {
               </h3>
 
               {/* Numeration */}
-              <div
-                className="tags are-medium m-3 "
-                style={{ cursor: "pointer" }}
-              >
-                {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
-                  (size) => (
-                    <span
-                      key={size}
-                      className={`tag ${
-                        selectedSizes.includes(size) ? "is-primary" : "is-light"
-                      }`}
-                      onClick={() => handleSelectSize(size)}
-                    >
-                      {size}
-                    </span>
-                  )
-                )}
-              </div>
+              <ShoeSizeSelector
+                selectedSizes={selectedSizes}
+                onSelectSize={handleSelectSize}
+                onRemoveSize={handleRemoveSize}
+              />
 
               {selectedSizes.length > 0 && (
                 <div className="tags m-3 are-medium">
