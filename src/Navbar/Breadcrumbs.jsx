@@ -8,40 +8,43 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Link } from "react-router-dom";
+
 const Breadcrumbs = () => (
-  <nav className="breadcrumb px-6 pt-5 " aria-label="breadcrumbs">
+  <nav className="breadcrumb px-6 pt-5" aria-label="breadcrumbs">
     <ul>
       <li>
-        <a href="#" className="has-text-black">
+        <Link to="/" className="has-text-black">
           <span className="icon is-small">
             <FontAwesomeIcon icon={faHome} />
           </span>
           <span>Home</span>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="#" className="has-text-black">
+        <Link to="/Men-shoes" className="has-text-black">
           <span className="icon is-small">
             <FontAwesomeIcon icon={faMale} /> {/* For men's shoes */}
           </span>
           <span>Men's Shoes</span>
-        </a>
+        </Link>
       </li>
+      {/* Other breadcrumb items */}
       <li>
-        <a href="#" className="has-text-black">
+        <Link to="/Sports-shoes" className="has-text-black">
           <span className="icon is-small">
             <FontAwesomeIcon icon={faRunning} />
           </span>
           <span>Sports Shoes</span>
-        </a>
+        </Link>
       </li>
       <li className="is-active">
-        <a href="#" className="has-text-black ">
+        <Link to="/Running-shoes" className="has-text-black">
           <span className="icon is-small">
-            <FontAwesomeIcon icon={faShoePrints} />{" "}
+            <FontAwesomeIcon icon={faShoePrints} />
           </span>
           <span>Running Shoes</span>
-        </a>
+        </Link>
       </li>
     </ul>
   </nav>

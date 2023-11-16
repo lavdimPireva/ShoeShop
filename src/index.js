@@ -6,13 +6,16 @@ import App from "./App";
 // bulma framework css
 import "bulma/css/bulma.min.css";
 import { CartProvider } from "./context/CartProvider";
+import { FilterProvider } from "./context/FilterProvider";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <CartProvider>
-      <App />
-    </CartProvider>
+    <FilterProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </FilterProvider>
   </BrowserRouter>
 );

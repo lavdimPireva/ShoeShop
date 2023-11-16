@@ -3,6 +3,7 @@ import "./App.css";
 import HomePage from "./HomePage/HomePage";
 import ShoeProduct from "./HomePage/ShoeProduct";
 import ShoeDetails from "./ShoeDetails/ShoeDetails";
+import MenShoesPage from "./MenShoes/MenShoesPage";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shoe/:slug" element={<ShoeDetails />} />
-        {/* other routes */}
+        <Route path="/Men-shoes" element={<MenShoesPage />} />
       </Routes>
     </div>
   );

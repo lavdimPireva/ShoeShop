@@ -40,6 +40,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "unisex",
   },
   {
     id: 2,
@@ -48,6 +49,7 @@ export const products = [
     originalPrice: "69.99",
     discountPrice: "19.99",
     description: "Elegant leather boots with a modern twist.",
+    type: "unisex",
   },
   {
     id: 3,
@@ -57,6 +59,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "unisex",
   },
   {
     id: 4,
@@ -66,6 +69,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "unisex",
   },
   {
     id: 5,
@@ -75,6 +79,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "unisex",
   },
 
   {
@@ -85,6 +90,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
     id: 7,
@@ -94,6 +100,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
     id: 8,
@@ -103,6 +110,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
     id: 9,
@@ -112,6 +120,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -122,6 +131,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -132,6 +142,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -142,6 +153,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -152,6 +164,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -162,6 +175,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -172,6 +186,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -182,6 +197,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -192,6 +208,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
     id: 18,
@@ -201,6 +218,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -211,6 +229,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -221,6 +240,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -231,6 +251,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -241,6 +262,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -251,6 +273,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
     id: 24,
@@ -260,6 +283,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 
   {
@@ -270,6 +294,7 @@ export const products = [
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 ];
 
