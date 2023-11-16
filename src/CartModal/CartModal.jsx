@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import "./CartModal.css"; // Make sure to import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCreditCard, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartProvider";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
-
   const { removeFromCart } = useCart();
+
+  const subtotal = cartItems
+    .reduce((total, item) => {
+      return total + parseFloat(item.discountPrice || item.originalPrice);
+    }, 0)
+    .toFixed(2);
 
   const handleClose = () => {
     setClosing(true);
@@ -33,7 +38,7 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
         }`}
       >
         <div className="cart-header">
-          <h2 className="cart-title is-size-5-fullhd ">
+          <h2 className="cart-title has-text-weight-bold is-size-7-mobile is-size-6 has-text-left-fullhd">
             Kepucet ne shporten tuaj:
           </h2>
 
@@ -56,25 +61,26 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                 </div>
                 <div className="media-content cart-item-details">
                   <div className="content">
-                    <p className="cart-item-name is-size-6-fullhd has-text-weight-semibold">
+                    <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
                       {item.name}
                     </p>
                     <p className="cart-item-price">
-                      <span className="has-text-weight-semibold is-size-6-fullhd">
+                      <span className="has-text-weight-semibold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
                         Çmimi:
                       </span>{" "}
-                      <span className="has-text-weight-bold">
+                      <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
                         {item.discountPrice
                           ? `${item.discountPrice}`
                           : item.originalPrice}
                         €
                       </span>
                     </p>
-                    <p className="cart-item-sizes has-text-weight-normal is-size-6-fullhd">
+                    <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
                       Madhesia e zgjedhur: {item.selectedSizes.join(", ")}
                     </p>
                   </div>
                 </div>
+
                 <div className="media-right">
                   <button
                     className="delete"
@@ -84,6 +90,31 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
               </article>
             </div>
           ))}
+        </div>
+        <div
+          className="subtotal-box has-background-light"
+          style={{ padding: "1rem" }}
+        >
+          <div className="content has-text-left-fullhd">
+            {cartItems.length > 0 && (
+              <p className="is-size-6 has-text-center-fullhd has-text-weight-bold">
+                Nëntotali: <strong>{subtotal}€</strong>
+              </p>
+            )}
+            <button
+              className={`button is-normal is-fullwidth has-text-black has-text-left-fullhd ${
+                cartItems.length === 0 ? "is-light" : ""
+              }`}
+              style={{ backgroundColor: "#52dc95" }}
+              disabled={cartItems.length === 0}
+            >
+              <span className="icon">
+                <FontAwesomeIcon icon={faCreditCard} />{" "}
+                {/* The icon component */}
+              </span>
+              <span>Vazhdo te Pagesa</span>
+            </button>
+          </div>
         </div>
       </div>
     </>

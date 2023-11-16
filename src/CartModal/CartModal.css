@@ -31,6 +31,7 @@
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transform: translateX(100%);
+  padding-bottom: 100px;
 }
 
 .cart-modal.open {
@@ -103,9 +104,9 @@
 }
 
 .cart-content {
-  max-height: 60vh; /* limit height */
   overflow-y: auto; /* allow scrolling */
   padding: 1rem;
+  max-height: calc(100% - 100px);
 }
 
 .cart-item {
@@ -205,4 +206,14 @@
   to {
     opacity: 0;
   }
+}
+
+.subtotal-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: #f7f7f7;
+  border-top: 1px solid #e1e1e1;
 }
