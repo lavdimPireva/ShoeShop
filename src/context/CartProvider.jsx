@@ -19,7 +19,17 @@ export const CartProvider = ({ children }) => {
 
   const [isCartOpen, setCartOpen] = useState(false);
 
-  // ... other state and functions ...
+  const calculateSubtotal = (items) => {
+    return items
+      .reduce((total, item) => {
+        const itemPrice = parseFloat(item.discountPrice || item.originalPrice);
+        const itemTotal = itemPrice * (item.quantity || 1);
+        return total + itemTotal;
+      }, 0)
+      .toFixed(2);
+  };
+
+  const subtotal = calculateSubtotal(cartItems);
 
   const addToCart = (product) => {
     setCartItems((currentItems) => {
@@ -56,6 +66,7 @@ export const CartProvider = ({ children }) => {
     removeFromCart,
     isCartOpen,
     toggleCart,
+    subtotal,
   };
 
   // ... rest of your context provider ...

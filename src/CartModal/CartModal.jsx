@@ -6,13 +6,10 @@ import { useCart } from "../context/CartProvider";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
-  const { removeFromCart } = useCart();
 
-  const subtotal = cartItems
-    .reduce((total, item) => {
-      return total + parseFloat(item.discountPrice || item.originalPrice);
-    }, 0)
-    .toFixed(2);
+  const { subtotal } = useCart();
+
+  const { removeFromCart } = useCart();
 
   const handleClose = () => {
     setClosing(true);

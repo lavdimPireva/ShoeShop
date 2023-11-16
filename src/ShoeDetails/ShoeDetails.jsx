@@ -36,10 +36,13 @@ const ShoeDetails = () => {
   );
 
   const handleAddToCart = () => {
+    const quantity = selectedSizes.length;
+
     // Create a product object with the necessary properties
     const productToAdd = {
       ...shoeDetails,
       selectedSizes: selectedSizes,
+      quantity: quantity,
     };
 
     // Call the addToCart function from your context
