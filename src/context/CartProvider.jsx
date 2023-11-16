@@ -45,6 +45,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const toggleCart = () => {
+    console.log("first");
     // Toggle the cart modal
     setCartOpen(!isCartOpen);
   };

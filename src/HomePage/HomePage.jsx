@@ -22,6 +22,8 @@ import { classicShoes, products } from "../ImagesModule/ModelsImage";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import { generateSlug } from "../helpers/slugUtils";
+import { useCart } from "../context/CartProvider";
+import CartModal from "../CartModal/CartModal";
 
 const HomePage = () => {
   const settings = {
@@ -35,8 +37,9 @@ const HomePage = () => {
     arrows: true,
   };
 
-  // Assuming this is in a file named `slugUils.js`
+  const { isCartOpen, toggleCart, cartItems } = useCart();
 
+  // Assuming this is in a file named `slugUils.js`
   const productsList = products.map((product) => ({
     ...product,
     slug: generateSlug(product.name, product.id),
@@ -200,6 +203,12 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <CartModal
+        isCartOpen={isCartOpen}
+        closeCart={toggleCart}
+        cartItems={cartItems}
+      />
 
       <Footer />
     </div>
