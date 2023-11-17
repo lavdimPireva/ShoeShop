@@ -1,0 +1,27 @@
+/* CustomPanel.css */
+.small-filter-panel .panel-heading {
+  padding: 0.25rem 0.75rem; /* Smaller padding */
+  font-size: 0.9rem; /* Smaller font size */
+  background-color: #f0efef; /* Light grey background */
+}
+
+.small-filter-panel .panel-block {
+  padding: 0.25rem 0.75rem; /* Smaller padding */
+  max-height: 50px; /* Set the maximum height you desire */
+  overflow-y: auto; /* 
+}
+
+.small-filter-panel .panel-block .control {
+  margin: 0.25rem 0; /* Smaller margin for control elements */
+}
+
+.small-filter-panel label.checkbox {
+  font-size: 0.8rem; /* Smaller font size for checkbox labels */
+  margin-right: 0.5rem; /* Space between checkboxes */
+}
+
+.scrollable-container {
+  max-height: 200px; /* Adjust this value as needed for your design */
+  overflow-y: auto; /* Adds vertical scrollbar when content overflows */
+  overflow-x: hidden; /* Prevents horizontal scrollbar */
+}
