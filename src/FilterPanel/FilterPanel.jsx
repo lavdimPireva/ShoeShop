@@ -51,9 +51,16 @@ const FilterPanel = ({ onFilterChange }) => {
     setSizes((prevSizes) => ({ ...prevSizes, [size]: !prevSizes[size] }));
   };
 
-  // Call this function whenever you want to propagate filter changes up to the parent component
   const applyFilters = () => {
-    onFilterChange({ price, brands, sizes });
+    const selectedBrands = Object.entries(brands)
+      .filter(([_, isChecked]) => isChecked)
+      .map(([brand]) => brand);
+
+    onFilterChange({
+      ...price,
+      brands: selectedBrands, // Pass array of selected brands
+      // include other filters like sizes, color, etc.
+    });
   };
 
   return (

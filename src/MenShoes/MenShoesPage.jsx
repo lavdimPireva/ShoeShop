@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 import CartModal from "../CartModal/CartModal";
@@ -9,24 +9,13 @@ import { Link } from "react-router-dom";
 import FilterPanel from "../FilterPanel/FilterPanel";
 
 const MenShoesPage = () => {
-  const { menShoes } = useFilter();
-  const [filters, setFilters] = useState({});
+  const { filteredProducts, updateFilterCriteria } = useFilter();
+
   const { isCartOpen, toggleCart, cartItems } = useCart();
 
-  const productsList = menShoes.map((product) => ({
-    ...product,
-    slug: generateSlug(product.name, product.id),
-  }));
-
-  const filteredProductsList = menShoes.filter((product) => {
-    // Apply filtering logic here based on the filters state
-    // Example:
-    // return (!filters.brand || product.brand === filters.brand) &&
-    //        (!filters.size || product.size === filters.size);
-  });
-
   const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+    console.log("new Filters", newFilters);
+    updateFilterCriteria(newFilters);
   };
 
   return (
@@ -43,7 +32,7 @@ const MenShoesPage = () => {
             <section className="section">
               <h1 className="title">Men's Shoes</h1>
               <div className="columns is-multiline">
-                {filteredProductsList.map((shoe) => (
+                {filteredProducts.map((shoe) => (
                   <div className="column is-3" key={shoe.id}>
                     <Link to={`/shoe/${shoe.slug}`}>
                       <div className="card">

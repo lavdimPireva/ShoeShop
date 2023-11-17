@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useMemo } from "react";
 
 import { products } from "../ImagesModule/ModelsImage";
 
@@ -9,12 +9,27 @@ export const useFilter = () => useContext(FilterContext);
 export const FilterProvider = ({ children }) => {
   const [filterType, setFilterType] = useState("all");
 
-  const menShoes = products.filter((product) => product.type === "men");
-  const femaleShoes = products.filter((product) => product.type === "unisex");
+  const [filterCriteria, setFilterCriteria] = useState({ type: "men" });
+
+  const updateFilterCriteria = (criteria) => {
+    setFilterCriteria({ ...filterCriteria, ...criteria });
+  };
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const typeMatch = product.type === filterCriteria.type;
+      const brandMatch =
+        !filterCriteria.brands || filterCriteria.brands.includes(product.name);
+
+      console.log("Rezultati", typeMatch && brandMatch);
+
+      return typeMatch && brandMatch;
+    });
+  }, [filterCriteria]);
 
   const value = {
-    menShoes,
-    femaleShoes,
+    filteredProducts, // Use this instead of menShoes or femaleShoes
+    updateFilterCriteria, // Use this function to update the filter criteria
   };
 
   return (

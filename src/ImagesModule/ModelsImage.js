@@ -349,7 +349,7 @@ export const products = [
   },
   {
     id: 26,
-    name: "La polo",
+    name: "Lapolo",
     imageUrl: classic1,
     originalPrice: "69.99",
     discountPrice: "24.99",
@@ -361,7 +361,7 @@ export const products = [
   },
   {
     id: 27,
-    name: "La polo",
+    name: "Lapolo",
     imageUrl: classic2,
     originalPrice: "69.99",
     discountPrice: "24.99",
@@ -373,7 +373,7 @@ export const products = [
   },
   {
     id: 28,
-    name: "La polo",
+    name: "Lapolo",
     imageUrl: classic3,
     originalPrice: "69.99",
     discountPrice: "24.99",
@@ -385,7 +385,7 @@ export const products = [
   },
   {
     id: 29,
-    name: "La polo",
+    name: "Lapolo",
     imageUrl: classic4,
     originalPrice: "69.99",
     discountPrice: "24.99",
