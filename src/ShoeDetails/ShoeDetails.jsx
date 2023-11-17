@@ -177,6 +177,7 @@ const ShoeDetails = () => {
 
               {/* Numeration */}
               <ShoeSizeSelector
+                numeration={shoeDetails.numeration}
                 selectedSizes={selectedSizes}
                 onSelectSize={handleSelectSize}
                 onRemoveSize={handleRemoveSize}

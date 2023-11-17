@@ -1,23 +1,25 @@
 // ShoeSizeSelector.jsx
 import React from "react";
 
-const ShoeSizeSelector = ({ selectedSizes, onSelectSize, onRemoveSize }) => {
-  const sizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44"];
-
+const ShoeSizeSelector = ({
+  numeration,
+  selectedSizes,
+  onSelectSize,
+  onRemoveSize,
+}) => {
   return (
     <div className="tags are-medium m-3" style={{ cursor: "pointer" }}>
-      {sizes.map((size) => (
+      {numeration.map((size) => (
         <span
           key={size}
           className={`tag ${
-            selectedSizes.includes(size) ? "is-primary" : "is-light"
+            selectedSizes.includes(size.toString()) ? "is-primary" : "is-light"
           }`}
-          onClick={() => onSelectSize(size)}
+          onClick={() => onSelectSize(size.toString())}
         >
           {size}
         </span>
       ))}
-      {/* ... */}
     </div>
   );
 };

@@ -34,73 +34,88 @@ import classic4 from "../img/classic4.jpg";
 export const products = [
   {
     id: 1,
-    name: "Luxury Fashion Brand",
+    name: "Alexander Mc Queen",
     imageUrl: alexanderbardhZi,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
-      "Comfortable running shoes with great traction and durability.",
+      "Këpucë të frymëzuara nga Alexander McQueen, me platformë të lartë dhe detaje të hollësishme, ofrojnë elegancë dhe komfort.",
     type: "unisex",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe", "zeze"],
   },
   {
     id: 2,
-    name: "Luxury Fashion Brand",
+    name: "Alexander Mc Queen",
     imageUrl: alexanderBardha,
     originalPrice: "69.99",
     discountPrice: "19.99",
-    description: "Elegant leather boots with a modern twist.",
+    description:
+      "Këpucë të frymëzuara nga Alexander McQueen, me platformë të lartë dhe detaje të hollësishme, ofrojnë elegancë dhe komfort.",
     type: "unisex",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
   },
   {
     id: 3,
-    name: "Luxury Fashion Brand",
+    name: "Alexander Mc Queen",
     imageUrl: alexanderZezebardh,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
-      "Comfortable running shoes with great traction and durability.",
+      "Këpucë të frymëzuara nga Alexander McQueen, me platformë të lartë dhe detaje të hollësishme, ofrojnë elegancë dhe komfort.",
     type: "unisex",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze", "bardhe"],
   },
   {
     id: 4,
-    name: "Luxury Fashion Brand",
+    name: "Alexander Mc Queen",
     imageUrl: alexanderZeze,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
-      "Comfortable running shoes with great traction and durability.",
+      "Këpucë të frymëzuara nga Alexander McQueen, me platformë të lartë dhe detaje të hollësishme, ofrojnë elegancë dhe komfort.",
     type: "unisex",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
   {
     id: 5,
-    name: "Luxury Fashion Brand",
+    name: "Nike Airforce 1",
     imageUrl: airforce33,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
-      "Comfortable running shoes with great traction and durability.",
+      "Nike Air Force 1 përbëjnë ikonën e kulturës së këpucëve sportive, të njohura për dizajnin e tyre klasik, komoditetin e pashoq dhe stilit të pastër që përshtatet me çdo veshje.",
     type: "unisex",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
   },
 
   {
     id: 6,
-    name: "Luxury Fashion Brand",
+    name: "Dragon Klasik",
     imageUrl: dragonclassic33,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
-      "Comfortable running shoes with great traction and durability.",
+      "Këpucë sportive në ngjyrë të zezë, me dizajn të thjeshtë dhe modern.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
   {
     id: 7,
-    name: "Luxury Fashion Brand",
+    name: "Dragon Klasik",
     imageUrl: dragonclassic331,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["gjelbert"],
   },
   {
     id: 8,
@@ -111,6 +126,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["gjelbert"],
   },
   {
     id: 9,
@@ -121,6 +138,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
 
   {
@@ -132,6 +151,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
 
   {
@@ -143,6 +164,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["hiri"],
   },
 
   {
@@ -154,6 +177,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze"],
   },
 
   {
@@ -165,6 +190,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze"],
   },
 
   {
@@ -176,6 +203,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["hiri"],
   },
 
   {
@@ -187,6 +216,9 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+
+    color: ["bardhe"],
   },
 
   {
@@ -198,6 +230,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["hiri"],
   },
 
   {
@@ -209,6 +243,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["hiri"],
   },
   {
     id: 18,
@@ -219,6 +255,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["bardhe"],
   },
 
   {
@@ -230,17 +268,20 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    color: ["hiri", "portokall"],
   },
 
   {
     id: 20,
-    name: "Luxury Fashion Brand",
+    name: "Adidas",
     imageUrl: origjinale11,
     originalPrice: "69.99",
     discountPrice: "19.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze"],
   },
 
   {
@@ -252,6 +293,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze"],
   },
 
   {
@@ -263,6 +306,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["bardhe"],
   },
 
   {
@@ -274,6 +319,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["bardhe"],
   },
   {
     id: 24,
@@ -284,6 +331,8 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze"],
   },
 
   {
@@ -295,45 +344,55 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
+    color: ["zeze", "bardhe"],
   },
   {
     id: 26,
-    name: "Classic Fashion Brand",
+    name: "La polo",
     imageUrl: classic1,
     originalPrice: "69.99",
     discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
   {
     id: 27,
-    name: "Classic Fashion Brand",
+    name: "La polo",
     imageUrl: classic2,
     originalPrice: "69.99",
     discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze", "bardhe"],
   },
   {
     id: 28,
-    name: "Classic Fashion Brand",
+    name: "La polo",
     imageUrl: classic3,
     originalPrice: "69.99",
     discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
   {
     id: 29,
-    name: "Classic Fashion Brand",
+    name: "La polo",
     imageUrl: classic4,
     originalPrice: "69.99",
     discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44],
+    color: ["zeze", "bardhe"],
   },
 ];
