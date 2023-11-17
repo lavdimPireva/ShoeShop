@@ -4,46 +4,55 @@ import Footer from "../HomePage/Footer";
 import CartModal from "../CartModal/CartModal";
 import { useFilter } from "../context/FilterProvider";
 import { useCart } from "../context/CartProvider";
+import { generateSlug } from "../helpers/slugUtils";
+import { Link } from "react-router-dom";
 
 const FemaleShoesPage = () => {
   const { femaleShoes } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
+
+  const productsList = femaleShoes.map((product) => ({
+    ...product,
+    slug: generateSlug(product.name, product.id),
+  }));
 
   return (
     <>
       <Navbar />
 
       <section className="section">
-        <div className="container" style={{ cursor: "pointer" }}>
-          <h1 className="title is-size-5">Modelet per Femra/Meshkuj</h1>
+        <div className="container">
+          <h1 className="title">Men's Shoes</h1>
           <div className="columns is-multiline">
-            {femaleShoes.map((shoe) => (
+            {productsList.map((shoe) => (
               <div className="column is-3" key={shoe.id}>
-                <div className="card">
-                  <div className="card-image">
-                    <figure className="image is-16by4">
-                      <img src={shoe.imageUrl} alt={shoe.name} />
-                    </figure>
-                  </div>
-                  <div className="card-content has-text-centered">
-                    <p className="title is-5">{shoe.name}</p>
-                    <p className="subtitle is-6 has-text-weight-semibold">
-                      {shoe.discountPrice
-                        ? `${shoe.discountPrice}€`
-                        : `${shoe.originalPrice}€`}
-                    </p>
-                    <p className="subtitle is-6">{shoe.description}</p>
-                    {/* If you have a strike-through price (original price), display it here */}
-                    {shoe.discountPrice && (
-                      <p
-                        className="has-text-grey-lighter"
-                        style={{ textDecoration: "line-through" }}
-                      >
-                        {shoe.originalPrice}€
+                <Link to={`/shoe/${shoe.slug}`}>
+                  <div className="card">
+                    <div className="card-image">
+                      <figure className="image is-1by1">
+                        <img src={shoe.imageUrl} alt={shoe.name} />
+                      </figure>
+                    </div>
+
+                    <div className="card-content has-text-centered">
+                      <p className="title is-5">{shoe.name}</p>
+                      <p className="subtitle is-6 has-text-weight-semibold">
+                        {shoe.discountPrice
+                          ? `${shoe.discountPrice}€`
+                          : `${shoe.originalPrice}€`}
                       </p>
-                    )}
+                      <p className="subtitle is-6">{shoe.description}</p>
+                      {shoe.discountPrice && (
+                        <p
+                          className="has-text-grey-lighter"
+                          style={{ textDecoration: "line-through" }}
+                        >
+                          {shoe.originalPrice}€
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

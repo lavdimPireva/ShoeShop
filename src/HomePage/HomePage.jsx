@@ -40,24 +40,12 @@ const HomePage = () => {
     arrows: true,
   };
 
-  // const handleFilterChange = (type) => {
-  //   setFilterType(type);
-  // };
-
-  // const filteredProductsList =
-  //   filterType === "all"
-  //     ? productsList
-  //     : productsList.filter((product) => product.type === filterType);
-
-  // Assuming this is in a file named `slugUils.js`
   const productsList = products.map((product) => ({
     ...product,
     slug: generateSlug(product.name, product.id),
   }));
 
-  console.log("productList", productsList);
-
-  const classicList = classicShoes;
+  console.log("classic", productsList.slice(25, 29));
 
   return (
     <div>
@@ -150,23 +138,29 @@ const HomePage = () => {
             style={{ overflowX: "auto", whiteSpace: "nowrap" }}
           >
             {productsList.slice(13, 25).map((product) => (
-              <div
-                className="card"
-                style={{
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  width: "210px",
-                  margin: "0 10px",
-                  height: "fit-content", // This makes the card height fit its content
-                  boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
-                  borderRadius: "10px", // Rounded corners for the card
-                  overflow: "hidden",
-                  marginBottom: "10px",
-                  cursor: "pointer",
-                }}
+              <Link
+                to={`/shoe/${product.slug}`}
+                key={product.id}
+                style={{ textDecoration: "none" }}
               >
-                <ShoeProduct {...product} />
-              </div>
+                <div
+                  className="card"
+                  style={{
+                    display: "inline-flex",
+                    flexDirection: "column",
+                    width: "210px",
+                    margin: "0 10px",
+                    height: "fit-content", // This makes the card height fit its content
+                    boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
+                    borderRadius: "10px", // Rounded corners for the card
+                    overflow: "hidden",
+                    marginBottom: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <ShoeProduct {...product} />
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -178,36 +172,41 @@ const HomePage = () => {
         <div className="container">
           <h4 className="title is-4">Classic Shoes</h4>
           <div className="columns">
-            {classicShoes.map((shoe) => (
-              <div className="column" key={shoe.id}>
-                <div
-                  className="card"
-                  style={{
-                    width: "100%",
-                    boxShadow: "0px 2px 15px rgba(0,0,0,0.1)",
-                    borderRadius: "10px",
-                  }}
+            {productsList.slice(25, 29).map((shoe) => (
+              <div className="column is-3" key={shoe.id}>
+                <Link
+                  to={`/shoe/${shoe.slug}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  <div className="card-image">
-                    <img
-                      src={shoe.imageUrl}
-                      alt={shoe.name}
-                      style={{
-                        borderRadius: "10px 10px 0 0",
-                        width: "100%",
-                        height: "auto",
-                      }}
-                    />
+                  <div
+                    className="card"
+                    style={{
+                      boxShadow: "0px 2px 15px rgba(0,0,0,0.1)",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <div className="card-image">
+                      <figure className="image">
+                        <img
+                          src={shoe.imageUrl}
+                          alt={shoe.name}
+                          style={{ borderRadius: "10px 10px 0 0" }}
+                        />
+                      </figure>
+                    </div>
+                    <div className="card-content has-text-centered">
+                      <p className="title is-5">{shoe.name}</p>
+                      <p
+                        className="title is-6"
+                        style={{ textDecoration: "line-through" }}
+                      >
+                        {shoe.originalPrice}€
+                      </p>
+                      <p className="title is-4">{shoe.discountPrice}€</p>
+                      <p className="subtitle is-6">{shoe.description}</p>
+                    </div>
                   </div>
-                  <div className="card-content" style={{ textAlign: "center" }}>
-                    <p className="title is-5">{shoe.name}</p>
-                    <p style={{ textDecoration: "line-through" }}>
-                      {shoe.originalPrice}€
-                    </p>
-                    <p className="title is-4">{shoe.discountPrice}€</p>
-                    <p className="subtitle is-6">{shoe.description}</p>
-                  </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

@@ -296,45 +296,44 @@ export const products = [
       "Comfortable running shoes with great traction and durability.",
     type: "men",
   },
-];
-
-export const classicShoes = [
   {
-    id: 1,
-    name: "Luxury Fashion Brand",
+    id: 26,
+    name: "Classic Fashion Brand",
     imageUrl: classic1,
     originalPrice: "69.99",
-    discountPrice: "19.99",
+    discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
   {
-    id: 2,
-    name: "Luxury Fashion Brand",
+    id: 27,
+    name: "Classic Fashion Brand",
     imageUrl: classic2,
     originalPrice: "69.99",
-    discountPrice: "19.99",
+    discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
-
   {
-    id: 3,
-    name: "Luxury Fashion Brand",
+    id: 28,
+    name: "Classic Fashion Brand",
     imageUrl: classic3,
     originalPrice: "69.99",
-    discountPrice: "19.99",
+    discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
-
   {
-    id: 4,
-    name: "Luxury Fashion Brand",
+    id: 29,
+    name: "Classic Fashion Brand",
     imageUrl: classic4,
     originalPrice: "69.99",
-    discountPrice: "19.99",
+    discountPrice: "24.99",
     description:
       "Comfortable running shoes with great traction and durability.",
+    type: "men",
   },
 ];

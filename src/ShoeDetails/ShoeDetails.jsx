@@ -29,6 +29,8 @@ const ShoeDetails = () => {
   // get the slug from URL
   const { slug } = useParams();
 
+  console.log("slug", slug);
+
   const shoeDetails = products.find(
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
   );

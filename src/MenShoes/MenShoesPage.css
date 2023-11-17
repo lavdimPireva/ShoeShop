@@ -1,0 +1,10 @@
+.category-image {
+  display: block; /* Make sure the image is a block element to fill the width of its container */
+  width: 250px; /* Set a fixed width */
+  height: 200px; /* Set a fixed height */
+  object-fit: cover; /* Cover the area without stretching the image */
+  object-position: center; /* Center the image within the element bounds */
+  margin: 10px;
+  border-radius: 8px; /* Rounded corners, adjust as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
