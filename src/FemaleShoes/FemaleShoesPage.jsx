@@ -5,8 +5,8 @@ import CartModal from "../CartModal/CartModal";
 import { useFilter } from "../context/FilterProvider";
 import { useCart } from "../context/CartProvider";
 
-const MenShoesPage = () => {
-  const { menShoes } = useFilter();
+const FemaleShoesPage = () => {
+  const { femaleShoes } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
 
   return (
@@ -15,9 +15,9 @@ const MenShoesPage = () => {
 
       <section className="section">
         <div className="container" style={{ cursor: "pointer" }}>
-          <h1 className="title">Men's Shoes</h1>
+          <h1 className="title is-size-5">Modelet per Femra/Meshkuj</h1>
           <div className="columns is-multiline">
-            {menShoes.map((shoe) => (
+            {femaleShoes.map((shoe) => (
               <div className="column is-3" key={shoe.id}>
                 <div className="card">
                   <div className="card-image">
@@ -61,4 +61,4 @@ const MenShoesPage = () => {
   );
 };
 
-export default MenShoesPage;
+export default FemaleShoesPage;

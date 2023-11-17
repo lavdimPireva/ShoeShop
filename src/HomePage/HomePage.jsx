@@ -24,8 +24,11 @@ import { Link } from "react-router-dom";
 import { generateSlug } from "../helpers/slugUtils";
 import { useCart } from "../context/CartProvider";
 import CartModal from "../CartModal/CartModal";
+import { useFilter } from "../context/FilterProvider";
 
 const HomePage = () => {
+  const { isCartOpen, toggleCart, cartItems } = useCart();
+
   const settings = {
     fade: true,
     lazyLoad: "ondemand",
@@ -37,7 +40,14 @@ const HomePage = () => {
     arrows: true,
   };
 
-  const { isCartOpen, toggleCart, cartItems } = useCart();
+  // const handleFilterChange = (type) => {
+  //   setFilterType(type);
+  // };
+
+  // const filteredProductsList =
+  //   filterType === "all"
+  //     ? productsList
+  //     : productsList.filter((product) => product.type === filterType);
 
   // Assuming this is in a file named `slugUils.js`
   const productsList = products.map((product) => ({

@@ -1,50 +1,83 @@
-import React, { useState } from "react";
-
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faMale,
+  faFemale,
   faRunning,
   faShoePrints,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Link } from "react-router-dom";
+import "./Breadcrumbs.css";
 
 const Breadcrumbs = () => (
   <nav className="breadcrumb px-6 pt-5" aria-label="breadcrumbs">
     <ul>
       <li>
-        <Link to="/" className="has-text-black">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "has-text-black is-active" : "has-text-black"
+          }
+          end
+        >
           <span className="icon is-small">
             <FontAwesomeIcon icon={faHome} />
           </span>
           <span>Home</span>
-        </Link>
+        </NavLink>
       </li>
       <li>
-        <Link to="/Men-shoes" className="has-text-black">
+        <NavLink
+          to="/Men-shoes"
+          className={({ isActive }) =>
+            isActive ? "has-text-black is-active" : "has-text-black"
+          }
+        >
           <span className="icon is-small">
-            <FontAwesomeIcon icon={faMale} /> {/* For men's shoes */}
+            <FontAwesomeIcon icon={faMale} />
           </span>
           <span>Men's Shoes</span>
-        </Link>
+        </NavLink>
       </li>
-      {/* Other breadcrumb items */}
       <li>
-        <Link to="/Sports-shoes" className="has-text-black">
+        <NavLink
+          to="/Female-shoes"
+          className={({ isActive }) =>
+            isActive ? "has-text-black is-active" : "has-text-black"
+          }
+        >
+          <span className="icon is-small">
+            <FontAwesomeIcon icon={faFemale} />
+          </span>
+          <span>Female's Shoes</span>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/Sports-shoes"
+          className={({ isActive }) =>
+            isActive ? "has-text-black is-active" : "has-text-black"
+          }
+        >
           <span className="icon is-small">
             <FontAwesomeIcon icon={faRunning} />
           </span>
           <span>Sports Shoes</span>
-        </Link>
+        </NavLink>
       </li>
-      <li className="is-active">
-        <Link to="/Running-shoes" className="has-text-black">
+      <li>
+        <NavLink
+          to="/Running-shoes"
+          className={({ isActive }) =>
+            isActive ? "has-text-black is-active" : "has-text-black"
+          }
+        >
           <span className="icon is-small">
             <FontAwesomeIcon icon={faShoePrints} />
           </span>
           <span>Running Shoes</span>
-        </Link>
+        </NavLink>
       </li>
     </ul>
   </nav>
