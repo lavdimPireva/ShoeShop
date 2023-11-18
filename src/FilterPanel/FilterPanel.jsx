@@ -1,10 +1,10 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./CustomPanel.css"; // Adjust the path to where your actual CSS file is located
 
-const FilterPanel = ({ onFilterChange }) => {
+const FilterPanel = ({ onFilterChange, availableSizes }) => {
   const [price, setPrice] = useState({ min: "", max: "" });
   const [brands, setBrands] = useState({
     Reebok: false,
@@ -30,25 +30,56 @@ const FilterPanel = ({ onFilterChange }) => {
     45: false,
   });
 
+  const [colors, setColors] = useState({
+    bardhe: false,
+    zeze: false,
+    hiri: false,
+    gjelbert: false,
+    portokall: false,
+  });
+
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isBrandOpen, setIsBrandOpen] = useState(true);
   const [isSizeOpen, setIsSizeOpen] = useState(true);
+  const [isColorOpen, setIsColorOpen] = useState(true);
 
   const togglePrice = () => setIsPriceOpen(!isPriceOpen);
   const toggleBrand = () => setIsBrandOpen(!isBrandOpen);
   const toggleSize = () => setIsSizeOpen(!isSizeOpen);
+  const toggleColor = () => setIsColorOpen(!isColorOpen);
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
     setPrice((prevPrice) => ({ ...prevPrice, [name]: value }));
   };
 
-  const handleBrandChange = (brand) => {
-    setBrands((prevBrands) => ({ ...prevBrands, [brand]: !prevBrands[brand] }));
+  const handleBrandChange = (brandName) => {
+    // Toggle the brand selection state
+    setBrands((prevBrands) => {
+      const updatedBrands = {
+        ...prevBrands,
+        [brandName]: !prevBrands[brandName],
+      };
+      // After state update, call onFilterChange with the current selection
+      onFilterChange({
+        brands: Object.keys(updatedBrands).filter(
+          (brand) => updatedBrands[brand]
+        ),
+        // ... include other filters like sizes and colors if needed
+      });
+      return updatedBrands;
+    });
   };
 
   const handleSizeChange = (size) => {
     setSizes((prevSizes) => ({ ...prevSizes, [size]: !prevSizes[size] }));
+  };
+
+  const handleColorChange = (color) => {
+    setColors((prevColors) => {
+      const updatedColors = { ...prevColors, [color]: !prevColors[color] };
+      return updatedColors;
+    });
   };
 
   const applyFilters = () => {
@@ -56,15 +87,28 @@ const FilterPanel = ({ onFilterChange }) => {
       .filter(([_, isChecked]) => isChecked)
       .map(([brand]) => brand);
 
+    const selectedSizes = Object.entries(sizes)
+      .filter(([_, isChecked]) => isChecked)
+      .map(([size]) => size);
+
+    const selectedColors = Object.entries(colors)
+      .filter(([_, isChecked]) => isChecked)
+      .map(([color]) => color);
+
+    console.log("Selected sizes", selectedSizes);
+
+    // Make sure to include any other filter states you have.
+
     onFilterChange({
-      ...price,
-      brands: selectedBrands, // Pass array of selected brands
-      // include other filters like sizes, color, etc.
+      price,
+      brands: selectedBrands,
+      sizes: selectedSizes,
+      colors: selectedColors,
     });
   };
 
   return (
-    <nav className="panel small-filter-panel">
+    <nav className="panel small-filter-panel " style={{ margin: "10px" }}>
       <a
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={togglePrice}
@@ -134,20 +178,57 @@ const FilterPanel = ({ onFilterChange }) => {
       </a>
       {isSizeOpen && (
         <div className="scrollable-container">
-          {Object.entries(sizes).map(([size, isChecked]) => (
-            <label className="panel-block" key={size}>
+          {Object.keys(sizes).map((size) => {
+            const isSizeAvailable = availableSizes.includes(parseInt(size));
+            return (
+              <label
+                className={`panel-block ${
+                  !isSizeAvailable ? "is-disabled" : ""
+                }`}
+                key={size}
+              >
+                <input
+                  type="checkbox"
+                  checked={sizes[size]}
+                  disabled={!isSizeAvailable}
+                  onChange={() => handleSizeChange(size)}
+                />
+                <span
+                  className={`is-size-7-fullhd ${
+                    !isSizeAvailable ? "has-text-grey-light" : ""
+                  }`}
+                >
+                  {size}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      )}
+
+      <a
+        className="panel-heading is-flex is-justify-content-space-between"
+        onClick={toggleColor}
+      >
+        Color
+        <span className="icon">
+          <FontAwesomeIcon icon={isColorOpen ? faChevronUp : faChevronDown} />
+        </span>
+      </a>
+      {isColorOpen && (
+        <div className="scrollable-container">
+          {Object.entries(colors).map(([color, isChecked]) => (
+            <label className="panel-block" key={color}>
               <input
                 type="checkbox"
                 checked={isChecked}
-                className="is-size-6-fullhd	"
-                onChange={() => handleSizeChange(size)}
+                onChange={() => handleColorChange(color)}
               />
-              <span className="is-size-7-fullhd">{size}</span>
+              <span className="is-size-7-fullhd">{color}</span>
             </label>
           ))}
         </div>
       )}
-
       <div className="panel-block">
         <button
           className="button is-link is-outlined is-fullwidth m-4"

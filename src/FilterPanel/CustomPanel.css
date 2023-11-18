@@ -8,11 +8,11 @@
 .small-filter-panel .panel-block {
   padding: 0.25rem 0.75rem; /* Smaller padding */
   max-height: 50px; /* Set the maximum height you desire */
-  overflow-y: auto; /* 
+  overflow-y: auto;
 }
 
 .small-filter-panel .panel-block .control {
-  margin: 0.25rem 0; /* Smaller margin for control elements */
+  margin: 0.25rem 0; /* Smaller margin for control elements 
 }
 
 .small-filter-panel label.checkbox {

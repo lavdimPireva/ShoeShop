@@ -268,6 +268,7 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
+    numeration: [40, 41, 42, 43, 44, 45],
     color: ["hiri", "portokall"],
   },
 
@@ -356,7 +357,7 @@ export const products = [
     description:
       "Comfortable running shoes with great traction and durability.",
     type: "men",
-    numeration: [40, 41, 42, 43, 44],
+    numeration: [39, 40, 41, 42, 43, 44],
     color: ["zeze"],
   },
   {

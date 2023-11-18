@@ -7,14 +7,45 @@ import { useCart } from "../context/CartProvider";
 import { generateSlug } from "../helpers/slugUtils";
 import { Link } from "react-router-dom";
 import FilterPanel from "../FilterPanel/FilterPanel";
+import { products } from "../ImagesModule/ModelsImage";
 
 const MenShoesPage = () => {
-  const { filteredProducts, updateFilterCriteria } = useFilter();
-
+  const { filteredProducts, updateFilterCriteria, filterCriteria } =
+    useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
+  const [availableSizes, setAvailableSizes] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
+  console.log("PRODUCT >>>", products);
+
+  useEffect(() => {
+    // Whenever selectedBrands changes, update the available sizes
+    const newAvailableSizes = new Set();
+    if (selectedBrands.length === 0) {
+      // If no brands are selected, all sizes are available
+      products.forEach((product) =>
+        product.numeration.forEach((size) => newAvailableSizes.add(size))
+      );
+    } else {
+      // If brands are selected, only their sizes are available
+      products.forEach((product) => {
+        if (selectedBrands.includes(product.name)) {
+          product.numeration.forEach((size) => newAvailableSizes.add(size));
+        }
+      });
+    }
+    setAvailableSizes([...newAvailableSizes]);
+  }, [selectedBrands]);
 
   const handleFilterChange = (newFilters) => {
-    console.log("new Filters", newFilters);
+    console.log("lavdim");
+
+    console.log("newFilters", newFilters);
+    // Update selected brands based on newFilters
+    if (newFilters.brands) {
+      setSelectedBrands(newFilters.brands);
+    }
+    // Call updateFilterCriteria from your context
     updateFilterCriteria(newFilters);
   };
 
@@ -25,7 +56,10 @@ const MenShoesPage = () => {
       <div className="container">
         <div className="columns">
           <div className="column is-one-quarter">
-            <FilterPanel onFilterChange={handleFilterChange} />
+            <FilterPanel
+              onFilterChange={handleFilterChange}
+              availableSizes={availableSizes}
+            />
           </div>
 
           <div className="column is-three-quarters">
