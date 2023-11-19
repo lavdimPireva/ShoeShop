@@ -4,7 +4,6 @@ import Footer from "../HomePage/Footer";
 import CartModal from "../CartModal/CartModal";
 import { useFilter } from "../context/FilterProvider";
 import { useCart } from "../context/CartProvider";
-import { generateSlug } from "../helpers/slugUtils";
 import { Link } from "react-router-dom";
 import FilterPanel from "../FilterPanel/FilterPanel";
 import { products } from "../ImagesModule/ModelsImage";
@@ -16,36 +15,31 @@ const MenShoesPage = () => {
   const [availableSizes, setAvailableSizes] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
-  console.log("PRODUCT >>>", products);
-
   useEffect(() => {
-    // Whenever selectedBrands changes, update the available sizes
     const newAvailableSizes = new Set();
-    if (selectedBrands.length === 0) {
-      // If no brands are selected, all sizes are available
-      products.forEach((product) =>
-        product.numeration.forEach((size) => newAvailableSizes.add(size))
-      );
-    } else {
-      // If brands are selected, only their sizes are available
-      products.forEach((product) => {
-        if (selectedBrands.includes(product.name)) {
-          product.numeration.forEach((size) => newAvailableSizes.add(size));
-        }
-      });
-    }
+    const brandsSelected = selectedBrands.length > 0;
+    const selectedColors = filterCriteria.colors || [];
+    const colorsSelected = selectedColors.length > 0;
+
+    products.forEach((product) => {
+      const brandMatches =
+        !brandsSelected || selectedBrands.includes(product.name);
+      const colorMatches =
+        !colorsSelected ||
+        product.color.some((color) => selectedColors.includes(color));
+
+      if (brandMatches && colorMatches) {
+        product.numeration.forEach((size) => newAvailableSizes.add(size));
+      }
+    });
+
     setAvailableSizes([...newAvailableSizes]);
-  }, [selectedBrands]);
+  }, [selectedBrands, filterCriteria.colors]);
 
   const handleFilterChange = (newFilters) => {
-    console.log("lavdim");
-
-    console.log("newFilters", newFilters);
-    // Update selected brands based on newFilters
     if (newFilters.brands) {
       setSelectedBrands(newFilters.brands);
     }
-    // Call updateFilterCriteria from your context
     updateFilterCriteria(newFilters);
   };
 

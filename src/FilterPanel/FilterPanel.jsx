@@ -78,6 +78,14 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
   const handleColorChange = (color) => {
     setColors((prevColors) => {
       const updatedColors = { ...prevColors, [color]: !prevColors[color] };
+
+      onFilterChange({
+        brands: Object.keys(brands).filter((b) => brands[b]), // Keep current brand selection
+        colors: Object.keys(updatedColors).filter((c) => updatedColors[c]), // Update color selection
+        sizes: Object.keys(sizes).filter((s) => sizes[s]), // Keep current size selection
+        // ... include other filters if needed
+      });
+
       return updatedColors;
     });
   };
