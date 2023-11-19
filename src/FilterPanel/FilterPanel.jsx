@@ -48,6 +48,31 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
   const toggleSize = () => setIsSizeOpen(!isSizeOpen);
   const toggleColor = () => setIsColorOpen(!isColorOpen);
 
+  const getActiveFilterLabels = () => {
+    const filterLabels = [];
+
+    // Add selected price range
+    if (price.min) filterLabels.push(`Minimum price: ${price.min}€`);
+    if (price.max) filterLabels.push(`Maximum price: ${price.max}€`);
+
+    // Add selected brands
+    Object.entries(brands).forEach(([brand, isSelected]) => {
+      if (isSelected) filterLabels.push(`Brand: ${brand}`);
+    });
+
+    // Add selected sizes
+    Object.keys(sizes).forEach((size) => {
+      if (sizes[size]) filterLabels.push(`Size: ${size}`);
+    });
+
+    // Add selected colors
+    Object.entries(colors).forEach(([color, isSelected]) => {
+      if (isSelected) filterLabels.push(`Color: ${color}`);
+    });
+
+    return filterLabels;
+  };
+
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
     setPrice((prevPrice) => ({ ...prevPrice, [name]: value }));
@@ -90,29 +115,10 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
     });
   };
 
-  const applyFilters = () => {
-    const selectedBrands = Object.entries(brands)
-      .filter(([_, isChecked]) => isChecked)
-      .map(([brand]) => brand);
-
-    const selectedSizes = Object.entries(sizes)
-      .filter(([_, isChecked]) => isChecked)
-      .map(([size]) => size);
-
-    const selectedColors = Object.entries(colors)
-      .filter(([_, isChecked]) => isChecked)
-      .map(([color]) => color);
-
-    console.log("Selected sizes", selectedSizes);
-
-    // Make sure to include any other filter states you have.
-
-    onFilterChange({
-      price,
-      brands: selectedBrands,
-      sizes: selectedSizes,
-      colors: selectedColors,
-    });
+  const onRemoveFilter = (label) => {
+    // You'll need to parse the label to understand what type of filter it is and its value
+    // Then update the state accordingly to remove the filter
+    // Call onFilterChange to update the parent component
   };
 
   return (
@@ -237,13 +243,41 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
           ))}
         </div>
       )}
-      <div className="panel-block">
-        <button
-          className="button is-link is-outlined is-fullwidth m-4"
-          onClick={applyFilters}
-        >
-          Apliko Filterat
-        </button>
+
+      {/* Section to display selected filters */}
+      <div
+        className="selected-filters-container"
+        style={{
+          padding: "10px",
+          background: "#f5f5f5",
+          borderRadius: "8px",
+          marginTop: "20px",
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        {getActiveFilterLabels().map((label, index) => (
+          <span
+            key={index}
+            className="tag is-small is-info m-1"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              background: "#e6e6e6",
+              color: "#333",
+              fontWeight: "bold",
+              borderRadius: "20px",
+            }}
+          >
+            {label}
+            <button
+              className="delete is-small"
+              onClick={() => onRemoveFilter(label)}
+              style={{ marginLeft: "10px" }}
+            ></button>
+          </span>
+        ))}
       </div>
     </nav>
   );

@@ -45,8 +45,6 @@ const HomePage = () => {
     slug: generateSlug(product.name, product.id),
   }));
 
-  console.log("classic", productsList.slice(25, 29));
-
   return (
     <div>
       <Helmet>
