@@ -18,6 +18,7 @@ const MenShoesPage = () => {
     resetFilterCriteria,
   } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
+  const [filteredProductsSlug, setFilteredProductsSlug] = useState([]);
   const [availableSizes, setAvailableSizes] = useState([]);
   const [availableBrands, setAvailableBrands] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
@@ -29,15 +30,23 @@ const MenShoesPage = () => {
     // ... any other filters you have
   });
 
-  const filteredProductsSlug = filteredProducts.map((product) => ({
-    ...product,
-    slug: generateSlug(product.name, product.id),
-  }));
+  useEffect(() => {
+    const slugProducts = filteredProducts.map((product) => ({
+      ...product,
+      slug: generateSlug(product.name, product.id),
+    }));
+    setFilteredProductsSlug(slugProducts);
+    console.log("filteredProductSlug", slugProducts);
+  }, [filteredProducts]);
 
   useEffect(() => {
     enableMultipleTypes(true);
     updateFilterCriteria({ type: ["men", "unisex"] });
-  }, [enableMultipleTypes, updateFilterCriteria]);
+
+    return () => {
+      resetFilterCriteria();
+    };
+  }, []);
 
   useEffect(() => {
     const newAvailableBrands = new Set();
@@ -54,10 +63,6 @@ const MenShoesPage = () => {
     setAvailableSizes(Array.from(newAvailableSizes));
     setAvailableColors(Array.from(newAvailableColors));
   }, [filteredProducts]);
-
-  useEffect(() => {
-    resetFilterCriteria();
-  }, []);
 
   const handleFilterChange = (newFilters) => {
     setActiveFilters((prevFilters) => ({
