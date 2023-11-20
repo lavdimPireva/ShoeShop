@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 import CartModal from "../CartModal/CartModal";
@@ -8,13 +8,23 @@ import { generateSlug } from "../helpers/slugUtils";
 import { Link } from "react-router-dom";
 
 const FemaleShoesPage = () => {
-  const { femaleShoes } = useFilter();
+  const { filteredProducts, updateType } = useFilter();
+  // console.log("female shoes", femaleShoes);
+
   const { isCartOpen, toggleCart, cartItems } = useCart();
 
-  const productsList = femaleShoes.map((product) => ({
+  const productsList = filteredProducts.map((product) => ({
     ...product,
     slug: generateSlug(product.name, product.id),
   }));
+
+  useEffect(() => {
+    // Set the filter type to "unisex" when the component mounts
+    updateType("unisex");
+
+    // Reset to default when unmounting
+    return () => updateType("all");
+  }, [updateType]);
 
   return (
     <>

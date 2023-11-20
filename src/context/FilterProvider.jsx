@@ -15,12 +15,18 @@ export const FilterProvider = ({ children }) => {
     colors: [],
   });
 
+  const [allowMultipleTypes, setAllowMultipleTypes] = useState(false);
+
   const defaultFilterCriteria = {
     type: "men",
     price: { min: "", max: "" },
     brands: [],
     sizes: [],
     colors: [],
+  };
+
+  const updateType = (type) => {
+    setFilterCriteria((prevCriteria) => ({ ...prevCriteria, type }));
   };
 
   const updateFilterCriteria = (criteria) => {
@@ -34,7 +40,13 @@ export const FilterProvider = ({ children }) => {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      const typeMatch = product.type === filterCriteria.type;
+      let typeMatch;
+
+      if (allowMultipleTypes) {
+        typeMatch = filterCriteria.type.includes(product.type);
+      } else {
+        typeMatch = product.type === filterCriteria.type;
+      }
 
       // Update logic to handle brands as an array
       const brandMatch =
@@ -65,11 +77,17 @@ export const FilterProvider = ({ children }) => {
     });
   }, [filterCriteria]);
 
+  const enableMultipleTypes = (isEnabled) => {
+    setAllowMultipleTypes(isEnabled);
+  };
+
   const value = {
     filteredProducts,
     updateFilterCriteria,
     filterCriteria,
     resetFilterCriteria,
+    enableMultipleTypes,
+    updateType,
   };
 
   return (

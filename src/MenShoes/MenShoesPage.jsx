@@ -6,14 +6,15 @@ import { useFilter } from "../context/FilterProvider";
 import { useCart } from "../context/CartProvider";
 import { Link } from "react-router-dom";
 import FilterPanel from "../FilterPanel/FilterPanel";
-import { products } from "../ImagesModule/ModelsImage";
 import { generateSlug } from "../helpers/slugUtils";
+import { Helmet } from "react-helmet";
 
 const MenShoesPage = () => {
   const {
     filteredProducts,
     updateFilterCriteria,
     filterCriteria,
+    enableMultipleTypes,
     resetFilterCriteria,
   } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
@@ -32,6 +33,11 @@ const MenShoesPage = () => {
     ...product,
     slug: generateSlug(product.name, product.id),
   }));
+
+  useEffect(() => {
+    enableMultipleTypes(true);
+    updateFilterCriteria({ type: ["men", "unisex"] });
+  }, [enableMultipleTypes, updateFilterCriteria]);
 
   useEffect(() => {
     const newAvailableBrands = new Set();
@@ -54,8 +60,6 @@ const MenShoesPage = () => {
   }, []);
 
   const handleFilterChange = (newFilters) => {
-    console.log("Changed");
-
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
       ...newFilters,
@@ -70,6 +74,14 @@ const MenShoesPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Modelet per meshkuj - Atletja ime</title>
+        <meta
+          name="description"
+          content="Browse our collection of men's shoes. Find the perfect pair for every occasion."
+        />
+        {/* You can add more meta tags and other elements as needed */}
+      </Helmet>
       <Navbar />
 
       <div className="container">
