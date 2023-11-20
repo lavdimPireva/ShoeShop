@@ -53,32 +53,6 @@ const Breadcrumbs = () => (
           <span>Female's Shoes</span>
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/Sports-shoes"
-          className={({ isActive }) =>
-            isActive ? "has-text-black is-active" : "has-text-black"
-          }
-        >
-          <span className="icon is-small">
-            <FontAwesomeIcon icon={faRunning} />
-          </span>
-          <span>Sports Shoes</span>
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/Running-shoes"
-          className={({ isActive }) =>
-            isActive ? "has-text-black is-active" : "has-text-black"
-          }
-        >
-          <span className="icon is-small">
-            <FontAwesomeIcon icon={faShoePrints} />
-          </span>
-          <span>Running Shoes</span>
-        </NavLink>
-      </li>
     </ul>
   </nav>
 );

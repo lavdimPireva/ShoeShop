@@ -48,6 +48,23 @@ const FemaleShoesPage = () => {
     };
   }, []); // Empty
 
+  useEffect(() => {
+    const newAvailableBrands = new Set();
+    const newAvailableSizes = new Set();
+    const newAvailableColors = new Set();
+
+    filteredProducts.forEach((product) => {
+      newAvailableBrands.add(product.name);
+      product.numeration.forEach((size) => newAvailableSizes.add(size));
+      product.color.forEach((color) => newAvailableColors.add(color));
+    });
+
+    setAvailableBrands(Array.from(newAvailableBrands));
+    setAvailableSizes(Array.from(newAvailableSizes));
+    setAvailableColors(Array.from(newAvailableColors));
+  }, [filteredProducts]);
+
+  // Handle changes to filter criteria
   const handleFilterChange = (newFilters) => {
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
