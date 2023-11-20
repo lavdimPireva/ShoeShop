@@ -15,9 +15,21 @@ export const FilterProvider = ({ children }) => {
     colors: [],
   });
 
+  const defaultFilterCriteria = {
+    type: "men",
+    price: { min: "", max: "" },
+    brands: [],
+    sizes: [],
+    colors: [],
+  };
+
   const updateFilterCriteria = (criteria) => {
     // Update filter criteria with a function to ensure correct updates when relying on previous state
     setFilterCriteria((prevCriteria) => ({ ...prevCriteria, ...criteria }));
+  };
+
+  const resetFilterCriteria = () => {
+    setFilterCriteria(defaultFilterCriteria);
   };
 
   const filteredProducts = useMemo(() => {
@@ -57,6 +69,7 @@ export const FilterProvider = ({ children }) => {
     filteredProducts,
     updateFilterCriteria,
     filterCriteria,
+    resetFilterCriteria,
   };
 
   return (

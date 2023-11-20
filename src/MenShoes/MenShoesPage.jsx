@@ -10,10 +10,16 @@ import { products } from "../ImagesModule/ModelsImage";
 import { generateSlug } from "../helpers/slugUtils";
 
 const MenShoesPage = () => {
-  const { filteredProducts, updateFilterCriteria, filterCriteria } =
-    useFilter();
+  const {
+    filteredProducts,
+    updateFilterCriteria,
+    filterCriteria,
+    resetFilterCriteria,
+  } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
   const [availableSizes, setAvailableSizes] = useState([]);
+  const [availableBrands, setAvailableBrands] = useState([]);
+  const [availableColors, setAvailableColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [activeFilters, setActiveFilters] = useState({
     brands: [],
@@ -28,25 +34,24 @@ const MenShoesPage = () => {
   }));
 
   useEffect(() => {
+    const newAvailableBrands = new Set();
     const newAvailableSizes = new Set();
-    const brandsSelected = selectedBrands.length > 0;
-    const selectedColors = filterCriteria.colors || [];
-    const colorsSelected = selectedColors.length > 0;
+    const newAvailableColors = new Set();
 
-    products.forEach((product) => {
-      const brandMatches =
-        !brandsSelected || selectedBrands.includes(product.name);
-      const colorMatches =
-        !colorsSelected ||
-        product.color.some((color) => selectedColors.includes(color));
-
-      if (brandMatches && colorMatches) {
-        product.numeration.forEach((size) => newAvailableSizes.add(size));
-      }
+    filteredProducts.forEach((product) => {
+      newAvailableBrands.add(product.name);
+      product.numeration.forEach((size) => newAvailableSizes.add(size));
+      product.color.forEach((color) => newAvailableColors.add(color));
     });
 
-    setAvailableSizes([...newAvailableSizes]);
-  }, [selectedBrands, filterCriteria.colors]);
+    setAvailableBrands(Array.from(newAvailableBrands));
+    setAvailableSizes(Array.from(newAvailableSizes));
+    setAvailableColors(Array.from(newAvailableColors));
+  }, [filteredProducts]);
+
+  useEffect(() => {
+    resetFilterCriteria();
+  }, []);
 
   const handleFilterChange = (newFilters) => {
     console.log("Changed");
@@ -73,6 +78,8 @@ const MenShoesPage = () => {
             <FilterPanel
               onFilterChange={handleFilterChange}
               availableSizes={availableSizes}
+              availableBrands={availableBrands}
+              availableColors={availableColors}
               activeFilters={activeFilters}
             />
           </div>

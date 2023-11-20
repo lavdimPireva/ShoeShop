@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import "./CustomPanel.css"; // Adjust the path to where your actual CSS file is located
 
-const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
+const FilterPanel = ({
+  onFilterChange,
+  availableSizes,
+  availableBrands,
+  availableColors,
+  activeFilters,
+}) => {
   const [price, setPrice] = useState({ min: "", max: "" });
   const [brands, setBrands] = useState({
     Reebok: false,
@@ -125,15 +131,16 @@ const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
   const onRemoveFilter = (label) => {
     const [filterType, filterValue] = label.split(": "); // Assuming label format is "Type: Value"
 
-    switch (filterType.toLowerCase()) {
-      case "minimum price":
+    console.log("filterType", filterType.toLowerCase());
+    switch (filterType.toLowerCase().trim()) {
+      case "çmimi nga":
         setPrice((prevPrice) => {
           const updatedPrice = { ...prevPrice, min: "" };
           onFilterChange({ ...activeFilters, price: updatedPrice });
           return updatedPrice;
         });
         break;
-      case "maximum price":
+      case "çmimi deri në":
         setPrice((prevPrice) => {
           const updatedPrice = { ...prevPrice, max: "" };
           onFilterChange({ ...activeFilters, price: updatedPrice });
@@ -217,7 +224,6 @@ const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
           </div>
         </div>
       )}
-
       <a
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleBrand}
@@ -230,18 +236,29 @@ const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
       {isBrandOpen && (
         <div className="scrollable-container">
           {Object.entries(brands).map(([brand, isChecked]) => (
-            <label className="panel-block" key={brand}>
+            <label
+              className={`panel-block ${
+                !availableBrands.includes(brand) ? "is-disabled" : ""
+              }`}
+              key={brand}
+            >
               <input
                 type="checkbox"
                 checked={isChecked}
+                disabled={!availableBrands.includes(brand)} // Disable checkbox if the brand is not available
                 onChange={() => handleBrandChange(brand)}
               />
-              <span className="is-size-7-fullhd">{brand}</span>
+              <span
+                className={`is-size-7-fullhd ${
+                  !availableBrands.includes(brand) ? "has-text-grey-light" : ""
+                }`}
+              >
+                {brand}
+              </span>
             </label>
           ))}
         </div>
       )}
-
       <a
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleSize}
@@ -280,7 +297,6 @@ const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
           })}
         </div>
       )}
-
       <a
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleColor}
@@ -293,18 +309,29 @@ const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
       {isColorOpen && (
         <div className="scrollable-container">
           {Object.entries(colors).map(([color, isChecked]) => (
-            <label className="panel-block" key={color}>
+            <label
+              className={`panel-block ${
+                !availableColors.includes(color) ? "is-disabled" : ""
+              }`}
+              key={color}
+            >
               <input
                 type="checkbox"
                 checked={isChecked}
+                disabled={!availableColors.includes(color)} // Disable checkbox if the color is not available
                 onChange={() => handleColorChange(color)}
               />
-              <span className="is-size-7-fullhd">{color}</span>
+              <span
+                className={`is-size-7-fullhd ${
+                  !availableColors.includes(color) ? "has-text-grey-light" : ""
+                }`}
+              >
+                {color}
+              </span>
             </label>
           ))}
         </div>
       )}
-
       {/* Section to display selected filters */}
       <div
         className="selected-filters-container"
