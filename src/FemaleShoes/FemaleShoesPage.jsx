@@ -123,7 +123,11 @@ const FemaleShoesPage = () => {
                               ? `${shoe.discountPrice}€`
                               : `${shoe.originalPrice}€`}
                           </p>
-                          <p className="subtitle is-6">{shoe.description}</p>
+                          <p className="subtitle is-6">
+                            {shoe.description.length > 15
+                              ? shoe.description.slice(0, 15) + "..."
+                              : shoe.description}
+                          </p>
                           {shoe.discountPrice && (
                             <p
                               className="has-text-grey-lighter"

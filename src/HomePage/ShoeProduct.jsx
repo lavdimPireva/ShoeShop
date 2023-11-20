@@ -77,7 +77,7 @@ const ShoeProduct = ({
             </sup>
           </div>
         </div>
-        <p className="is-size-6">{description}</p>
+        <p className="is-size-6">{description.slice(0, 30) + "..."}</p>
       </div>
     </>
   );
