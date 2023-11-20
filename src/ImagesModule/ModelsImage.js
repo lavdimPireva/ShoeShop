@@ -157,7 +157,7 @@ export const products = [
 
   {
     id: 11,
-    name: "Luxury Fashion Brand",
+    name: "Nike Pegasus",
     imageUrl: origjinale1,
     originalPrice: "69.99",
     discountPrice: "19.99",

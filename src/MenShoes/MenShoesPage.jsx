@@ -49,6 +49,8 @@ const MenShoesPage = () => {
   }, [selectedBrands, filterCriteria.colors]);
 
   const handleFilterChange = (newFilters) => {
+    console.log("Changed");
+
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
       ...newFilters,
@@ -57,6 +59,7 @@ const MenShoesPage = () => {
     if (newFilters.brands) {
       setSelectedBrands(newFilters.brands);
     }
+
     updateFilterCriteria(newFilters);
   };
 
@@ -70,6 +73,7 @@ const MenShoesPage = () => {
             <FilterPanel
               onFilterChange={handleFilterChange}
               availableSizes={availableSizes}
+              activeFilters={activeFilters}
             />
           </div>
 

@@ -9,6 +9,7 @@ export const FilterProvider = ({ children }) => {
   // Initialize filterCriteria with properties for brands, sizes, and colors
   const [filterCriteria, setFilterCriteria] = useState({
     type: "men",
+    price: { min: "", max: "" },
     brands: [],
     sizes: [],
     colors: [],
@@ -40,7 +41,15 @@ export const FilterProvider = ({ children }) => {
         filterCriteria.colors.length === 0 ||
         filterCriteria.colors.some((color) => product.color.includes(color));
 
-      return typeMatch && brandMatch && sizeMatch && colorMatch;
+      const priceMatch =
+        (!filterCriteria.price.min ||
+          parseFloat(product.discountPrice) >=
+            parseFloat(filterCriteria.price.min)) &&
+        (!filterCriteria.price.max ||
+          parseFloat(product.discountPrice) <=
+            parseFloat(filterCriteria.price.max));
+
+      return typeMatch && brandMatch && sizeMatch && colorMatch && priceMatch;
     });
   }, [filterCriteria]);
 

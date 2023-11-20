@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import "./CustomPanel.css"; // Adjust the path to where your actual CSS file is located
 
-const FilterPanel = ({ onFilterChange, availableSizes }) => {
+const FilterPanel = ({ onFilterChange, availableSizes, activeFilters }) => {
   const [price, setPrice] = useState({ min: "", max: "" });
   const [brands, setBrands] = useState({
     Reebok: false,
@@ -52,22 +52,22 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
     const filterLabels = [];
 
     // Add selected price range
-    if (price.min) filterLabels.push(`Minimum price: ${price.min}€`);
-    if (price.max) filterLabels.push(`Maximum price: ${price.max}€`);
+    if (price.min) filterLabels.push(`Çmimi nga : ${price.min}€`);
+    if (price.max) filterLabels.push(`Çmimi deri në: ${price.max}€`);
 
     // Add selected brands
     Object.entries(brands).forEach(([brand, isSelected]) => {
-      if (isSelected) filterLabels.push(`Brand: ${brand}`);
+      if (isSelected) filterLabels.push(`Brendi: ${brand}`);
     });
 
     // Add selected sizes
     Object.keys(sizes).forEach((size) => {
-      if (sizes[size]) filterLabels.push(`Size: ${size}`);
+      if (sizes[size]) filterLabels.push(`Madhesia: ${size}`);
     });
 
     // Add selected colors
     Object.entries(colors).forEach(([color, isSelected]) => {
-      if (isSelected) filterLabels.push(`Color: ${color}`);
+      if (isSelected) filterLabels.push(`Ngjyra: ${color}`);
     });
 
     return filterLabels;
@@ -75,7 +75,14 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
-    setPrice((prevPrice) => ({ ...prevPrice, [name]: value }));
+    setPrice((prevPrice) => {
+      const updatedPrice = { ...prevPrice, [name]: value };
+      onFilterChange({
+        ...activeFilters,
+        price: updatedPrice,
+      });
+      return updatedPrice;
+    });
   };
 
   const handleBrandChange = (brandName) => {
@@ -116,9 +123,57 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
   };
 
   const onRemoveFilter = (label) => {
-    // You'll need to parse the label to understand what type of filter it is and its value
-    // Then update the state accordingly to remove the filter
-    // Call onFilterChange to update the parent component
+    const [filterType, filterValue] = label.split(": "); // Assuming label format is "Type: Value"
+
+    switch (filterType.toLowerCase()) {
+      case "minimum price":
+        setPrice((prevPrice) => {
+          const updatedPrice = { ...prevPrice, min: "" };
+          onFilterChange({ ...activeFilters, price: updatedPrice });
+          return updatedPrice;
+        });
+        break;
+      case "maximum price":
+        setPrice((prevPrice) => {
+          const updatedPrice = { ...prevPrice, max: "" };
+          onFilterChange({ ...activeFilters, price: updatedPrice });
+          return updatedPrice;
+        });
+        break;
+      case "brendi":
+        setBrands((prevBrands) => {
+          const updatedBrands = { ...prevBrands, [filterValue]: false };
+          onFilterChange({
+            ...activeFilters,
+            brands: Object.keys(updatedBrands).filter((b) => updatedBrands[b]),
+          });
+          return updatedBrands;
+        });
+        break;
+      case "madhesia":
+        setSizes((prevSizes) => {
+          const updatedSizes = { ...prevSizes, [filterValue]: false };
+          onFilterChange({
+            ...activeFilters,
+            sizes: Object.keys(updatedSizes).filter((s) => updatedSizes[s]),
+          });
+          return updatedSizes;
+        });
+        break;
+      case "ngjyra":
+        setColors((prevColors) => {
+          const updatedColors = { ...prevColors, [filterValue]: false };
+          onFilterChange({
+            ...activeFilters,
+            colors: Object.keys(updatedColors).filter((c) => updatedColors[c]),
+          });
+          return updatedColors;
+        });
+        break;
+      // Handle other filter types if necessary
+      default:
+        break;
+    }
   };
 
   return (
@@ -127,7 +182,7 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={togglePrice}
       >
-        Price
+        Çmimi
         <span className="icon">
           <FontAwesomeIcon icon={isPriceOpen ? faChevronUp : faChevronDown} />
         </span>
@@ -139,7 +194,10 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
               <input
                 className="input is-small"
                 type="number"
-                placeholder="Minimum price"
+                placeholder="Minimum"
+                name="min" // Make sure to set the name attribute
+                value={price.min} // Set the value from state
+                onChange={handlePriceChange} // Attach the handler
               />
               <span className="icon is-left">€</span>
             </p>
@@ -149,7 +207,10 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
               <input
                 className="input is-small"
                 type="number"
-                placeholder="Maximum price"
+                placeholder="Maksimum"
+                name="max" // Make sure to set the name attribute
+                value={price.max} // Set the value from state
+                onChange={handlePriceChange} // Attach the handler
               />
               <span className="icon is-left">€</span>
             </p>
@@ -161,7 +222,7 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleBrand}
       >
-        Brand
+        Brendi
         <span className="icon">
           <FontAwesomeIcon icon={isBrandOpen ? faChevronUp : faChevronDown} />
         </span>
@@ -185,7 +246,7 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleSize}
       >
-        Size
+        Madhesia
         <span className="icon">
           <FontAwesomeIcon icon={isSizeOpen ? faChevronUp : faChevronDown} />
         </span>
@@ -224,7 +285,7 @@ const FilterPanel = ({ onFilterChange, availableSizes }) => {
         className="panel-heading is-flex is-justify-content-space-between"
         onClick={toggleColor}
       >
-        Color
+        Ngjyra
         <span className="icon">
           <FontAwesomeIcon icon={isColorOpen ? faChevronUp : faChevronDown} />
         </span>
