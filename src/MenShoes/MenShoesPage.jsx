@@ -10,6 +10,7 @@ import { generateSlug } from "../helpers/slugUtils";
 import { Helmet } from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import FilterModal from "./FilterModal";
 
 const MenShoesPage = () => {
   const {
@@ -172,6 +173,16 @@ const MenShoesPage = () => {
           </div>
         </div>
       </div>
+
+      <FilterModal
+        isActive={isFilterModalOpen}
+        closeFilterModal={toggleFilterModal}
+        onFilterChange={handleFilterChange}
+        availableSizes={availableSizes}
+        availableBrands={availableBrands}
+        availableColors={availableColors}
+        activeFilters={activeFilters}
+      />
 
       <CartModal
         isCartOpen={isCartOpen}
