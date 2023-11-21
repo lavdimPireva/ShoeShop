@@ -24,16 +24,41 @@ import { Link } from "react-router-dom";
 import { generateSlug } from "../helpers/slugUtils";
 import { useCart } from "../context/CartProvider";
 import CartModal from "../CartModal/CartModal";
-import { useFilter } from "../context/FilterProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const { isCartOpen, toggleCart, cartItems } = useCart();
+
+  const scrollFirstContainer = useRef(null);
+  const scrollSecondContainer = useRef(null);
+
+  const scroll1 = (offset) => {
+    if (scrollFirstContainer.current) {
+      scrollFirstContainer.current.scrollBy({
+        left: offset,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scroll2 = (offset) => {
+    if (scrollSecondContainer.current) {
+      scrollSecondContainer.current.scrollBy({
+        left: offset,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const settings = {
     fade: true,
     lazyLoad: "ondemand",
     infinite: true,
-    speed: 500,
+    speed: 350,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -72,7 +97,12 @@ const HomePage = () => {
       {/* Categories */}
       <section className="section">
         <div className="container">
-          <h4 className="title is-4">Kategoritë më të kërkuara</h4>
+          <h4
+            className="title is-size-6-mobile is-size-6-tablet is-size-5-desktop"
+            style={{ marginLeft: "13px" }}
+          >
+            Kategoritë më të kërkuara
+          </h4>
           <div className="horizontal-scroll-wrapper">
             <CategoryImageList images={categoryImages} />
           </div>
@@ -82,7 +112,12 @@ const HomePage = () => {
       {/* Brands */}
       <section className="section">
         <div className="container">
-          <h4 className="title is-4">Brendet më të kërkuara</h4>
+          <h4
+            className="title is-size-6-mobile is-size-6-tablet is-size-5-desktop"
+            style={{ marginLeft: "13px" }}
+          >
+            Brendet më të kërkuara
+          </h4>
           <div className="horizontal-scroll-wrapper">
             <BrandsImageList images={brandsImages} />
           </div>
@@ -94,72 +129,100 @@ const HomePage = () => {
       {/* Product Cards */}
       <section className="section">
         <div className="container">
-          <h4 className="title is-4">Modelet tona</h4>
-          <div
-            className="horizontal-scroll-wrapper"
-            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+          <h4
+            className="title is-4 is-size-6-mobile is-size-6-tablet is-size-5-desktop"
+            style={{ marginLeft: "13px" }}
           >
-            {productsList.slice(0, 13).map((product) => (
-              <Link
-                to={`/shoe/${product.slug}`}
-                key={product.id}
-                style={{ textDecoration: "none" }}
-              >
-                <div
-                  className="card"
-                  style={{
-                    display: "inline-flex",
-                    flexDirection: "column",
-                    width: "210px",
-                    margin: "0 10px",
-                    height: "fit-content", // This makes the card height fit its content
-                    boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
-                    borderRadius: "10px", // Rounded corners for the card
-                    overflow: "hidden",
-                    marginBottom: "10px",
-                    cursor: "pointer",
-                  }}
+            Modelet tona
+          </h4>
+          <div className="horizontal-scroll-container">
+            <button onClick={() => scroll1(-200)} className="scroll-arrow left">
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <div
+              className="horizontal-scroll-wrapper"
+              ref={scrollFirstContainer}
+              style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+            >
+              {productsList.slice(0, 13).map((product) => (
+                <Link
+                  to={`/shoe/${product.slug}`}
+                  key={product.id}
+                  style={{ textDecoration: "none" }}
                 >
-                  <ShoeProduct {...product} />
-                </div>
-              </Link>
-            ))}
+                  <div
+                    className="card"
+                    style={{
+                      display: "inline-flex",
+                      flexDirection: "column",
+                      width: "210px",
+                      margin: "0 10px",
+                      height: "fit-content", // This makes the card height fit its content
+                      boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
+                      borderRadius: "10px", // Rounded corners for the card
+                      overflow: "hidden",
+                      marginBottom: "10px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <ShoeProduct {...product} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <button onClick={() => scroll1(200)} className="scroll-arrow right">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
           </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <h4 className="title is-4">Modelet tona</h4>
-          <div
-            className="horizontal-scroll-wrapper"
-            style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+          <h4
+            className="title is-4 is-size-6-mobile is-size-6-tablet is-size-5-desktop"
+            style={{ marginLeft: "13px" }}
           >
-            {productsList.slice(13, 25).map((product) => (
-              <Link
-                to={`/shoe/${product.slug}`}
-                key={product.id}
-                style={{ textDecoration: "none" }}
-              >
-                <div
-                  className="card"
-                  style={{
-                    display: "inline-flex",
-                    flexDirection: "column",
-                    width: "210px",
-                    margin: "0 10px",
-                    height: "fit-content", // This makes the card height fit its content
-                    boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
-                    borderRadius: "10px", // Rounded corners for the card
-                    overflow: "hidden",
-                    marginBottom: "10px",
-                    cursor: "pointer",
-                  }}
+            Modelet tona
+          </h4>
+          <div className="horizontal-scroll-container">
+            <button onClick={() => scroll2(-200)} className="scroll-arrow left">
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <div
+              className="horizontal-scroll-wrapper"
+              ref={scrollSecondContainer}
+              style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+            >
+              {productsList.slice(13, 25).map((product) => (
+                <Link
+                  to={`/shoe/${product.slug}`}
+                  key={product.id}
+                  style={{ textDecoration: "none" }}
                 >
-                  <ShoeProduct {...product} />
-                </div>
-              </Link>
-            ))}
+                  <div
+                    className="card"
+                    style={{
+                      display: "inline-flex",
+                      flexDirection: "column",
+                      width: "210px",
+                      margin: "0 10px",
+                      height: "fit-content", // This makes the card height fit its content
+                      boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
+                      borderRadius: "10px", // Rounded corners for the card
+                      overflow: "hidden",
+                      marginBottom: "10px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <ShoeProduct {...product} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <button onClick={() => scroll2(200)} className="scroll-arrow right">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
           </div>
         </div>
       </section>
@@ -167,11 +230,14 @@ const HomePage = () => {
       {/* classic ones */}
 
       <section className="section">
-        <div className="container">
+        <div className="container ">
           <h4 className="title is-4">Classic Shoes</h4>
-          <div className="columns">
+          <div className="columns is-multiline is-mobile">
             {productsList.slice(25, 29).map((shoe) => (
-              <div className="column is-3" key={shoe.id}>
+              <div
+                className="column is-half-mobile is-4-tablet is-3-desktop"
+                key={shoe.id}
+              >
                 <Link
                   to={`/shoe/${shoe.slug}`}
                   style={{ textDecoration: "none" }}
@@ -192,16 +258,18 @@ const HomePage = () => {
                         />
                       </figure>
                     </div>
-                    <div className="card-content has-text-centered">
-                      <p className="title is-5">{shoe.name}</p>
+                    <div className="card-content has-text-left">
+                      <p className="title is-size-6">{shoe.name}</p>
                       <p
-                        className="title is-6"
+                        className="title is-7"
                         style={{ textDecoration: "line-through" }}
                       >
                         {shoe.originalPrice}€
                       </p>
-                      <p className="title is-4">{shoe.discountPrice}€</p>
-                      <p className="subtitle is-6">{shoe.description}</p>
+                      <p className="title is-6">{shoe.discountPrice}€</p>
+                      <p className="subtitle is-6">
+                        {shoe.description.slice(0, 40) + "..."}
+                      </p>
                     </div>
                   </div>
                 </Link>

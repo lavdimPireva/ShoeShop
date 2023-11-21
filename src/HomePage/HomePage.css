@@ -1,8 +1,14 @@
 /* For desktop screens */
 .responsive-image {
-  width: 1300px; /* fixed width for desktop */
-  height: 400px; /* fixed height for desktop */
-  object-fit: cover; /* this will cover the area without stretching the image */
+  max-width: 100%; /* Ensures the image is not wider than its container */
+  height: auto; /* Maintains aspect ratio */
+  object-fit: cover; /* Covers the area without stretching the image */
+}
+
+@media (max-width: 767px) {
+  .responsive-image {
+    height: auto; /* Adjust the height for mobile devices */
+  }
 }
 
 .category-image {
@@ -27,13 +33,6 @@
 }
 
 /* For mobile screens */
-@media (max-width: 768px) {
-  .responsive-image {
-    width: 100%; /* full width on mobile */
-    height: auto; /* height will adjust to maintain aspect ratio */
-    object-fit: cover; /* maintain aspect ratio without stretching */
-  }
-}
 
 .is-size-6 {
   overflow: visible;
@@ -77,6 +76,10 @@
   z-index: 25;
   font-size: 0;
   color: transparent;
+  top: 40%; /* Center vertically */
+  transform: translateY(
+    -50%
+  ); /* Align the middle of the arrow with the middle of the slides */
 }
 
 .slick-prev:before,
@@ -87,28 +90,32 @@
 }
 
 .slick-prev {
-  left: 30px;
+  left: 1vw; /* Use viewport width units for relative positioning */
 }
 
 .slick-next {
-  right: 120px;
+  right: 2vw; /* Use viewport width units for relative positioning */
 }
 
 @media (max-width: 1407px) {
   .slick-prev:before,
   .slick-next:before {
-    font-size: 20px; /* Smaller size for mobile */
-    color: white; /* Change the color for mobile if needed */
-    /* You can add more styles specific to mobile here */
+    font-size: 20px; /* Smaller size for smaller devices */
   }
 
+  /* Adjust left/right positioning for smaller devices if needed */
   .slick-prev {
-    left: 10px; /* Adjust the position for mobile */
+    left: 2vw;
   }
 
   .slick-next {
-    right: 10px; /* Adjust the position for mobile */
+    right: 2vw;
   }
+}
+
+.horizontal-scroll-container {
+  position: relative;
+  /* Add padding or margin to allow space for arrows if needed */
 }
 
 .horizontal-scroll-wrapper {
@@ -174,7 +181,7 @@
 
   .horizontal-scroll-item {
     width: calc(
-      (100vw - 30px) / 3
+      (100vw - 50px) / 3
     ); /* Adjust for 3 items per row, 30px accounts for the margin */
     /* You can also add padding inside each item if needed */
   }

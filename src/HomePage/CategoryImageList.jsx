@@ -10,13 +10,13 @@ const CategoryImageList = ({ images }) => {
 
   const scrollLeft = () => {
     if (scrollContainer.current) {
-      scrollContainer.current.scrollLeft -= 200;
+      scrollContainer.current.scrollBy({ left: -200, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollContainer.current) {
-      scrollContainer.current.scrollLeft += 200;
+      scrollContainer.current.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
 
