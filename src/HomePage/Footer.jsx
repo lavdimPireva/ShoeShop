@@ -12,28 +12,55 @@ const Footer = () => {
         <div className="columns">
           <div className="column">
             <p className="heading">Të tjera</p>
-            <ul>
-              <li>Imprint</li>
+            <ul
+              style={{
+                marginRight: "13px",
+              }}
+            >
+              <li
+                style={{
+                  marginRight: "15px",
+                }}
+              >
+                Imprint
+              </li>
               <li>Termet dhe kushtet</li>
               <li>Politikat e privatësisë</li>
             </ul>
           </div>
 
           <div className="column">
-            <p className="heading">Programi partneritetit</p>
-            <ul>
+            <p className="heading" style={{ marginLeft: "5px" }}>
+              Programi partneritetit
+            </p>
+            <ul
+              style={{
+                marginRight: "15px",
+              }}
+            >
               <li>Bëhu partner</li>
               <li>Kyçu si partner</li>
             </ul>
           </div>
           <div className="column">
             <p className="heading">Rreth nesh</p>
-            <ul>
-              <li>Rreth atletja</li>
+            <ul
+              style={{
+                marginRight: "13px",
+              }}
+            >
+              <li style={{ marginRight: "15px" }}>Rreth atletja</li>
             </ul>
           </div>
           <div className="column">
-            <p className="heading">Ndihma dhe kontakti</p>
+            <p
+              className="heading"
+              style={{
+                marginLeft: "25px",
+              }}
+            >
+              Ndihma dhe kontakti
+            </p>
             <ul>
               <li>Pytje te shpeshta</li>
               <li>Kontakti</li>
