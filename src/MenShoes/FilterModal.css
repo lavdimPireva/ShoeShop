@@ -34,6 +34,10 @@
   cursor: pointer;
 }
 
+.filter-button {
+  width: 190px; /* Or any other value */
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(100%);

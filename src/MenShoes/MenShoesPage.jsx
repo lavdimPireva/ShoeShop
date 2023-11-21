@@ -119,7 +119,7 @@ const MenShoesPage = () => {
                 </div>
                 <div className="level-right">
                   <button
-                    className="button is-hidden-tablet is-hidden-desktop"
+                    className="button is-hidden-tablet is-hidden-desktop filter-button"
                     onClick={toggleFilterModal}
                   >
                     <span className="icon is-size-7">
