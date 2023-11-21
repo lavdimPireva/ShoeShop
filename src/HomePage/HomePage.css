@@ -42,15 +42,19 @@
   height: auto;
 }
 
-.scroll-arrows {
-  display: inline-block;
-  position: absolute;
-  top: 50%; /* Adjust as necessary */
-  transform: translateY(-50%);
-  cursor: pointer;
-  background-color: #fff; /* or any color you prefer */
-  border: none; /* Remove default button border */
-  /* Other styles as needed */
+.scroll-arrow {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Semi-transparent white background */
+  border-radius: 50%; /* Circular shape */
+  width: 30px; /* Fixed width */
+  height: 30px; /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .scroll-arrows button {
@@ -108,9 +112,40 @@
 }
 
 .horizontal-scroll-wrapper {
+  position: relative;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap; /* Prevent wrapping to a new line */
+}
+
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 50%; /* Circular shape */
+  width: 35px; /* Fixed width */
+  height: 35px; /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  color: #333; /* Icon color */
+  cursor: pointer;
+  z-index: 20; /* Ensure it's above other items */
+}
+
+.scroll-arrow:hover {
+  background: rgba(255, 255, 255, 0.9); /* Slightly more opaque on hover */
+}
+
+.scroll-arrow.left {
+  left: 0;
+}
+
+.scroll-arrow.right {
+  right: 0;
 }
 
 .horizontal-scroll-item {
@@ -128,6 +163,21 @@
 .horizontal-scroll-wrapper {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+@media (max-width: 767px) {
+  .horizontal-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap; /* Prevent wrapping to a new line */
+  }
+
+  .horizontal-scroll-item {
+    width: calc(
+      (100vw - 30px) / 3
+    ); /* Adjust for 3 items per row, 30px accounts for the margin */
+    /* You can also add padding inside each item if needed */
+  }
 }
 
 .footer {
