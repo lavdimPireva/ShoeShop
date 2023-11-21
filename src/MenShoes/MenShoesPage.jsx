@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import FilterPanel from "../FilterPanel/FilterPanel";
 import { generateSlug } from "../helpers/slugUtils";
 import { Helmet } from "react-helmet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const MenShoesPage = () => {
   const {
@@ -30,13 +32,14 @@ const MenShoesPage = () => {
     // ... any other filters you have
   });
 
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
   useEffect(() => {
     const slugProducts = filteredProducts.map((product) => ({
       ...product,
       slug: generateSlug(product.name, product.id),
     }));
     setFilteredProductsSlug(slugProducts);
-    console.log("filteredProductSlug", slugProducts);
   }, [filteredProducts]);
 
   useEffect(() => {
@@ -77,6 +80,10 @@ const MenShoesPage = () => {
     updateFilterCriteria(newFilters);
   };
 
+  const toggleFilterModal = () => {
+    setIsFilterModalOpen(!isFilterModalOpen);
+  };
+
   return (
     <>
       <Helmet>
@@ -91,7 +98,7 @@ const MenShoesPage = () => {
 
       <div className="container">
         <div className="columns">
-          <div className="column is-one-quarter">
+          <div className="column is-one-quarter is-hidden-mobile">
             <FilterPanel
               onFilterChange={handleFilterChange}
               availableSizes={availableSizes}
@@ -103,10 +110,30 @@ const MenShoesPage = () => {
 
           <div className="column is-three-quarters">
             <section className="section">
-              <h1 className="title">Men's Shoes</h1>
-              <div className="columns is-multiline">
+              <div className="level is-mobile">
+                <div className="level-left">
+                  <h1 className="title is-size-6-mobile is-size-6-tablet is-size-6-desktop">
+                    Men's Shoes
+                  </h1>
+                </div>
+                <div className="level-right">
+                  <button
+                    className="button is-hidden-tablet is-hidden-desktop"
+                    onClick={toggleFilterModal}
+                  >
+                    <span className="icon is-size-7">
+                      <FontAwesomeIcon icon={faFilter} />
+                    </span>
+                    <span className="is-size-7">Filtro</span>
+                  </button>
+                </div>
+              </div>
+              <div className="columns is-multiline is-mobile">
                 {filteredProductsSlug.map((shoe) => (
-                  <div className="column is-3" key={shoe.id}>
+                  <div
+                    className="column is-half-mobile is-4-tablet is-3-desktop"
+                    key={shoe.id}
+                  >
                     <Link to={`/shoe/${shoe.slug}`}>
                       <div className="card">
                         <div className="card-image">
@@ -115,16 +142,16 @@ const MenShoesPage = () => {
                           </figure>
                         </div>
 
-                        <div className="card-content has-text-centered">
-                          <p className="title is-5">{shoe.name}</p>
+                        <div className="card-content">
+                          <p className="title is-7">{shoe.name}</p>
                           <p className="subtitle is-6 has-text-weight-semibold">
                             {shoe.discountPrice
                               ? `${shoe.discountPrice}€`
                               : `${shoe.originalPrice}€`}
                           </p>
-                          <p className="subtitle is-6">
+                          <p className="subtitle is-7">
                             {shoe.description.length > 15
-                              ? shoe.description.slice(0, 15) + "..."
+                              ? shoe.description.slice(0, 40) + "..."
                               : shoe.description}
                           </p>
                           {shoe.discountPrice && (

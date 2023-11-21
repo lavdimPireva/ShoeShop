@@ -49,3 +49,21 @@
 .selected-filters-container .delete {
   margin-left: 10px;
 }
+
+.input-mobile {
+  height: 1.5em; /* or any other size you prefer */
+}
+
+/* Tablet size */
+@media screen and (min-width: 768px) {
+  .input-tablet {
+    height: 2em; /* or any other size you prefer */
+  }
+}
+
+/* Desktop size */
+@media screen and (min-width: 1024px) {
+  .input-desktop {
+    height: 0.9em; /* or any other size you prefer */
+  }
+}

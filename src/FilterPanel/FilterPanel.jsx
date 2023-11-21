@@ -249,7 +249,7 @@ const FilterPanel = ({
                 onChange={() => handleBrandChange(brand)}
               />
               <span
-                className={`is-size-7-fullhd ${
+                className={`is-size-7 ${
                   !availableBrands.includes(brand) ? "has-text-grey-light" : ""
                 }`}
               >
@@ -286,7 +286,7 @@ const FilterPanel = ({
                   onChange={() => handleSizeChange(size)}
                 />
                 <span
-                  className={`is-size-7-fullhd ${
+                  className={`is-size-7 ${
                     !isSizeAvailable ? "has-text-grey-light" : ""
                   }`}
                 >
@@ -322,7 +322,7 @@ const FilterPanel = ({
                 onChange={() => handleColorChange(color)}
               />
               <span
-                className={`is-size-7-fullhd ${
+                className={`is-size-7 ${
                   !availableColors.includes(color) ? "has-text-grey-light" : ""
                 }`}
               >
