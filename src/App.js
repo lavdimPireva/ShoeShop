@@ -5,6 +5,7 @@ import ShoeProduct from "./HomePage/ShoeProduct";
 import ShoeDetails from "./ShoeDetails/ShoeDetails";
 import MenShoesPage from "./MenShoes/MenShoesPage";
 import FemaleShoesPage from "./FemaleShoes/FemaleShoesPage";
+import Checkout from "./Checkout/Checkout";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/shoe/:slug" element={<ShoeDetails />} />
         <Route path="/Men-shoes" element={<MenShoesPage />} />
         <Route path="/Female-shoes" element={<FemaleShoesPage />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </div>
   );
