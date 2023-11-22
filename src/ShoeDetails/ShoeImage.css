@@ -12,7 +12,7 @@
 
 @media (max-width: 1023px) {
   .image-container {
-    max-width: none;
+    max-width: 85%; /* Make the image smaller on mobile screens */
   }
 }
 

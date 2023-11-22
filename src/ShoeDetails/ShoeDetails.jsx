@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 
@@ -29,7 +29,9 @@ const ShoeDetails = () => {
   // get the slug from URL
   const { slug } = useParams();
 
-  console.log("slug", slug);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const shoeDetails = products.find(
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
@@ -101,7 +103,7 @@ const ShoeDetails = () => {
           <div className="column is-full-mobile mb-5" style={hideDetailsStyle}>
             <div className="box">
               {/* Box Title */}
-              <h2 className="title is-size-6-mobile is-size-6-tablet		is-size-5-fullhd m-2">
+              <h2 className="title is-size-6-mobile is-size-6-tablet is-size-5-fullhd m-2">
                 Detajet e Produktit
               </h2>
 
@@ -145,7 +147,7 @@ const ShoeDetails = () => {
               </div>
 
               <div className="is-flex is-align-items-center mb-2 m-3">
-                <span className="icon is-large">
+                <span className="icon is-normal-mobile is-large">
                   <FontAwesomeIcon
                     icon={faTruck}
                     style={{ color: "#781200" }}

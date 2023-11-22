@@ -21,10 +21,10 @@ const NavLinks = () => {
       <a className="level-item navbar-item" href="/">
         Home
       </a>
-      <a className="level-item navbar-item" href="/about">
+      <a className="level-item navbar-item" href="/">
         About
       </a>
-      <a className="level-item navbar-item" href="/products">
+      <a className="level-item navbar-item" href="/">
         Products
       </a>
       <a className="level-item navbar-item" onClick={toggleCart}>
