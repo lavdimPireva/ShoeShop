@@ -16,7 +16,6 @@ const NavLinks = () => {
       return total + price;
     }, 0)
     .toFixed(2);
-
   return (
     <div className="level-right px-2 py-2">
       <a className="level-item navbar-item" href="/">
@@ -31,7 +30,7 @@ const NavLinks = () => {
       <a className="level-item navbar-item" onClick={toggleCart}>
         <FontAwesomeIcon icon={faShoppingCart} />
         {cartItems.length > 0 && (
-          <span className="badge">{cartItems.length}</span>
+          <span className="badge badge-near-icon">{cartItems.length}</span>
         )}
         <span>{totalPrice} €</span>
       </a>

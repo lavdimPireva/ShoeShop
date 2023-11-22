@@ -26,18 +26,13 @@
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .badge {
-    top: "0.5em";
-    right: "0.2em";
-    padding: "0.25em";
-    font-size: "1em";
-    min-width: "1em";
-    height: "1.25em";
-  }
-
-  /* Ensure the cart icon container is relative to position the badge */
-  .cart-icon-container {
-    position: relative;
+/* Mobile and Tablet */
+@media screen and (max-width: 768px) {
+  .badge-near-icon {
+    position: absolute;
+    top: 20%;
+    right: 55%;
+    transform: translate(50%, -50%);
+    /* Add additional styling as needed */
   }
 }
