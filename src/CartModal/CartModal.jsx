@@ -3,13 +3,14 @@ import "./CartModal.css"; // Make sure to import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartProvider";
+import { useNavigate } from "react-router-dom";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
 
-  const { subtotal } = useCart();
+  const { removeFromCart, subtotal } = useCart();
 
-  const { removeFromCart } = useCart();
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setClosing(true);
@@ -17,6 +18,10 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
       setClosing(false);
       closeCart();
     }, 300);
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout"); // This will navigate to the checkout page
   };
 
   if (!isCartOpen && !isClosing) return null;
@@ -104,6 +109,7 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
               }`}
               style={{ backgroundColor: "#52dc95" }}
               disabled={cartItems.length === 0}
+              onClick={handleCheckout}
             >
               <span className="icon">
                 <FontAwesomeIcon icon={faCreditCard} />{" "}

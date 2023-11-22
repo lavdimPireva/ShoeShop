@@ -36,12 +36,12 @@ const Checkout = () => {
     <>
       <CheckoutNavBar />
 
-      <section className="section">
+      <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
+        {" "}
+        {/* Light gray background for the entire section */}
         <div className="container">
           <div className="columns">
             <div className="column is-half">
-              {/* Form goes here */}
-              {/* ... */}
               <form onSubmit={handleSubmit}>
                 <div className="field">
                   <label className="label">Name</label>
@@ -121,9 +121,13 @@ const Checkout = () => {
               </form>
             </div>
             <div className="column is-half">
-              <div className="box">
-                <h2 className="title is-4">Your Invoice</h2>
-
+              <div className="box" style={{ backgroundColor: "white" }}>
+                {" "}
+                {/* Ensure the box background is white */}
+                <h2 className="title is-5" style={{ padding: "5px" }}>
+                  Shporta e blerjeve{" "}
+                </h2>
+                {/* cartItems */}
                 <div
                   className="cart-content"
                   style={{
@@ -135,7 +139,13 @@ const Checkout = () => {
                   {" "}
                   {/* Set a max-height and overflowY to create a scrollable area */}
                   {cartItems.map((item) => (
-                    <div key={item.id} className="box cart-item">
+                    <div
+                      key={item.id}
+                      className="box cart-item"
+                      style={{ backgroundColor: "white", marginBottom: "10px" }}
+                    >
+                      {" "}
+                      {/* Individual cart item box */}
                       <article className="media">
                         <div className="media-left">
                           <figure className="image is-96x96">
@@ -179,22 +189,30 @@ const Checkout = () => {
                     </div>
                   ))}
                 </div>
-                <div
-                  className="price-summary"
-                  style={{ borderTop: "1px solid #dbdbdb", paddingTop: "10px" }}
-                >
+                {/* Calculation of the Total*/}
+                {/* Calculation of the Total*/}
+                <div className="price-summary" style={{ paddingTop: "0px" }}>
+                  {/* Summary Heading */}
+                  <h3 className="title is-5 has-text-left">Permbledhje</h3>
+
                   <div
                     className="content has-text-left"
-                    style={{ marginTop: "50px" }}
+                    style={{ marginTop: "20px" }}
                   >
                     <p className="is-size-6">
-                      <strong>Subtotal:</strong> {formattedSubtotal} €
+                      <span>Subtotal:</span> {formattedSubtotal} €
                     </p>
                     {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                     <p className="is-size-6">
-                      <strong>Shipping:</strong> Free
+                      <span>Transporti:</span> Free
                     </p>
-                    <p className="is-size-6">
+                    <p
+                      className="is-size-6"
+                      style={{
+                        borderTop: "1px solid #eaeaea",
+                        paddingTop: "10px",
+                      }}
+                    >
                       <strong>Total:</strong> {formattedSubtotal} €
                     </p>{" "}
                     {/* No shipping fees added for this example */}
