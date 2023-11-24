@@ -17,6 +17,7 @@ const Checkout = () => {
     city: "",
     address: "",
     phoneNumber: "",
+    transportCost: 0,
   });
 
   const countryOptions = [
@@ -45,10 +46,23 @@ const Checkout = () => {
 
   const handleCountryChange = (selectedOption) => {
     if (selectedOption) {
-      setFormData({ ...formData, country: selectedOption.value, city: "" });
+      let transportCost = 0;
+
+      if (
+        selectedOption.value === "Shqiperia" ||
+        selectedOption.value === "Maqedonia"
+      ) {
+        transportCost = 5;
+      }
+
+      setFormData({
+        ...formData,
+        country: selectedOption.value,
+        transportCost,
+      });
     } else {
-      // If the selection is cleared with the "x" button, set the country to an empty string
-      setFormData({ ...formData, country: "", city: "" });
+      // If the selection is cleared, reset the country field and transport cost
+      setFormData({ ...formData, country: "", transportCost: 0 });
     }
   };
 
@@ -240,7 +254,7 @@ const Checkout = () => {
                             position: "absolute", // Absolute position for the delete button
                             top: "50%", // Position at the top half to vertically center
                             right: "0.75rem", // Right position with some padding
-                            transform: "translateY(-50%)", // Tra
+                            transform: "translateY(-50%)",
                           }}
                         >
                           <button
@@ -274,7 +288,10 @@ const Checkout = () => {
                     </p>
                     {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                     <p className="is-size-6">
-                      <span>Transporti:</span> Free
+                      <span>Transporti:</span>{" "}
+                      {formData.transportCost === 0
+                        ? "Free"
+                        : `${formData.transportCost.toFixed(2)} €`}
                     </p>
                     <p
                       className="is-size-6"
@@ -283,7 +300,11 @@ const Checkout = () => {
                         paddingTop: "10px",
                       }}
                     >
-                      <strong>Total:</strong> {formattedSubtotal} €
+                      <strong>Total:</strong>{" "}
+                      {(parseFloat(subtotal) + formData.transportCost).toFixed(
+                        2
+                      )}{" "}
+                      €
                     </p>{" "}
                     {/* No shipping fees added for this example */}
                   </div>
