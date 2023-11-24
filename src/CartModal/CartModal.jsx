@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "./CartModal.css"; // Make sure to import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCreditCard, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCreditCard,
+  faTimes,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -50,7 +54,15 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
         </div>
         <div className="cart-content">
           {cartItems.map((item) => (
-            <div key={item.id} className="box cart-item">
+            <div
+              key={item.id}
+              className="box cart-item"
+              style={{
+                backgroundColor: "white",
+                marginBottom: "10px",
+                position: "relative",
+              }}
+            >
               <article className="media">
                 <div className="media-left">
                   <figure className="image is-96x96">
@@ -83,11 +95,26 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                   </div>
                 </div>
 
-                <div className="media-right">
+                <div
+                  className="media-right"
+                  style={{
+                    position: "absolute", // Absolute position for the delete button
+                    top: "50%", // Position at the top half to vertically center
+                    right: "0.75rem", // Right position with some padding
+                    transform: "translateY(-50%)", // Tra
+                  }}
+                >
                   <button
-                    className="delete"
+                    className="button is-light" // Use 'is-light' for a button that blends into the background
                     onClick={() => removeFromCart(item.cartItemId)}
-                  ></button>
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      marginLeft: "auto", // This will push the button to the far right
+                    }} // Remove border and background for a cleaner look
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </div>
               </article>
             </div>

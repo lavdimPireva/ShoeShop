@@ -2,23 +2,55 @@ import React, { useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
 import Footer from "../HomePage/Footer";
 import { useCart } from "../context/CartProvider";
+import Select from "react-select";
+
+import "./Checkout.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Checkout = () => {
+  const { cartItems, subtotal, removeFromCart } = useCart();
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     country: "",
     city: "",
+    address: "",
     phoneNumber: "",
   });
 
-  const { cartItems, subtotal, removeFromCart } = useCart();
+  const countryOptions = [
+    { value: "Kosova", label: "Kosova" },
+    { value: "Shqiperia", label: "Shqiperia" },
+    { value: "Maqedonia", label: "Maqedonia" },
+  ];
+
+  const customStyles = {
+    placeholder: (defaultStyles) => {
+      return {
+        ...defaultStyles,
+        color: "#d3d3d3",
+      };
+    },
+    control: (provided) => ({
+      ...provided,
+
+      boxShadow: "none",
+      border: "1px solid #dbdbdb",
+    }),
+  };
 
   const formattedSubtotal =
     subtotal && !isNaN(subtotal) ? parseFloat(subtotal).toFixed(2) : "0.00";
 
-  console.log("subtotal", formattedSubtotal);
-  console.log("subtotal TYPE", typeof formattedSubtotal);
+  const handleCountryChange = (selectedOption) => {
+    if (selectedOption) {
+      setFormData({ ...formData, country: selectedOption.value, city: "" });
+    } else {
+      // If the selection is cleared with the "x" button, set the country to an empty string
+      setFormData({ ...formData, country: "", city: "" });
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,18 +105,16 @@ const Checkout = () => {
                 </div>
                 <div className="field">
                   <label className="label">Country</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="country"
-                      value={formData.country}
-                      onChange={handleChange}
-                      placeholder="Enter your country"
-                      required
-                    />
-                  </div>
+                  <Select
+                    options={countryOptions}
+                    onChange={handleCountryChange}
+                    placeholder="Select your country"
+                    isClearable={true} // Allows users to clear their selection
+                    isSearchable={false} // Disables the ability to type and search in the dropdown
+                    styles={customStyles} // Apply the custom styles
+                  />
                 </div>
+
                 <div className="field">
                   <label className="label">City</label>
                   <div className="control">
@@ -95,6 +125,20 @@ const Checkout = () => {
                       value={formData.city}
                       onChange={handleChange}
                       placeholder="Enter your city"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Address</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      placeholder="Enter your address"
                       required
                     />
                   </div>
@@ -120,8 +164,9 @@ const Checkout = () => {
                 </div>
               </form>
             </div>
+
             <div className="column is-half">
-              <div className="box" style={{ backgroundColor: "white" }}>
+              <div className="box " style={{ backgroundColor: "white" }}>
                 {" "}
                 {/* Ensure the box background is white */}
                 <h2 className="title is-5" style={{ padding: "5px" }}>
@@ -141,12 +186,22 @@ const Checkout = () => {
                   {cartItems.map((item) => (
                     <div
                       key={item.id}
-                      className="box cart-item"
-                      style={{ backgroundColor: "white", marginBottom: "10px" }}
+                      className="box cart-item "
+                      style={{
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                        position: "relative",
+                      }}
                     >
-                      {" "}
-                      {/* Individual cart item box */}
-                      <article className="media">
+                      <article
+                        className="media"
+                        style={{
+                          backgroundColor: "white",
+                          marginBottom: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <div className="media-left">
                           <figure className="image is-96x96">
                             <img
@@ -156,7 +211,7 @@ const Checkout = () => {
                             />
                           </figure>
                         </div>
-                        <div className="media-content cart-item-details">
+                        <div className="media-content cart-item-details ">
                           <div className="content">
                             <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
                               {item.name}
@@ -179,11 +234,26 @@ const Checkout = () => {
                           </div>
                         </div>
 
-                        <div className="media-right">
+                        <div
+                          className="media-right"
+                          style={{
+                            position: "absolute", // Absolute position for the delete button
+                            top: "50%", // Position at the top half to vertically center
+                            right: "0.75rem", // Right position with some padding
+                            transform: "translateY(-50%)", // Tra
+                          }}
+                        >
                           <button
-                            className="delete"
+                            className="button is-light" // Use 'is-light' for a button that blends into the background
                             onClick={() => removeFromCart(item.cartItemId)}
-                          ></button>
+                            style={{
+                              border: "none",
+                              background: "transparent",
+                              marginLeft: "auto", // This will push the button to the far right
+                            }} // Remove border and background for a cleaner look
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
                         </div>
                       </article>
                     </div>
