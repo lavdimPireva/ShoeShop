@@ -31,6 +31,16 @@ import classic2 from "../img/classic2.jpg";
 import classic3 from "../img/classic3.jpg";
 import classic4 from "../img/classic4.jpg";
 
+// kategorit me te kerkuara
+import reebok1 from "../img/reebok1.png";
+import reebok2 from "../img/reebok2.png";
+import airforce1 from "../img/airforce1.png";
+import airforce2 from "../img/airforce2.png";
+import airforcetm1 from "../img/airforcetm1.png";
+import airforcetm2 from "../img/airforcetm2.png";
+import superstar1 from "../img/superstar1.png";
+import superstar2 from "../img/superstar2.png";
+
 export const products = [
   {
     id: 1,
@@ -395,5 +405,108 @@ export const products = [
     type: "men",
     numeration: [40, 41, 42, 43, 44],
     color: ["zeze", "bardhe"],
+  },
+
+  // Reebok
+  {
+    id: 30,
+    name: "Reebok",
+    imageUrl: reebok1,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
+  },
+  {
+    id: 31,
+    name: "Reebok",
+    imageUrl: reebok2,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze"],
+  },
+
+  {
+    id: 32,
+    name: "Airforce",
+    imageUrl: airforce1,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
+  },
+
+  {
+    id: 33,
+    name: "Airforce",
+    imageUrl: airforce2,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze"],
+  },
+  {
+    id: 34,
+    name: "Airforce TM",
+    imageUrl: airforcetm1,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
+  },
+
+  {
+    id: 35,
+    name: "Airforce",
+    imageUrl: airforcetm2,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze"],
+  },
+
+  {
+    id: 36,
+    name: "Superstar",
+    imageUrl: superstar1,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["bardhe"],
+  },
+
+  {
+    id: 37,
+    name: "Superstar",
+    imageUrl: superstar2,
+    originalPrice: "69.99",
+    discountPrice: "19.99",
+    description:
+      "Comfortable running shoes with great traction and durability.",
+    type: "men",
+    numeration: [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    color: ["zeze"],
   },
 ];

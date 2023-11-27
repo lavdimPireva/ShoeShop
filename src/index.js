@@ -7,15 +7,19 @@ import App from "./App";
 import "bulma/css/bulma.min.css";
 import { CartProvider } from "./context/CartProvider";
 import { FilterProvider } from "./context/FilterProvider";
+
 import { BrowserRouter } from "react-router-dom";
+import { ProductProvider } from "./context/ProductProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <FilterProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </FilterProvider>
+    <ProductProvider>
+      <FilterProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </FilterProvider>
+    </ProductProvider>
   </BrowserRouter>
 );

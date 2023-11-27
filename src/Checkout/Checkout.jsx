@@ -62,7 +62,7 @@ const Checkout = () => {
       });
     } else {
       // If the selection is cleared, reset the country field and transport cost
-      setFormData({ ...formData, country: "", transportCost: 0 });
+      setFormData({ ...formData, country: "", city: "", transportCost: 0 });
     }
   };
 
@@ -301,10 +301,12 @@ const Checkout = () => {
                       }}
                     >
                       <strong>Total:</strong>{" "}
-                      {(parseFloat(subtotal) + formData.transportCost).toFixed(
-                        2
-                      )}{" "}
-                      €
+                      <strong>
+                        {(
+                          parseFloat(subtotal) + formData.transportCost
+                        ).toFixed(2)}{" "}
+                        €
+                      </strong>
                     </p>{" "}
                     {/* No shipping fees added for this example */}
                   </div>

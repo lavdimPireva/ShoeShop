@@ -1,7 +1,9 @@
-// slideshow images
-import img1 from "../img/slide1.avif";
-import img2 from "../img/slide2.webp";
-import img3 from "../img/slide3.avif";
+const img1 =
+  "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide1.avif";
+const img2 =
+  "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide2.webp";
+const img3 =
+  "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide3.avif";
 
 const mainSliderImages = [
   { src: img1, alt: "Image1" },

@@ -12,16 +12,14 @@ import "./HomePage.css";
 
 import MainSlider from "./MainSlider";
 import CategoryImageList from "./CategoryImageList";
-import categoryImages from "../ImagesModule/categoryImages";
+
 import mainSliderImages from "../ImagesModule/mainSliderImages";
 import brandsImages from "../ImagesModule/brandsImages";
 import BrandsImageList from "./BrandsImagesList";
 import ShoeProduct from "./ShoeProduct";
-import { classicShoes, products } from "../ImagesModule/ModelsImage";
 
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
-import { generateSlug } from "../helpers/slugUtils";
 import { useCart } from "../context/CartProvider";
 import CartModal from "../CartModal/CartModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,9 +27,12 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useProduct } from "../context/ProductProvider";
 
 const HomePage = () => {
   const { isCartOpen, toggleCart, cartItems } = useCart();
+
+  const { productsWithSlug, productBestCategory } = useProduct();
 
   const scrollFirstContainer = useRef(null);
   const scrollSecondContainer = useRef(null);
@@ -64,11 +65,6 @@ const HomePage = () => {
     autoplay: true,
     arrows: true,
   };
-
-  const productsList = products.map((product) => ({
-    ...product,
-    slug: generateSlug(product.name, product.id),
-  }));
 
   return (
     <div>
@@ -104,7 +100,7 @@ const HomePage = () => {
             Kategoritë më të kërkuara
           </h4>
           <div className="horizontal-scroll-wrapper">
-            <CategoryImageList images={categoryImages} />
+            <CategoryImageList products={productBestCategory} />
           </div>
         </div>
       </section>
@@ -144,7 +140,7 @@ const HomePage = () => {
               ref={scrollFirstContainer}
               style={{ overflowX: "auto", whiteSpace: "nowrap" }}
             >
-              {productsList.slice(0, 13).map((product) => (
+              {productsWithSlug.slice(0, 13).map((product) => (
                 <Link
                   to={`/shoe/${product.slug}`}
                   key={product.id}
@@ -194,7 +190,7 @@ const HomePage = () => {
               ref={scrollSecondContainer}
               style={{ overflowX: "auto", whiteSpace: "nowrap" }}
             >
-              {productsList.slice(13, 25).map((product) => (
+              {productsWithSlug.slice(13, 25).map((product) => (
                 <Link
                   to={`/shoe/${product.slug}`}
                   key={product.id}
@@ -233,7 +229,7 @@ const HomePage = () => {
         <div className="container ">
           <h4 className="title is-4">Classic Shoes</h4>
           <div className="columns is-multiline is-mobile">
-            {productsList.slice(25, 29).map((shoe) => (
+            {productsWithSlug.slice(25, 29).map((shoe) => (
               <div
                 className="column is-half-mobile is-4-tablet is-3-desktop"
                 key={shoe.id}

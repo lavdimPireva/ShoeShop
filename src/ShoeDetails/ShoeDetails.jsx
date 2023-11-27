@@ -20,12 +20,15 @@ import ShoeImage from "./ShoeImage";
 import { generateSlug } from "../helpers/slugUtils";
 import { Helmet } from "react-helmet";
 import { useCart } from "../context/CartProvider";
+import { useProduct } from "../context/ProductProvider";
 
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [isImageHovered, setImageHovered] = useState(false);
 
   const { addToCart, isCartOpen, toggleCart, cartItems } = useCart();
+  const { productsWithSlug } = useProduct();
+
   // get the slug from URL
   const { slug } = useParams();
 
@@ -33,7 +36,7 @@ const ShoeDetails = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const shoeDetails = products.find(
+  const shoeDetails = productsWithSlug.find(
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
   );
 

@@ -4,8 +4,9 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
-const CategoryImageList = ({ images }) => {
+const CategoryImageList = ({ products }) => {
   const scrollContainer = useRef(null);
 
   const scrollLeft = () => {
@@ -26,11 +27,19 @@ const CategoryImageList = ({ images }) => {
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <div className="horizontal-scroll-wrapper" ref={scrollContainer}>
-        {images.map((image, index) => (
+        {products.map((product, index) => (
           <div className="horizontal-scroll-item" key={index}>
-            <a href={image.link}>
-              <img src={image.src} alt={image.alt} className="category-image" />
-            </a>
+            <Link
+              to={`/shoe/${product.slug}`}
+              key={product.id}
+              style={{ textDecoration: "none" }}
+            >
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="category-image"
+              />
+            </Link>
           </div>
         ))}
       </div>

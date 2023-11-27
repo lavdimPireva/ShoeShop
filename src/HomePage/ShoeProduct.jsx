@@ -71,9 +71,9 @@ const ShoeProduct = ({
             }}
           >
             <span style={{ fontSize: "1rem" }}>€</span>
-            {discountPrice.split(".")[0]}
+            {discountPrice.toString().split(".")[0]}
             <sup style={{ fontSize: "1rem", top: "-0.5em" }}>
-              {discountPrice.split(".")[1]}
+              {discountPrice.toString().split(".")[1]}
             </sup>
           </div>
         </div>
