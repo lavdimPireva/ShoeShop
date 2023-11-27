@@ -13,7 +13,6 @@ import {
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 import CartModal from "../CartModal/CartModal";
-import { products } from "../ImagesModule/ModelsImage";
 import { useParams } from "react-router-dom";
 import ShoeSizeSelector from "./ShoeSizeSelector";
 import ShoeImage from "./ShoeImage";

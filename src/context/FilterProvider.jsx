@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useMemo } from "react";
-import { products } from "../ImagesModule/ModelsImage";
+import { useProduct } from "./ProductProvider";
 
 const FilterContext = createContext();
 
@@ -7,6 +7,7 @@ export const useFilter = () => useContext(FilterContext);
 
 export const FilterProvider = ({ children }) => {
   // Initialize filterCriteria with properties for brands, sizes, and colors
+
   const [filterCriteria, setFilterCriteria] = useState({
     type: "men",
     price: { min: "", max: "" },
@@ -16,6 +17,8 @@ export const FilterProvider = ({ children }) => {
   });
 
   const [allowMultipleTypes, setAllowMultipleTypes] = useState(false);
+
+  const { productsWithSlug } = useProduct();
 
   const defaultFilterCriteria = {
     type: "men",
@@ -39,7 +42,7 @@ export const FilterProvider = ({ children }) => {
   };
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return productsWithSlug.filter((product) => {
       let typeMatch;
 
       if (allowMultipleTypes) {
