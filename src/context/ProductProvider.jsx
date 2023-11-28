@@ -10,6 +10,7 @@ export const useProduct = () => useContext(ProductContext);
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,8 +18,10 @@ export const ProductProvider = ({ children }) => {
         const response = await axios.get("http://localhost:8080/api/products");
 
         setProducts(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching products", error);
+        setIsLoading(false);
       }
     };
 
@@ -31,11 +34,10 @@ export const ProductProvider = ({ children }) => {
   }));
   const productBestCategory = productsWithSlug.slice(30, 38);
 
-  console.log("productsWithSlug", productsWithSlug);
-
   const value = {
     productsWithSlug,
     productBestCategory,
+    isLoading,
   };
 
   return (

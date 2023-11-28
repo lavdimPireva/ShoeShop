@@ -13,15 +13,17 @@ const FilterPanel = ({
 }) => {
   const [price, setPrice] = useState({ min: "", max: "" });
   const [brands, setBrands] = useState({
-    Reebok: false,
-    Lapolo: false,
-    "New Balance": false,
-    "Dragon Ortopedic Shoes": false,
-    "New Dragon Ortopedic Shoes": false,
-    "Nike Pegasus": false,
-    Pllanika: false,
-    "Dugana Sport Shoes": false,
     "Alexander Mc Queen": false,
+    "Nike Airforce 1": false,
+    "Dragon Klasik": false,
+    "Luxury Fashion Brand": false,
+    "Nike Pegasus": false,
+    Adidas: false,
+    Lapolo: false,
+    Reebok: false,
+    Airforce: false,
+    "Airforce TM": false,
+    Superstar: false,
   });
   const [sizes, setSizes] = useState({
     36: false,

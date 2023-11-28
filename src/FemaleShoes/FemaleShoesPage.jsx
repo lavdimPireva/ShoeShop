@@ -11,6 +11,8 @@ import FilterPanel from "../FilterPanel/FilterPanel";
 import FilterModal from "../MenShoes/FilterModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { useProduct } from "../context/ProductProvider";
+import { PropagateLoader } from "react-spinners";
 
 const FemaleShoesPage = () => {
   const {
@@ -20,6 +22,7 @@ const FemaleShoesPage = () => {
     updateFilterCriteria,
   } = useFilter();
   const { isCartOpen, toggleCart, cartItems } = useCart();
+  const [delayedLoading, setDelayedLoading] = useState(true);
 
   const [filteredProductsSlug, setFilteredProductsSlug] = useState([]);
   const [availableSizes, setAvailableSizes] = useState([]);
@@ -32,8 +35,25 @@ const FemaleShoesPage = () => {
     colors: [],
     // ... any other filters you have
   });
+  const { isLoading } = useProduct();
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  useEffect(() => {
+    let timeout;
+    if (!isLoading) {
+      // Set a timeout to change the delayedLoading state after a certain period
+      timeout = setTimeout(() => {
+        setDelayedLoading(false);
+      }, 1000); // 1000 ms delay
+    }
+
+    return () => {
+      // Clear the timeout if the component is unmounted
+      // to prevent a state update on an unmounted component
+      clearTimeout(timeout);
+    };
+  }, [isLoading]); // Dependency on the isLoading state
 
   useEffect(() => {
     const slugProducts = filteredProducts.map((product) => ({
@@ -99,100 +119,116 @@ const FemaleShoesPage = () => {
       </Helmet>
       <Navbar />
 
-      <div className="container">
-        <div className="columns">
-          <div className="column is-one-quarter  is-hidden-mobile">
-            <FilterPanel
-              onFilterChange={handleFilterChange}
-              availableSizes={availableSizes}
-              availableBrands={availableBrands}
-              availableColors={availableColors}
-              activeFilters={activeFilters}
-            />
-          </div>
-
-          <div className="column is-three-quarters">
-            <section className="section">
-              <div className="level is-mobile">
-                <div className="level-left">
-                  <h1 className="title is-size-6-mobile is-size-6-tablet is-size-6-desktop">
-                    Female's Shoes
-                  </h1>
-                </div>
-                <div className="level-right">
-                  <button
-                    className="button is-hidden-tablet is-hidden-desktop filter-button"
-                    onClick={toggleFilterModal}
-                  >
-                    <span className="icon is-size-7">
-                      <FontAwesomeIcon icon={faFilter} />
-                    </span>
-                    <span className="is-size-7">Filtro</span>
-                  </button>
-                </div>
-              </div>
-              <div className="columns is-multiline is-mobile">
-                {filteredProductsSlug.map((shoe) => (
-                  <div
-                    className="column is-half-mobile is-4-tablet is-3-desktop"
-                    key={shoe.id}
-                  >
-                    <Link to={`/shoe/${shoe.slug}`}>
-                      <div className="card">
-                        <div className="card-image">
-                          <figure className="image">
-                            <img src={shoe.imageUrl} alt={shoe.name} />
-                          </figure>
-                        </div>
-
-                        <div className="card-content">
-                          <p className="title is-7">{shoe.name}</p>
-                          <p className="subtitle is-6 has-text-weight-semibold">
-                            {shoe.discountPrice
-                              ? `${shoe.discountPrice}€`
-                              : `${shoe.originalPrice}€`}
-                          </p>
-                          <p className="subtitle is-7">
-                            {shoe.description.length > 15
-                              ? shoe.description.slice(0, 40) + "..."
-                              : shoe.description}
-                          </p>
-                          {shoe.discountPrice && (
-                            <p
-                              className="has-text-grey-lighter"
-                              style={{ textDecoration: "line-through" }}
-                            >
-                              {shoe.originalPrice}€
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
+      {delayedLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "calc(100vh - 60px)",
+          }}
+        >
+          {/* Adjust the height as per your Navbar's height, here assumed 60px */}
+          <PropagateLoader color={"#123abc"} />
         </div>
-      </div>
+      ) : (
+        <div>
+          <div className="container">
+            <div className="columns">
+              <div className="column is-one-quarter  is-hidden-mobile">
+                <FilterPanel
+                  onFilterChange={handleFilterChange}
+                  availableSizes={availableSizes}
+                  availableBrands={availableBrands}
+                  availableColors={availableColors}
+                  activeFilters={activeFilters}
+                />
+              </div>
 
-      <FilterModal
-        isActive={isFilterModalOpen}
-        closeFilterModal={toggleFilterModal}
-        onFilterChange={handleFilterChange}
-        availableSizes={availableSizes}
-        availableBrands={availableBrands}
-        availableColors={availableColors}
-        activeFilters={activeFilters}
-      />
+              <div className="column is-three-quarters">
+                <section className="section">
+                  <div className="level is-mobile">
+                    <div className="level-left">
+                      <h1 className="title is-size-6-mobile is-size-6-tablet is-size-6-desktop">
+                        Female's Shoes
+                      </h1>
+                    </div>
+                    <div className="level-right">
+                      <button
+                        className="button is-hidden-tablet is-hidden-desktop filter-button"
+                        onClick={toggleFilterModal}
+                      >
+                        <span className="icon is-size-7">
+                          <FontAwesomeIcon icon={faFilter} />
+                        </span>
+                        <span className="is-size-7">Filtro</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="columns is-multiline is-mobile">
+                    {filteredProductsSlug.map((shoe) => (
+                      <div
+                        className="column is-half-mobile is-4-tablet is-3-desktop"
+                        key={shoe.id}
+                      >
+                        <Link to={`/shoe/${shoe.slug}`}>
+                          <div className="card">
+                            <div className="card-image">
+                              <figure className="image">
+                                <img src={shoe.imageUrl} alt={shoe.name} />
+                              </figure>
+                            </div>
 
-      <CartModal
-        isCartOpen={isCartOpen}
-        closeCart={toggleCart}
-        cartItems={cartItems}
-      />
+                            <div className="card-content">
+                              <p className="title is-7">{shoe.name}</p>
+                              <p className="subtitle is-6 has-text-weight-semibold">
+                                {shoe.discountPrice
+                                  ? `${shoe.discountPrice}€`
+                                  : `${shoe.originalPrice}€`}
+                              </p>
+                              <p className="subtitle is-7">
+                                {shoe.description.length > 15
+                                  ? shoe.description.slice(0, 40) + "..."
+                                  : shoe.description}
+                              </p>
+                              {shoe.discountPrice && (
+                                <p
+                                  className="has-text-grey-lighter"
+                                  style={{ textDecoration: "line-through" }}
+                                >
+                                  {shoe.originalPrice}€
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
 
-      <Footer />
+          <FilterModal
+            isActive={isFilterModalOpen}
+            closeFilterModal={toggleFilterModal}
+            onFilterChange={handleFilterChange}
+            availableSizes={availableSizes}
+            availableBrands={availableBrands}
+            availableColors={availableColors}
+            activeFilters={activeFilters}
+          />
+
+          <CartModal
+            isCartOpen={isCartOpen}
+            closeCart={toggleCart}
+            cartItems={cartItems}
+          />
+
+          <Footer />
+        </div>
+      )}
     </>
   );
 };

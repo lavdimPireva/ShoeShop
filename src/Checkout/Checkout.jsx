@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
 import Footer from "../HomePage/Footer";
 import { useCart } from "../context/CartProvider";
@@ -7,9 +7,14 @@ import Select from "react-select";
 import "./Checkout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useProduct } from "../context/ProductProvider";
+import { PropagateLoader } from "react-spinners";
 
 const Checkout = () => {
+  const [delayedLoading, setDelayedLoading] = useState(true);
   const { cartItems, subtotal, removeFromCart } = useCart();
+  const { isLoading } = useProduct();
+
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -19,6 +24,19 @@ const Checkout = () => {
     phoneNumber: "",
     transportCost: 0,
   });
+
+  useEffect(() => {
+    let timeout;
+    if (!isLoading) {
+      timeout = setTimeout(() => {
+        setDelayedLoading(false);
+      }, 1000); // 1000 ms delay
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isLoading]);
 
   const countryOptions = [
     { value: "Kosova", label: "Kosova" },
@@ -72,252 +90,293 @@ const Checkout = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can add what you want to do on form submit, like sending data to a backend server
-    console.log(formData);
+
+    // Assuming your Spring Boot backend endpoint is something like /api/checkout
+    const endpoint = "http://localhost:8080/api/checkout"; // Replace with your actual backend URL
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json", // Ensure this is set correctly
+        },
+        body: JSON.stringify(formData), // Convert the React state to a JSON string
+      });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log("Success:", jsonResponse);
+        // Handle the response data as needed, e.g., redirect to a success page, clear form, etc.
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error during the fetch:", error);
+    }
   };
 
   return (
     <>
       <CheckoutNavBar />
 
-      <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
-        {" "}
-        {/* Light gray background for the entire section */}
-        <div className="container">
-          <div className="columns">
-            <div className="column is-half">
-              <form onSubmit={handleSubmit}>
-                <div className="field">
-                  <label className="label">Name</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Enter your name"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">Surname</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="surname"
-                      value={formData.surname}
-                      onChange={handleChange}
-                      placeholder="Enter your surname"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">Country</label>
-                  <Select
-                    options={countryOptions}
-                    onChange={handleCountryChange}
-                    placeholder="Select your country"
-                    isClearable={true} // Allows users to clear their selection
-                    isSearchable={false} // Disables the ability to type and search in the dropdown
-                    styles={customStyles} // Apply the custom styles
-                  />
+      {delayedLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "calc(100vh - 60px)",
+          }}
+        >
+          {/* Adjust the height as per your Navbar's height, here assumed 60px */}
+          <PropagateLoader color={"#123abc"} />
+        </div>
+      ) : (
+        <div>
+          <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
+            {" "}
+            {/* Light gray background for the entire section */}
+            <div className="container">
+              <div className="columns">
+                <div className="column is-half">
+                  <form onSubmit={handleSubmit}>
+                    <div className="field">
+                      <label className="label">Name</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Enter your name"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label className="label">Surname</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          name="surname"
+                          value={formData.surname}
+                          onChange={handleChange}
+                          placeholder="Enter your surname"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label className="label">Country</label>
+                      <Select
+                        options={countryOptions}
+                        onChange={handleCountryChange}
+                        placeholder="Select your country"
+                        isClearable={true} // Allows users to clear their selection
+                        isSearchable={false} // Disables the ability to type and search in the dropdown
+                        styles={customStyles} // Apply the custom styles
+                      />
+                    </div>
+
+                    <div className="field">
+                      <label className="label">City</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          placeholder="Enter your city"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label className="label">Address</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          name="address"
+                          value={formData.address}
+                          onChange={handleChange}
+                          placeholder="Enter your address"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="field">
+                      <label className="label">Phone Number</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="tel"
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleChange}
+                          placeholder="Enter your phone number"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="control">
+                      <button className="button is-primary" type="submit">
+                        Complete Payment
+                      </button>
+                    </div>
+                  </form>
                 </div>
 
-                <div className="field">
-                  <label className="label">City</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      placeholder="Enter your city"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">Address</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="Enter your address"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="label">Phone Number</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="tel"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="Enter your phone number"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="control">
-                  <button className="button is-primary" type="submit">
-                    Complete Payment
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <div className="column is-half">
-              <div className="box " style={{ backgroundColor: "white" }}>
-                {" "}
-                {/* Ensure the box background is white */}
-                <h2 className="title is-5" style={{ padding: "5px" }}>
-                  Shporta e blerjeve{" "}
-                </h2>
-                {/* cartItems */}
-                <div
-                  className="cart-content"
-                  style={{
-                    overflowY: "auto",
-                    maxHeight: "300px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  {" "}
-                  {/* Set a max-height and overflowY to create a scrollable area */}
-                  {cartItems.map((item) => (
+                <div className="column is-half">
+                  <div className="box " style={{ backgroundColor: "white" }}>
+                    {" "}
+                    {/* Ensure the box background is white */}
+                    <h2 className="title is-5" style={{ padding: "5px" }}>
+                      Shporta e blerjeve{" "}
+                    </h2>
+                    {/* cartItems */}
                     <div
-                      key={item.id}
-                      className="box cart-item "
+                      className="cart-content"
                       style={{
-                        backgroundColor: "white",
-                        marginBottom: "10px",
-                        position: "relative",
+                        overflowY: "auto",
+                        maxHeight: "300px",
+                        marginBottom: "20px",
                       }}
                     >
-                      <article
-                        className="media"
-                        style={{
-                          backgroundColor: "white",
-                          marginBottom: "10px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div className="media-left">
-                          <figure className="image is-96x96">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="cart-item-image"
-                            />
-                          </figure>
-                        </div>
-                        <div className="media-content cart-item-details ">
-                          <div className="content">
-                            <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                              {item.name}
-                            </p>
-                            <p className="cart-item-price">
-                              <span className="has-text-weight-semibold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                                Çmimi:
-                              </span>{" "}
-                              <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                                {item.discountPrice
-                                  ? `${item.discountPrice}`
-                                  : item.originalPrice}
-                                €
-                              </span>
-                            </p>
-                            <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
-                              Madhesia e zgjedhur:{" "}
-                              {item.selectedSizes.join(", ")}
-                            </p>
-                          </div>
-                        </div>
-
+                      {" "}
+                      {/* Set a max-height and overflowY to create a scrollable area */}
+                      {cartItems.map((item) => (
                         <div
-                          className="media-right"
+                          key={item.id}
+                          className="box cart-item "
                           style={{
-                            position: "absolute", // Absolute position for the delete button
-                            top: "50%", // Position at the top half to vertically center
-                            right: "0.75rem", // Right position with some padding
-                            transform: "translateY(-50%)",
+                            backgroundColor: "white",
+                            marginBottom: "10px",
+                            position: "relative",
                           }}
                         >
-                          <button
-                            className="button is-light" // Use 'is-light' for a button that blends into the background
-                            onClick={() => removeFromCart(item.cartItemId)}
+                          <article
+                            className="media"
                             style={{
-                              border: "none",
-                              background: "transparent",
-                              marginLeft: "auto", // This will push the button to the far right
-                            }} // Remove border and background for a cleaner look
+                              backgroundColor: "white",
+                              marginBottom: "10px",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
                           >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </div>
-                      </article>
-                    </div>
-                  ))}
-                </div>
-                {/* Calculation of the Total*/}
-                {/* Calculation of the Total*/}
-                <div className="price-summary" style={{ paddingTop: "0px" }}>
-                  {/* Summary Heading */}
-                  <h3 className="title is-5 has-text-left">Permbledhje</h3>
+                            <div className="media-left">
+                              <figure className="image is-96x96">
+                                <img
+                                  src={item.imageUrl}
+                                  alt={item.name}
+                                  className="cart-item-image"
+                                />
+                              </figure>
+                            </div>
+                            <div className="media-content cart-item-details ">
+                              <div className="content">
+                                <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                                  {item.name}
+                                </p>
+                                <p className="cart-item-price">
+                                  <span className="has-text-weight-semibold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                                    Çmimi:
+                                  </span>{" "}
+                                  <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                                    {item.discountPrice
+                                      ? `${item.discountPrice}`
+                                      : item.originalPrice}
+                                    €
+                                  </span>
+                                </p>
+                                <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
+                                  Madhesia e zgjedhur:{" "}
+                                  {item.selectedSizes.join(", ")}
+                                </p>
+                              </div>
+                            </div>
 
-                  <div
-                    className="content has-text-left"
-                    style={{ marginTop: "20px" }}
-                  >
-                    <p className="is-size-6">
-                      <span>Subtotal:</span> {formattedSubtotal} €
-                    </p>
-                    {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
-                    <p className="is-size-6">
-                      <span>Transporti:</span>{" "}
-                      {formData.transportCost === 0
-                        ? "Free"
-                        : `${formData.transportCost.toFixed(2)} €`}
-                    </p>
-                    <p
-                      className="is-size-6"
-                      style={{
-                        borderTop: "1px solid #eaeaea",
-                        paddingTop: "10px",
-                      }}
+                            <div
+                              className="media-right"
+                              style={{
+                                position: "absolute", // Absolute position for the delete button
+                                top: "50%", // Position at the top half to vertically center
+                                right: "0.75rem", // Right position with some padding
+                                transform: "translateY(-50%)",
+                              }}
+                            >
+                              <button
+                                className="button is-light" // Use 'is-light' for a button that blends into the background
+                                onClick={() => removeFromCart(item.cartItemId)}
+                                style={{
+                                  border: "none",
+                                  background: "transparent",
+                                  marginLeft: "auto", // This will push the button to the far right
+                                }} // Remove border and background for a cleaner look
+                              >
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>
+                            </div>
+                          </article>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Calculation of the Total*/}
+                    {/* Calculation of the Total*/}
+                    <div
+                      className="price-summary"
+                      style={{ paddingTop: "0px" }}
                     >
-                      <strong>Total:</strong>{" "}
-                      <strong>
-                        {(
-                          parseFloat(subtotal) + formData.transportCost
-                        ).toFixed(2)}{" "}
-                        €
-                      </strong>
-                    </p>{" "}
-                    {/* No shipping fees added for this example */}
+                      {/* Summary Heading */}
+                      <h3 className="title is-5 has-text-left">Permbledhje</h3>
+
+                      <div
+                        className="content has-text-left"
+                        style={{ marginTop: "20px" }}
+                      >
+                        <p className="is-size-6">
+                          <span>Subtotal:</span> {formattedSubtotal} €
+                        </p>
+                        {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
+                        <p className="is-size-6">
+                          <span>Transporti:</span>{" "}
+                          {formData.transportCost === 0
+                            ? "Free"
+                            : `${formData.transportCost.toFixed(2)} €`}
+                        </p>
+                        <p
+                          className="is-size-6"
+                          style={{
+                            borderTop: "1px solid #eaeaea",
+                            paddingTop: "10px",
+                          }}
+                        >
+                          <strong>Total:</strong>{" "}
+                          <strong>
+                            {(
+                              parseFloat(subtotal) + formData.transportCost
+                            ).toFixed(2)}{" "}
+                            €
+                          </strong>
+                        </p>{" "}
+                        {/* No shipping fees added for this example */}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <Footer />
+          <Footer />
+        </div>
+      )}
     </>
   );
 };

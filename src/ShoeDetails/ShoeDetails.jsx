@@ -24,6 +24,7 @@ import { useProduct } from "../context/ProductProvider";
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [isImageHovered, setImageHovered] = useState(false);
+  const [showSizeWarning, setShowSizeWarning] = useState(false);
 
   const { addToCart, isCartOpen, toggleCart, cartItems } = useCart();
   const { productsWithSlug } = useProduct();
@@ -40,7 +41,12 @@ const ShoeDetails = () => {
   );
 
   const handleAddToCart = () => {
-    if (selectedSizes.length === 0) return null;
+    if (selectedSizes.length === 0) {
+      setShowSizeWarning(true);
+      // Optionally, set a timeout to hide the notification after a few seconds
+      setTimeout(() => setShowSizeWarning(false), 3000);
+      return;
+    }
 
     const quantity = selectedSizes.length;
 
@@ -94,7 +100,7 @@ const ShoeDetails = () => {
       <Navbar />
       <div className="container">
         <div className="columns is-multiline">
-          <div className="column is-full-mobile is-three-fifths-tablet is-three-fifths-desktop">
+          <div className="column is-full-mobile is-half-tablet is-half-desktop">
             <ShoeImage
               shoe={shoeDetails}
               onMouseEnter={() => handleMouseHover(true)}
@@ -213,6 +219,16 @@ const ShoeDetails = () => {
                 </span>
                 <span>Add to Cart</span>
               </div>
+
+              {showSizeWarning && (
+                <div className="notification is-danger">
+                  <button
+                    className="delete"
+                    onClick={() => setShowSizeWarning(false)}
+                  ></button>
+                  Please select a size before adding to cart.
+                </div>
+              )}
               <CartModal
                 isCartOpen={isCartOpen}
                 closeCart={toggleCart}

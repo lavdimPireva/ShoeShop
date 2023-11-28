@@ -20,6 +20,8 @@ export const FilterProvider = ({ children }) => {
 
   const { productsWithSlug } = useProduct();
 
+  console.log("productWithSlug", productsWithSlug);
+
   const defaultFilterCriteria = {
     type: "men",
     price: { min: "", max: "" },
@@ -42,6 +44,7 @@ export const FilterProvider = ({ children }) => {
   };
 
   const filteredProducts = useMemo(() => {
+    console.log("Hi>>>>");
     return productsWithSlug.filter((product) => {
       let typeMatch;
 
@@ -78,7 +81,7 @@ export const FilterProvider = ({ children }) => {
 
       return typeMatch && brandMatch && sizeMatch && colorMatch && priceMatch;
     });
-  }, [filterCriteria]);
+  }, [productsWithSlug, filterCriteria, allowMultipleTypes]); // Make sure to include all dependencies
 
   const enableMultipleTypes = (isEnabled) => {
     setAllowMultipleTypes(isEnabled);
