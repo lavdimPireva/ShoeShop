@@ -20,6 +20,7 @@ import { generateSlug } from "../helpers/slugUtils";
 import { Helmet } from "react-helmet";
 import { useCart } from "../context/CartProvider";
 import { useProduct } from "../context/ProductProvider";
+import { PropagateLoader } from "react-spinners";
 
 const ShoeDetails = () => {
   const [selectedSizes, setSelectedSizes] = useState([]);
@@ -27,7 +28,7 @@ const ShoeDetails = () => {
   const [showSizeWarning, setShowSizeWarning] = useState(false);
 
   const { addToCart, isCartOpen, toggleCart, cartItems } = useCart();
-  const { productsWithSlug } = useProduct();
+  const { productsWithSlug, isLoading } = useProduct();
 
   // get the slug from URL
   const { slug } = useParams();
@@ -35,6 +36,8 @@ const ShoeDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  console.log("productWithSlug ><><", productsWithSlug);
 
   const shoeDetails = productsWithSlug.find(
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
@@ -87,6 +90,22 @@ const ShoeDetails = () => {
       }
     });
   };
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "calc(100vh - 60px)",
+        }}
+      >
+        {/* Adjust the height as per your Navbar's height, here assumed 60px */}
+        <PropagateLoader color={"#123abc"} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -153,7 +172,6 @@ const ShoeDetails = () => {
                   Albania - Transport 5€
                 </span>
               </div>
-
               <div className="is-flex is-align-items-center mb-2 m-3">
                 <span className="icon is-normal-mobile is-large">
                   <FontAwesomeIcon
@@ -163,7 +181,7 @@ const ShoeDetails = () => {
                   />
                 </span>
                 <span className="ml-2 is-size-6-mobile is-size-6-tablet is-6-fullhd  ">
-                  Maqedoni - Transport 5€{" "}
+                  Maqedoni - Transport 5€
                 </span>
               </div>
 
@@ -221,12 +239,12 @@ const ShoeDetails = () => {
               </div>
 
               {showSizeWarning && (
-                <div className="notification is-danger">
+                <div className="notification is-danger is-light">
                   <button
                     className="delete"
                     onClick={() => setShowSizeWarning(false)}
                   ></button>
-                  Please select a size before adding to cart.
+                  <strong>Please select a size before adding to cart.</strong>
                 </div>
               )}
               <CartModal

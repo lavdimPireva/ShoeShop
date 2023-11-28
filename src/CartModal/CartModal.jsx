@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartProvider";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
@@ -53,72 +54,79 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
           </button>
         </div>
         <div className="cart-content">
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="box cart-item"
-              style={{
-                backgroundColor: "white",
-                marginBottom: "10px",
-                position: "relative",
-              }}
-            >
-              <article className="media">
-                <div className="media-left">
-                  <figure className="image is-96x96">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="cart-item-image"
-                    />
-                  </figure>
-                </div>
-                <div className="media-content cart-item-details">
-                  <div className="content">
-                    <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                      {item.name}
-                    </p>
-                    <p className="cart-item-price">
-                      <span className="has-text-weight-semibold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                        Çmimi:
-                      </span>{" "}
-                      <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                        {item.discountPrice
-                          ? `${item.discountPrice}`
-                          : item.originalPrice}
-                        €
-                      </span>
-                    </p>
-                    <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
-                      Madhesia e zgjedhur: {item.selectedSizes.join(", ")}
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  className="media-right"
-                  style={{
-                    position: "absolute", // Absolute position for the delete button
-                    top: "50%", // Position at the top half to vertically center
-                    right: "0.75rem", // Right position with some padding
-                    transform: "translateY(-50%)", // Tra
-                  }}
-                >
-                  <button
-                    className="button is-light" // Use 'is-light' for a button that blends into the background
-                    onClick={() => removeFromCart(item.cartItemId)}
-                    style={{
-                      border: "none",
-                      background: "transparent",
-                      marginLeft: "auto", // This will push the button to the far right
-                    }} // Remove border and background for a cleaner look
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </div>
-              </article>
+          {cartItems.length === 0 ? (
+            // Display a message when the cart is empty
+            <div className="notification is-info is-light">
+              <strong>Shporta juaj e blerjeve eshte bosh.</strong>
             </div>
-          ))}
+          ) : (
+            cartItems.map((item) => (
+              <div
+                key={item.id}
+                className="box cart-item"
+                style={{
+                  backgroundColor: "white",
+                  marginBottom: "10px",
+                  position: "relative",
+                }}
+              >
+                <article className="media">
+                  <div className="media-left">
+                    <figure className="image is-96x96">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="cart-item-image"
+                      />
+                    </figure>
+                  </div>
+                  <div className="media-content cart-item-details">
+                    <div className="content">
+                      <p className="cart-item-name has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                        {item.name}
+                      </p>
+                      <p className="cart-item-price">
+                        <span className="has-text-weight-semibold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                          Çmimi:
+                        </span>{" "}
+                        <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
+                          {item.discountPrice
+                            ? `${item.discountPrice}`
+                            : item.originalPrice}
+                          €
+                        </span>
+                      </p>
+                      <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
+                        Madhesia e zgjedhur: {item.selectedSizes.join(", ")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    className="media-right"
+                    style={{
+                      position: "absolute", // Absolute position for the delete button
+                      top: "50%", // Position at the top half to vertically center
+                      right: "0.75rem", // Right position with some padding
+                      transform: "translateY(-50%)", // Tra
+                    }}
+                  >
+                    <button
+                      className="button is-light" // Use 'is-light' for a button that blends into the background
+                      onClick={() => removeFromCart(item.cartItemId)}
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        marginLeft: "auto", // This will push the button to the far right
+                      }} // Remove border and background for a cleaner look
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
+                </article>
+              </div>
+            ))
+          )}
         </div>
         <div
           className="subtotal-box has-background-light"

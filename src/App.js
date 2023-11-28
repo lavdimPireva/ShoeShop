@@ -6,6 +6,7 @@ import ShoeDetails from "./ShoeDetails/ShoeDetails";
 import MenShoesPage from "./MenShoes/MenShoesPage";
 import FemaleShoesPage from "./FemaleShoes/FemaleShoesPage";
 import Checkout from "./Checkout/Checkout";
+import { SnackbarProvider } from "notistack";
 
 function App() {
   return (
