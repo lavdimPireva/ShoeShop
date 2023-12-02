@@ -8,7 +8,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartProvider";
 import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
 
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);

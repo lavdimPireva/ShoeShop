@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
+import { loadPayPalScript } from "../helpers/loadPayPalScript";
+import { PayPalButton } from "react-paypal-button-v2";
 
 const Checkout = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
@@ -24,6 +26,10 @@ const Checkout = () => {
     phoneNumber: "",
     transportCost: 0,
   });
+
+  useEffect(() => {
+    loadPayPalScript();
+  }, []);
 
   useEffect(() => {
     let timeout;
@@ -118,6 +124,12 @@ const Checkout = () => {
     }
   };
 
+  const handlePaymentSuccess = (details, data) => {
+    // Handle the successful payment here
+    console.log("Payment Success:", details, data);
+    alert("Payment Success:", details, data);
+  };
+
   return (
     <>
       <CheckoutNavBar />
@@ -140,6 +152,15 @@ const Checkout = () => {
             {" "}
             {/* Light gray background for the entire section */}
             <div className="container">
+              <h2
+                className="title is-3 "
+                style={{
+                  borderBottom: "2px solid #dbdbdb",
+                  paddingBottom: "1rem",
+                }}
+              >
+                Checkout
+              </h2>
               <div className="columns">
                 <div className="column is-half">
                   <form onSubmit={handleSubmit}>
@@ -328,7 +349,6 @@ const Checkout = () => {
                       ))}
                     </div>
                     {/* Calculation of the Total*/}
-                    {/* Calculation of the Total*/}
                     <div
                       className="price-summary"
                       style={{ paddingTop: "0px" }}
@@ -366,6 +386,42 @@ const Checkout = () => {
                           </strong>
                         </p>{" "}
                         {/* No shipping fees added for this example */}
+                      </div>
+                    </div>
+                    {/* PayPal Button */}
+                    <div className="field mt-4">
+                      <PayPalButton
+                        amount={(
+                          parseFloat(subtotal) + formData.transportCost
+                        ).toFixed(2)}
+                        currency="EUR" // Specify the currency here
+                        onSuccess={(details, data) => {
+                          console.log(
+                            "Transaction completed by ",
+                            details.payer.name.given_name
+                          );
+                          // Handle successful transaction here
+                        }}
+                        options={{
+                          clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
+                          currency: "EUR", // Also specify the currency in the options
+                        }}
+                      />
+                      <div className="paypal-disclaimer content mt-2">
+                        <p className="is-size-7">
+                          By paying with your card, you acknowledge that your
+                          data will be processed by PayPal subject to the
+                          <a
+                            href="https://www.paypal.com/webapps/mpp/ua/privacy-full"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="has-text-link"
+                          >
+                            {" "}
+                            PayPal Privacy Statement
+                          </a>{" "}
+                          available at PayPal.com.
+                        </p>
                       </div>
                     </div>
                   </div>
