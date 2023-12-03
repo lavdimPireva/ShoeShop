@@ -11,6 +11,7 @@ import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
 import { loadPayPalScript } from "../helpers/loadPayPalScript";
 import { PayPalButton } from "react-paypal-button-v2";
+import axios from "axios";
 
 const Checkout = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
@@ -124,10 +125,36 @@ const Checkout = () => {
     }
   };
 
-  const handlePaymentSuccess = (details, data) => {
-    // Handle the successful payment here
+  const handlePaymentSuccess = async (details, data) => {
     console.log("Payment Success:", details, data);
-    alert("Payment Success:", details, data);
+
+    // Extract the necessary data from the payment details
+    const paymentID = details.id; // PayPal payment ID
+    const payerID = details.payer.payer_id; // PayPal payer ID
+
+    console.log("paymentID>>>", paymentID);
+    console.log("payer>>>", payerID);
+
+    const verifyPaymentEndpoint = "http://localhost:8080/api/verify-payment";
+    try {
+      const response = await axios.post(verifyPaymentEndpoint, {
+        paymentID,
+        payerID,
+      });
+
+      if (response.status === 200) {
+        // Handle successful verification
+        console.log("Payment verified by backend:", response.data);
+        alert("Payment Success: " + response.data.message);
+      } else {
+        // Handle failed verification
+        console.error("Payment verification failed:", response.data);
+        alert("Payment verification failed.");
+      }
+    } catch (error) {
+      console.error("Error during payment verification:", error);
+      alert("Error during payment verification.");
+    }
   };
 
   return (
@@ -247,7 +274,11 @@ const Checkout = () => {
                       </div>
                     </div>
                     <div className="control">
-                      <button className="button is-primary" type="submit">
+                      <button
+                        className="button"
+                        type="submit"
+                        style={{ background: "#E54325", marginTop: "5px" }}
+                      >
                         Complete Payment
                       </button>
                     </div>
@@ -395,13 +426,7 @@ const Checkout = () => {
                           parseFloat(subtotal) + formData.transportCost
                         ).toFixed(2)}
                         currency="EUR" // Specify the currency here
-                        onSuccess={(details, data) => {
-                          console.log(
-                            "Transaction completed by ",
-                            details.payer.name.given_name
-                          );
-                          // Handle successful transaction here
-                        }}
+                        onSuccess={handlePaymentSuccess}
                         options={{
                           clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
                           currency: "EUR", // Also specify the currency in the options

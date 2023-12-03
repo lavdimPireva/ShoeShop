@@ -231,7 +231,11 @@ const ShoeDetails = () => {
                 </div>
               )}
 
-              <div className="button is-primary m-3" onClick={handleAddToCart}>
+              <div
+                className="button  m-3"
+                style={{ background: "#E54325" }}
+                onClick={handleAddToCart}
+              >
                 <span className="icon">
                   <FontAwesomeIcon icon={faCartPlus} />
                 </span>

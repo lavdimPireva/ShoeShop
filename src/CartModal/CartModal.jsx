@@ -141,15 +141,15 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
               className={`button is-normal is-fullwidth has-text-black has-text-left-fullhd ${
                 cartItems.length === 0 ? "is-light" : ""
               }`}
-              style={{ backgroundColor: "#52dc95" }}
+              style={{ backgroundColor: "#E54325" }}
               disabled={cartItems.length === 0}
               onClick={handleCheckout}
             >
-              <span className="icon">
+              <span className="icon " style={{}}>
                 <FontAwesomeIcon icon={faCreditCard} />{" "}
                 {/* The icon component */}
               </span>
-              <span>Vazhdo te Pagesa</span>
+              <span className="has-text-weight-medium		">Vazhdo te Pagesa</span>
             </button>
           </div>
         </div>

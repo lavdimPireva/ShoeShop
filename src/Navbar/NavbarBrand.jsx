@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import logo from "../img/atletja.jpg";
+import logo from "../img/atletja1.svg";
 
 const NavbarBrand = ({ isActive, toggleBurgerMenu }) => (
   <div className="navbar-brand">
@@ -8,7 +8,7 @@ const NavbarBrand = ({ isActive, toggleBurgerMenu }) => (
       <img
         src={logo}
         alt="Logo"
-        style={{ maxHeight: "100px", padding: "5px" }}
+        style={{ width: "120px", maxHeight: "100px", padding: "5px" }} // Adjust the size as needed
       />
     </a>
     <a
