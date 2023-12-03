@@ -239,7 +239,7 @@ const ShoeDetails = () => {
                 <span className="icon">
                   <FontAwesomeIcon icon={faCartPlus} />
                 </span>
-                <span>Add to Cart</span>
+                <span className="has-text-weight-bold">Add to Cart</span>
               </div>
 
               {showSizeWarning && (

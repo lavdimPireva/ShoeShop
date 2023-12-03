@@ -129,7 +129,7 @@ const FemaleShoesPage = () => {
           }}
         >
           {/* Adjust the height as per your Navbar's height, here assumed 60px */}
-          <PropagateLoader color={"#123abc"} />
+          <PropagateLoader color={"#e54325"} />
         </div>
       ) : (
         <div>
