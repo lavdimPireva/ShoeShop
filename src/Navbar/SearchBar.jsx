@@ -16,7 +16,10 @@ const SearchBar = () => (
       <div className="control">
         <button
           className="button"
-          style={{ backgroundColor: "#be5d4c", color: "black" }}
+          style={{
+            backgroundColor: "#1975B5",
+            color: "#fff",
+          }}
         >
           <FontAwesomeIcon icon={faSearch} />
         </button>

@@ -6,8 +6,14 @@ import ShoeDetails from "./ShoeDetails/ShoeDetails";
 import MenShoesPage from "./MenShoes/MenShoesPage";
 import FemaleShoesPage from "./FemaleShoes/FemaleShoesPage";
 import Checkout from "./Checkout/Checkout";
+import { useEffect } from "react";
+import { loadPayPalScript } from "./helpers/loadPayPalScript";
 
 function App() {
+  useEffect(() => {
+    loadPayPalScript();
+  }, []);
+
   return (
     <div>
       <Routes>

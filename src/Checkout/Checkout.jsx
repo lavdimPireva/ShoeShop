@@ -29,10 +29,6 @@ const Checkout = () => {
   });
 
   useEffect(() => {
-    loadPayPalScript();
-  }, []);
-
-  useEffect(() => {
     let timeout;
     if (!isLoading) {
       timeout = setTimeout(() => {
@@ -193,7 +189,7 @@ const Checkout = () => {
           }}
         >
           {/* Adjust the height as per your Navbar's height, here assumed 60px */}
-          <PropagateLoader color={"#e54325"} />
+          <PropagateLoader color={"#1975B5"} />
         </div>
       ) : (
         <div>
@@ -299,7 +295,12 @@ const Checkout = () => {
                       <button
                         className="button"
                         type="submit"
-                        style={{ background: "#E54325", marginTop: "5px" }}
+                        style={{
+                          background: "#1975B5",
+                          marginTop: "10px",
+                          color: "#fff",
+                          fontSize: "15px",
+                        }}
                       >
                         Complete Payment
                       </button>

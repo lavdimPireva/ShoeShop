@@ -3,7 +3,6 @@ import Navbar from "../Navbar/NavBar";
 import Footer from "../HomePage/Footer";
 
 // css
-import "./ShoeDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartPlus,
@@ -217,7 +216,8 @@ const ShoeDetails = () => {
                   {selectedSizes.map((size) => (
                     <span
                       key={size}
-                      className="tag is-deleteable is-primary m-2 is-6-fullhd"
+                      className="tag is-deleteable  m-2 is-6-fullhd"
+                      style={{ background: "#1975B5", color: "#fff" }}
                     >
                       {size}
                       <button
@@ -233,13 +233,13 @@ const ShoeDetails = () => {
 
               <div
                 className="button  m-3"
-                style={{ background: "#E54325" }}
+                style={{ background: "#1975B5", color: "#fff" }}
                 onClick={handleAddToCart}
               >
                 <span className="icon">
                   <FontAwesomeIcon icon={faCartPlus} />
                 </span>
-                <span className="has-text-weight-bold">Add to Cart</span>
+                <span className="has-text-weight-semi-bold">Add to Cart</span>
               </div>
 
               {showSizeWarning && (

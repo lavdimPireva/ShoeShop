@@ -109,7 +109,7 @@ const HomePage = () => {
           }}
         >
           {/* Adjust the height as per your Navbar's height, here assumed 60px */}
-          <PropagateLoader color={"#e54325"} />
+          <PropagateLoader color={"#1975B5"} />
         </div>
       ) : (
         <div>

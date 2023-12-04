@@ -13,8 +13,13 @@ const ShoeSizeSelector = ({
         <span
           key={size}
           className={`tag ${
-            selectedSizes.includes(size.toString()) ? "is-primary" : "is-light"
+            selectedSizes.includes(size.toString()) ? "" : "is-light"
           }`}
+          style={
+            selectedSizes.includes(size.toString())
+              ? { backgroundColor: "#1975B5", color: "white" }
+              : {}
+          }
           onClick={() => onSelectSize(size.toString())}
         >
           {size}
