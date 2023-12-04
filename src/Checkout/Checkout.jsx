@@ -45,6 +45,22 @@ const Checkout = () => {
     };
   }, [isLoading]);
 
+  // paypal create-order
+
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      intent: "AUTHORIZE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "EUR",
+            value: (parseFloat(subtotal) + formData.transportCost).toFixed(2),
+          },
+        },
+      ],
+    });
+  };
+
   const countryOptions = [
     { value: "Kosova", label: "Kosova" },
     { value: "Shqiperia", label: "Shqiperia" },
@@ -129,31 +145,37 @@ const Checkout = () => {
     console.log("Payment Success:", details, data);
 
     // Extract the necessary data from the payment details
-    const paymentID = details.id; // PayPal payment ID
-    const payerID = details.payer.payer_id; // PayPal payer ID
+    const orderID = details.orderID;
 
-    console.log("paymentID>>>", paymentID);
-    console.log("payer>>>", payerID);
+    console.log("orderID>>>", orderID);
 
-    const verifyPaymentEndpoint = "http://localhost:8080/api/verify-payment";
+    const captureOrderEndpoint = "http://localhost:8080/api/capture-order";
     try {
-      const response = await axios.post(verifyPaymentEndpoint, {
-        paymentID,
-        payerID,
+      const response = await axios.post(captureOrderEndpoint, {
+        orderId: orderID,
       });
 
+      console.log("Response from backend:", response); // To inspect the structure
+
       if (response.status === 200) {
-        // Handle successful verification
         console.log("Payment verified by backend:", response.data);
-        alert("Payment Success: " + response.data.message);
+        // Display the important details in the alert
+        alert(
+          "Payment Success: ID - " +
+            response.data.id +
+            ", Status - " +
+            response.data.status
+        );
       } else {
-        // Handle failed verification
         console.error("Payment verification failed:", response.data);
         alert("Payment verification failed.");
       }
     } catch (error) {
       console.error("Error during payment verification:", error);
-      alert("Error during payment verification.");
+      alert(
+        "Error during payment verification: " +
+          (error.response?.data || error.message)
+      );
     }
   };
 
@@ -422,32 +444,13 @@ const Checkout = () => {
                     {/* PayPal Button */}
                     <div className="field mt-4">
                       <PayPalButton
-                        amount={(
-                          parseFloat(subtotal) + formData.transportCost
-                        ).toFixed(2)}
-                        currency="EUR" // Specify the currency here
-                        onSuccess={handlePaymentSuccess}
+                        createOrder={createOrder}
+                        onApprove={handlePaymentSuccess}
                         options={{
                           clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
-                          currency: "EUR", // Also specify the currency in the options
+                          currency: "EUR",
                         }}
                       />
-                      <div className="paypal-disclaimer content mt-2">
-                        <p className="is-size-7">
-                          By paying with your card, you acknowledge that your
-                          data will be processed by PayPal subject to the
-                          <a
-                            href="https://www.paypal.com/webapps/mpp/ua/privacy-full"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="has-text-link"
-                          >
-                            {" "}
-                            PayPal Privacy Statement
-                          </a>{" "}
-                          available at PayPal.com.
-                        </p>
-                      </div>
                     </div>
                   </div>
                 </div>
