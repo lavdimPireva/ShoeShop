@@ -4,6 +4,7 @@ import Footer from "../HomePage/Footer";
 
 // css
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./ShoeDetails.css";
 import {
   faCartPlus,
   faShoePrints,
@@ -221,7 +222,7 @@ const ShoeDetails = () => {
                     >
                       {size}
                       <button
-                        className="delete is-small "
+                        className="delete is-small"
                         onClick={() => handleRemoveSize(size)}
                       >
                         <FontAwesomeIcon icon={faTimes} />
