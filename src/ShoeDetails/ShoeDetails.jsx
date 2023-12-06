@@ -36,8 +36,6 @@ const ShoeDetails = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log("productWithSlug ><><", productsWithSlug);
-
   const shoeDetails = productsWithSlug.find(
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
   );

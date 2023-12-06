@@ -1,7 +1,7 @@
 const img1 =
   "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide1.avif";
 const img2 =
-  "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide2.webp";
+  "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide2.avif";
 const img3 =
   "https://atletjaime-images.s3.eu-central-1.amazonaws.com/slide3.avif";
 

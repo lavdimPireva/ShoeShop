@@ -16,7 +16,12 @@ export const ProductProvider = ({ children }) => {
     console.log("refresh");
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/products");
+        const response = await axios.get("http://localhost:8081/api/products/");
+
+        // production environment
+        // const response = await axios.get(
+        //   "https://api.atletjaime.com/api/products/"
+        // );
 
         setProducts(response.data);
         setIsLoading(false);
