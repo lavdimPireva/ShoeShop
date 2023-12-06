@@ -3,7 +3,14 @@ import React, { useState } from "react";
 import logo from "../img/atletja1.svg";
 
 const NavbarBrand = ({ isActive, toggleBurgerMenu }) => (
-  <div className="navbar-brand">
+  <div
+    className="navbar-brand"
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+    }}
+  >
     <a className="navbar-item" href="/">
       <img
         src={logo}

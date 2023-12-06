@@ -11,7 +11,7 @@ import {
 import "./Breadcrumbs.css";
 
 const Breadcrumbs = () => (
-  <nav className="breadcrumb px-6 pt-5" aria-label="breadcrumbs">
+  <nav className="breadcrumb px-5 pt-4" aria-label="breadcrumbs">
     <ul>
       <li>
         <NavLink

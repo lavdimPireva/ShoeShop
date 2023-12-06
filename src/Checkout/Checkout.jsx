@@ -198,7 +198,7 @@ const Checkout = () => {
             {/* Light gray background for the entire section */}
             <div className="container">
               <h2
-                className="title is-3 "
+                className="title is-4 "
                 style={{
                   borderBottom: "2px solid #dbdbdb",
                   paddingBottom: "1rem",
