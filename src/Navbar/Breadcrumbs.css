@@ -2,3 +2,37 @@
   color: #1975b5 !important;
   font-weight: bold;
 }
+
+/* Ensure that this media query aligns with Bulma's mobile breakpoint */
+.breadcrumb ul {
+  align-items: center; /* Ensure vertical alignment */
+}
+
+.breadcrumb .icon {
+  display: flex; /* Use flexbox for icons */
+  align-items: center; /* Center align the icons */
+  margin-right: 0.25rem; /* Adjust the right margin as needed */
+}
+
+.breadcrumb span {
+  display: flex; /* Use flexbox for text */
+  align-items: center; /* Center align the text */
+}
+
+/* Responsive adjustments for mobile */
+@media screen and (max-width: 768px) {
+  .breadcrumb ul {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Allows horizontal scrolling if items can't fit */
+  }
+  .breadcrumb li {
+    flex: 0 0 auto; /* Prevents flex items from growing or shrinking */
+  }
+  .breadcrumb span {
+    font-size: 0.75rem; /* Smaller font size for mobile */
+  }
+  .breadcrumb .icon {
+    margin-right: 0.25rem; /* Reduce space between icon and text */
+  }
+}

@@ -221,9 +221,7 @@ const ShoeDetails = () => {
                       <button
                         className="delete is-small "
                         onClick={() => handleRemoveSize(size)}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
-                      </button>
+                      ></button>
                     </span>
                   ))}
                 </div>
