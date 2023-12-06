@@ -112,8 +112,7 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Assuming your Spring Boot backend endpoint is something like /api/checkout
-    const endpoint = "http://localhost:8080/api/checkout"; // Replace with your actual backend URL
+    const endpoint = "https://api.atletjaime.com/api/checkout"; // Replace with your actual backend URL
 
     try {
       const response = await fetch(endpoint, {
@@ -145,7 +144,8 @@ const Checkout = () => {
 
     console.log("orderID>>>", orderID);
 
-    const captureOrderEndpoint = "http://localhost:8080/api/capture-order";
+    const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
+
     try {
       const response = await axios.post(captureOrderEndpoint, {
         orderId: orderID,
