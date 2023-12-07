@@ -5,28 +5,34 @@ import { useCart } from "../context/CartProvider";
 import Select from "react-select";
 
 import "./Checkout.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
-import { loadPayPalScript } from "../helpers/loadPayPalScript";
 import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
+import ProgressStepBar from "./ProgressStepBar";
 
 const Checkout = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
+
   const { cartItems, subtotal, removeFromCart } = useCart();
   const { isLoading } = useProduct();
 
-  const [formData, setFormData] = useState({
+  const [checkoutForm, setCheckoutForm] = useState({
     name: "",
     surname: "",
     country: "",
     city: "",
     address: "",
     phoneNumber: "",
+    email: "",
     transportCost: 0,
   });
+
+  const [activeStep, setActiveStep] = useState(0); // Start at step 0
 
   useEffect(() => {
     let timeout;
@@ -50,11 +56,23 @@ const Checkout = () => {
         {
           amount: {
             currency_code: "EUR",
-            value: (parseFloat(subtotal) + formData.transportCost).toFixed(2),
+            value: (parseFloat(subtotal) + checkoutForm.transportCost).toFixed(
+              2
+            ),
           },
         },
       ],
     });
+  };
+
+  // Function to move to the next step
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  // Function to move to the previous step
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const countryOptions = [
@@ -92,20 +110,25 @@ const Checkout = () => {
         transportCost = 5;
       }
 
-      setFormData({
-        ...formData,
+      setCheckoutForm({
+        ...checkoutForm,
         country: selectedOption.value,
         transportCost,
       });
     } else {
       // If the selection is cleared, reset the country field and transport cost
-      setFormData({ ...formData, country: "", city: "", transportCost: 0 });
+      setCheckoutForm({
+        ...checkoutForm,
+        country: "",
+        city: "",
+        transportCost: 0,
+      });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setCheckoutForm({ ...checkoutForm, [name]: value });
   };
 
   // Function to handle form submission
@@ -123,7 +146,7 @@ const Checkout = () => {
           "Content-Type": "application/json",
           Accept: "application/json", // Ensure this is set correctly
         },
-        body: JSON.stringify(formData), // Convert the React state to a JSON string
+        body: JSON.stringify(checkoutForm), // Convert the React state to a JSON string
       });
 
       if (response.ok) {
@@ -140,6 +163,11 @@ const Checkout = () => {
 
   const handlePaymentSuccess = async (details, data) => {
     console.log("Payment Success:", details, data);
+
+    console.log("Information");
+
+    console.log("Details >>", details);
+    console.log("Data >>", data);
 
     // Extract the necessary data from the payment details
     const orderID = details.orderID;
@@ -197,7 +225,6 @@ const Checkout = () => {
       ) : (
         <div>
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
-            {" "}
             {/* Light gray background for the entire section */}
             <div className="container">
               <h2
@@ -211,6 +238,11 @@ const Checkout = () => {
               </h2>
               <div className="columns">
                 <div className="column is-half">
+                  <div className="columns " style={{ marginBottom: "10px" }}>
+                    <div className="column">
+                      <ProgressStepBar activeStep={activeStep} />
+                    </div>
+                  </div>
                   <form onSubmit={handleSubmit}>
                     <div className="field">
                       <label className="label">Name</label>
@@ -219,7 +251,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="name"
-                          value={formData.name}
+                          value={checkoutForm.name}
                           onChange={handleChange}
                           placeholder="Enter your name"
                           required
@@ -233,7 +265,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="surname"
-                          value={formData.surname}
+                          value={checkoutForm.surname}
                           onChange={handleChange}
                           placeholder="Enter your surname"
                           required
@@ -259,7 +291,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="city"
-                          value={formData.city}
+                          value={checkoutForm.city}
                           onChange={handleChange}
                           placeholder="Enter your city"
                           required
@@ -273,9 +305,24 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="address"
-                          value={formData.address}
+                          value={checkoutForm.address}
                           onChange={handleChange}
                           placeholder="Enter your address"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="field">
+                      <label className="label">Email</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="email"
+                          name="email"
+                          value={checkoutForm.email}
+                          onChange={handleChange}
+                          placeholder="Enter your email"
                           required
                         />
                       </div>
@@ -287,26 +334,12 @@ const Checkout = () => {
                           className="input"
                           type="tel"
                           name="phoneNumber"
-                          value={formData.phoneNumber}
+                          value={checkoutForm.phoneNumber}
                           onChange={handleChange}
                           placeholder="Enter your phone number"
                           required
                         />
                       </div>
-                    </div>
-                    <div className="control">
-                      <button
-                        className="button"
-                        type="submit"
-                        style={{
-                          background: "#1975B5",
-                          marginTop: "10px",
-                          color: "#fff",
-                          fontSize: "15px",
-                        }}
-                      >
-                        Complete Payment
-                      </button>
                     </div>
                   </form>
                 </div>
@@ -423,9 +456,9 @@ const Checkout = () => {
                         {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                         <p className="is-size-6">
                           <span>Transporti:</span>{" "}
-                          {formData.transportCost === 0
+                          {checkoutForm.transportCost === 0
                             ? "Free"
-                            : `${formData.transportCost.toFixed(2)} €`}
+                            : `${checkoutForm.transportCost.toFixed(2)} €`}
                         </p>
                         <p
                           className="is-size-6"
@@ -437,7 +470,7 @@ const Checkout = () => {
                           <strong>Total:</strong>{" "}
                           <strong>
                             {(
-                              parseFloat(subtotal) + formData.transportCost
+                              parseFloat(subtotal) + checkoutForm.transportCost
                             ).toFixed(2)}{" "}
                             €
                           </strong>

@@ -3,12 +3,6 @@ import NavbarBrand from "../Navbar/NavbarBrand";
 import logo from "../img/atletja1.svg";
 
 const CheckoutNavBar = () => {
-  const [isActive, setIsActive] = useState(false);
-
-  const toggleBurgerMenu = () => {
-    setIsActive(!isActive);
-  };
-
   return (
     <nav
       className="navbar is-white has-shadow"
