@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
-import Footer from "../HomePage/Footer";
 import { useCart } from "../context/CartProvider";
 import Select from "react-select";
 
@@ -10,11 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
-import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
 import ProgressStepBar from "./ProgressStepBar";
+import CheckoutFooter from "./CheckoutFooter";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+
   const [delayedLoading, setDelayedLoading] = useState(true);
   const [isPayPalButtonEnabled, setPayPalButtonEnabled] = useState(false);
   const [isReadyForPayment, setReadyForPayment] = useState(false);
@@ -72,6 +74,7 @@ const Checkout = () => {
     // if (/* form data is valid */) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setReadyForPayment(true);
+    navigate("/payment"); // Navigate to the payment page
 
     // } else {
     // Show an error message or indicate that the form data is incomplete
@@ -229,14 +232,10 @@ const Checkout = () => {
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
             {/* Light gray background for the entire section */}
             <div className="container">
-              <div className="columns">
-                <div className="column is-half">
+              <div className="columns" style={{ gap: "30px" }}>
+                <div className="column is-half" style={{ padding: "15px" }}>
                   <ProgressStepBar activeStep={activeStep} />
 
-                  <div
-                    className="columns "
-                    style={{ marginBottom: "10px" }}
-                  ></div>
                   <form onSubmit={handleSubmit}>
                     <div className="field">
                       <label className="label">Name</label>
@@ -335,20 +334,10 @@ const Checkout = () => {
                         />
                       </div>
                     </div>
-                    <div className="control mt-5">
-                      <button
-                        type="button" // Set type to 'button' to prevent form submission
-                        className="button is-link"
-                        style={{ background: "#1975B5", color: "white" }}
-                        onClick={handleNextStep}
-                      >
-                        Continue to the Payment
-                      </button>
-                    </div>
                   </form>
                 </div>
 
-                <div className="column is-half">
+                <div className="column is-half" style={{ padding: "15px" }}>
                   <div className="box " style={{ backgroundColor: "white" }}>
                     {" "}
                     {/* Ensure the box background is white */}
@@ -482,35 +471,12 @@ const Checkout = () => {
                         {/* No shipping fees added for this example */}
                       </div>
                     </div>
-                    {/* PayPal Button */}
-                    <div className="field mt-4">
-                      <div>
-                        {isReadyForPayment ? (
-                          <PayPalButton
-                            createOrder={createOrder}
-                            onApprove={handlePaymentSuccess}
-                            options={{
-                              clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
-                              currency: "EUR",
-                            }}
-                          />
-                        ) : (
-                          <button
-                            className="button is-fullwidth is-light"
-                            disabled
-                          >
-                            Proceed to Payment
-                          </button>
-                        )}
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-
-          <Footer />
+          <CheckoutFooter total={subtotal} onNextStepClick={handleNextStep} />
         </div>
       )}
     </>
