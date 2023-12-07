@@ -16,7 +16,8 @@ import ProgressStepBar from "./ProgressStepBar";
 
 const Checkout = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [isPayPalButtonEnabled, setPayPalButtonEnabled] = useState(false);
+  const [isReadyForPayment, setReadyForPayment] = useState(false);
 
   const { cartItems, subtotal, removeFromCart } = useCart();
   const { isLoading } = useProduct();
@@ -65,14 +66,15 @@ const Checkout = () => {
     });
   };
 
-  // Function to move to the next step
-  const handleNext = () => {
+  const handleNextStep = () => {
+    // Logic to determine if it's valid to go to the next step
+    // For example, you might check if the current form data is valid
+    // if (/* form data is valid */) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+    setReadyForPayment(true);
 
-  // Function to move to the previous step
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // } else {
+    // Show an error message or indicate that the form data is incomplete
   };
 
   const countryOptions = [
@@ -227,22 +229,14 @@ const Checkout = () => {
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
             {/* Light gray background for the entire section */}
             <div className="container">
-              <h2
-                className="title is-4 "
-                style={{
-                  borderBottom: "2px solid #dbdbdb",
-                  paddingBottom: "1rem",
-                }}
-              >
-                Checkout
-              </h2>
               <div className="columns">
                 <div className="column is-half">
-                  <div className="columns " style={{ marginBottom: "10px" }}>
-                    <div className="column">
-                      <ProgressStepBar activeStep={activeStep} />
-                    </div>
-                  </div>
+                  <ProgressStepBar activeStep={activeStep} />
+
+                  <div
+                    className="columns "
+                    style={{ marginBottom: "10px" }}
+                  ></div>
                   <form onSubmit={handleSubmit}>
                     <div className="field">
                       <label className="label">Name</label>
@@ -340,6 +334,16 @@ const Checkout = () => {
                           required
                         />
                       </div>
+                    </div>
+                    <div className="control mt-5">
+                      <button
+                        type="button" // Set type to 'button' to prevent form submission
+                        className="button is-link"
+                        style={{ background: "#1975B5", color: "white" }}
+                        onClick={handleNextStep}
+                      >
+                        Continue to the Payment
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -480,14 +484,25 @@ const Checkout = () => {
                     </div>
                     {/* PayPal Button */}
                     <div className="field mt-4">
-                      <PayPalButton
-                        createOrder={createOrder}
-                        onApprove={handlePaymentSuccess}
-                        options={{
-                          clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
-                          currency: "EUR",
-                        }}
-                      />
+                      <div>
+                        {isReadyForPayment ? (
+                          <PayPalButton
+                            createOrder={createOrder}
+                            onApprove={handlePaymentSuccess}
+                            options={{
+                              clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
+                              currency: "EUR",
+                            }}
+                          />
+                        ) : (
+                          <button
+                            className="button is-fullwidth is-light"
+                            disabled
+                          >
+                            Proceed to Payment
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
