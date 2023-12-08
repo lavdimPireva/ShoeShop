@@ -52,22 +52,6 @@ const Checkout = () => {
 
   // paypal create-order
 
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      intent: "AUTHORIZE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "EUR",
-            value: (parseFloat(subtotal) + checkoutForm.transportCost).toFixed(
-              2
-            ),
-          },
-        },
-      ],
-    });
-  };
-
   const handleNextStep = () => {
     // Logic to determine if it's valid to go to the next step
     // For example, you might check if the current form data is valid
@@ -166,51 +150,6 @@ const Checkout = () => {
     }
   };
 
-  const handlePaymentSuccess = async (details, data) => {
-    console.log("Payment Success:", details, data);
-
-    console.log("Information");
-
-    console.log("Details >>", details);
-    console.log("Data >>", data);
-
-    // Extract the necessary data from the payment details
-    const orderID = details.orderID;
-
-    console.log("orderID>>>", orderID);
-
-    const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
-    // const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
-
-    try {
-      const response = await axios.post(captureOrderEndpoint, {
-        orderId: orderID,
-      });
-
-      console.log("Response from backend:", response); // To inspect the structure
-
-      if (response.status === 200) {
-        console.log("Payment verified by backend:", response.data);
-        // Display the important details in the alert
-        alert(
-          "Payment Success: ID - " +
-            response.data.id +
-            ", Status - " +
-            response.data.status
-        );
-      } else {
-        console.error("Payment verification failed:", response.data);
-        alert("Payment verification failed.");
-      }
-    } catch (error) {
-      console.error("Error during payment verification:", error);
-      alert(
-        "Error during payment verification: " +
-          (error.response?.data || error.message)
-      );
-    }
-  };
-
   return (
     <>
       <CheckoutNavBar />
@@ -232,8 +171,11 @@ const Checkout = () => {
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
             {/* Light gray background for the entire section */}
             <div className="container">
-              <div className="columns" style={{ gap: "30px" }}>
-                <div className="column is-half" style={{ padding: "15px" }}>
+              <div
+                className="columns"
+                style={{ gap: "30px", marginTop: "-5px" }}
+              >
+                <div className="column is-half" style={{}}>
                   <ProgressStepBar activeStep={activeStep} />
 
                   <form onSubmit={handleSubmit}>
@@ -337,7 +279,10 @@ const Checkout = () => {
                   </form>
                 </div>
 
-                <div className="column is-half" style={{ padding: "15px" }}>
+                <div
+                  className="column is-half"
+                  style={{ padding: "10px", marginBottom: "20px" }}
+                >
                   <div className="box " style={{ backgroundColor: "white" }}>
                     {" "}
                     {/* Ensure the box background is white */}
