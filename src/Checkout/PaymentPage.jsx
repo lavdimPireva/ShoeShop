@@ -102,8 +102,8 @@ const PaymentPage = () => {
 
     console.log("orderData >>", orderData);
 
-    const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
-    // const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
+    // const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
+    const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
 
     try {
       const response = await axios.post(captureOrderEndpoint, orderData);

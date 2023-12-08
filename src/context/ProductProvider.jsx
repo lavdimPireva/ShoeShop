@@ -13,7 +13,6 @@ export const ProductProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("refresh");
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
