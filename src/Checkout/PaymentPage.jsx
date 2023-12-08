@@ -7,12 +7,42 @@ import ProgressStepBar from "./ProgressStepBar";
 import { useCart } from "../context/CartProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useLocation } from "react-router-dom";
+import { PayPalButton } from "react-paypal-button-v2";
+import axios from "axios";
 
 const PaymentPage = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
+  const [transportCost, setTransportCost] = useState(0);
   const { cartItems, subtotal, removeFromCart } = useCart();
-
   const { isLoading } = useProduct();
+  const location = useLocation();
+  const checkoutFormData = location.state?.checkoutFormData;
+
+  console.log("CheckoutFormData", checkoutFormData);
+
+  const userDetails = {
+    fullName: checkoutFormData.name + " " + checkoutFormData.surname,
+    address: checkoutFormData.address,
+    city: checkoutFormData.city,
+    country: checkoutFormData.country,
+  };
+
+  useEffect(() => {
+    // Check the selected country and set the transport cost
+    if (
+      checkoutFormData?.country === "Shqiperia" ||
+      checkoutFormData?.country === "Maqedonia"
+    ) {
+      setTransportCost(5);
+    } else if (checkoutFormData?.country === "Kosova") {
+      setTransportCost(0); // Free
+    }
+  }, [checkoutFormData]);
+
+  // Now you can use the `transportCost` state wherever you need it, for example in the calculation of the total or to display it to the user.
+
+  console.log("user details", userDetails);
 
   useEffect(() => {
     let timeout;
@@ -34,33 +64,103 @@ const PaymentPage = () => {
     console.log("hello");
   };
 
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      intent: "AUTHORIZE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "EUR",
+            value: (parseFloat(subtotal) + transportCost).toFixed(2),
+          },
+        },
+      ],
+    });
+  };
+
+  const handlePaymentSuccess = async (details, data) => {
+    console.log("Payment Success:", details, data);
+
+    console.log("Information");
+
+    console.log("Details >>", details);
+    console.log("Data >>", data);
+
+    // Extract the necessary data from the payment details
+    const orderID = details.orderID;
+
+    console.log("orderID>>>", orderID);
+
+    const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
+    // const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
+
+    try {
+      const response = await axios.post(captureOrderEndpoint, {
+        orderId: orderID,
+      });
+
+      console.log("Response from backend:", response); // To inspect the structure
+
+      if (response.status === 200) {
+        console.log("Payment verified by backend:", response.data);
+        // Display the important details in the alert
+        alert(
+          "Payment Success: ID - " +
+            response.data.id +
+            ", Status - " +
+            response.data.status
+        );
+      } else {
+        console.error("Payment verification failed:", response.data);
+        alert("Payment verification failed.");
+      }
+    } catch (error) {
+      console.error("Error during payment verification:", error);
+      alert(
+        "Error during payment verification: " +
+          (error.response?.data || error.message)
+      );
+    }
+  };
+
   return (
     <>
       <CheckoutNavBar />
 
-      {delayedLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "calc(100vh - 60px)",
-          }}
-        >
-          {/* Adjust the height as per your Navbar's height, here assumed 60px */}
-          <PropagateLoader color={"#1975B5"} />
-        </div>
-      ) : (
+      {/* ... Loading logic ... */}
+
+      {!delayedLoading && (
         <div>
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
-            {/* Light gray background for the entire section */}
             <div className="container">
-              <div className="columns" style={{ gap: "30px" }}>
-                <div className="column is-half" style={{ padding: "15px" }}>
+              <div className="columns">
+                {/* User Details Box */}
+                <div className="column is-half">
                   <ProgressStepBar activeStep={1} />
+
+                  <div className="message is-info" style={{ margin: "1rem" }}>
+                    <div className="message-header">
+                      <p className="title is-6">Address Details</p>
+                    </div>
+                    <div
+                      className="message-body is-6"
+                      style={{ padding: "1rem" }}
+                    >
+                      {/* Iterate over userDetails to display them */}
+                      {Object.entries(userDetails).map(([key, value]) => (
+                        <div key={key}>
+                          <span>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}:
+                          </span>{" "}
+                          <strong>{value}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="column is-half" style={{ padding: "15px" }}>
+                {/* Cart Items Box */}
+                <div className="column is-half">
                   <div className="box " style={{ backgroundColor: "white" }}>
                     {" "}
                     {/* Ensure the box background is white */}
@@ -169,10 +269,13 @@ const PaymentPage = () => {
                         <p className="is-size-6">
                           <span>Subtotal:</span> {formattedSubtotal} €
                         </p>
-                        {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                         <p className="is-size-6">
-                          <span>Transporti:</span> <span>€</span>
+                          <span>Transporti:</span>{" "}
+                          {transportCost === 0
+                            ? "Free"
+                            : `${transportCost.toFixed(2)} €`}
                         </p>
+                        {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                         <p
                           className="is-size-6"
                           style={{
@@ -180,9 +283,29 @@ const PaymentPage = () => {
                             paddingTop: "10px",
                           }}
                         >
-                          <strong>Total:</strong>{" "}
-                        </p>{" "}
+                          <strong>Total:</strong>
+                          <strong>
+                            {" "}
+                            {(parseFloat(subtotal) + transportCost).toFixed(
+                              2
+                            )}{" "}
+                            €
+                          </strong>
+                        </p>
+
                         {/* No shipping fees added for this example */}
+                      </div>
+                      <div className="field mt-4">
+                        <div>
+                          <PayPalButton
+                            createOrder={createOrder}
+                            onApprove={handlePaymentSuccess}
+                            options={{
+                              clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
+                              currency: "EUR",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -190,11 +313,9 @@ const PaymentPage = () => {
               </div>
             </div>
           </section>
-          <CheckoutFooter total={subtotal} onNextStepClick={handleNextStep} />
         </div>
       )}
     </>
   );
 };
-
 export default PaymentPage;

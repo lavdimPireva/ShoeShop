@@ -74,7 +74,7 @@ const Checkout = () => {
     // if (/* form data is valid */) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setReadyForPayment(true);
-    navigate("/payment"); // Navigate to the payment page
+    navigate("/payment", { state: { checkoutFormData: checkoutForm } });
 
     // } else {
     // Show an error message or indicate that the form data is incomplete
