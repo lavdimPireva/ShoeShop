@@ -120,36 +120,6 @@ const Checkout = () => {
     setCheckoutForm({ ...checkoutForm, [name]: value });
   };
 
-  // Function to handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Assuming your Spring Boot backend endpoint is something like /api/checkout
-    const endpoint = "http://localhost:8081/api/checkout"; // Replace with your actual backend URL
-    // const endpoint = "https://api.atletjaime.com/api/checkout"; // Replace with your actual backend URL
-
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json", // Ensure this is set correctly
-        },
-        body: JSON.stringify(checkoutForm), // Convert the React state to a JSON string
-      });
-
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        console.log("Success:", jsonResponse);
-        // Handle the response data as needed, e.g., redirect to a success page, clear form, etc.
-      } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("Error during the fetch:", error);
-    }
-  };
-
   return (
     <>
       <CheckoutNavBar />
@@ -178,7 +148,7 @@ const Checkout = () => {
                 <div className="column is-half" style={{}}>
                   <ProgressStepBar activeStep={activeStep} />
 
-                  <form onSubmit={handleSubmit}>
+                  <form>
                     <div className="field">
                       <label className="label">Name</label>
                       <div className="control">

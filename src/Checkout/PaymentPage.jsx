@@ -81,45 +81,54 @@ const PaymentPage = () => {
   const handlePaymentSuccess = async (details, data) => {
     console.log("Payment Success:", details, data);
 
-    console.log("Information");
-
-    console.log("Details >>", details);
-    console.log("Data >>", data);
-
     // Extract the necessary data from the payment details
     const orderID = details.orderID;
 
-    console.log("orderID>>>", orderID);
+    // Combine the order details with user information
+    const orderData = {
+      orderID: orderID,
+      userDetails: {
+        fullName: checkoutFormData.name + " " + checkoutFormData.surname,
+        address: checkoutFormData.address,
+        city: checkoutFormData.city,
+        country: checkoutFormData.country,
+        // Include any other details you've collected in the checkout form
+      },
+      cartItems: cartItems, // assuming cartItems is an array of items the user is purchasing
+      subtotal: subtotal, // assuming subtotal is the total price of cart items
+      transportCost: checkoutFormData.transportCost, // or however you've calculated this
+      // Include any other relevant order information
+    };
+
+    console.log("orderData >>", orderData);
 
     const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
     // const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
 
     try {
-      const response = await axios.post(captureOrderEndpoint, {
-        orderId: orderID,
-      });
+      const response = await axios.post(captureOrderEndpoint, orderData);
 
-      console.log("Response from backend:", response); // To inspect the structure
+      console.log("Response from backend:", response.data); // To inspect the structure
 
       if (response.status === 200) {
-        console.log("Payment verified by backend:", response.data);
-        // Display the important details in the alert
-        alert(
-          "Payment Success: ID - " +
-            response.data.id +
-            ", Status - " +
-            response.data.status
+        console.log(
+          "Payment and order details successfully processed by backend:",
+          response.data
         );
+        // Handle successful response, e.g., redirect to a success page, display a confirmation message, etc.
       } else {
-        console.error("Payment verification failed:", response.data);
-        alert("Payment verification failed.");
+        console.error(
+          "Payment and order details processing failed:",
+          response.data
+        );
+        // Handle error, e.g., display an error message to the user
       }
     } catch (error) {
-      console.error("Error during payment verification:", error);
-      alert(
-        "Error during payment verification: " +
-          (error.response?.data || error.message)
+      console.error(
+        "Error during payment and order details processing:",
+        error
       );
+      // Handle exception, e.g., display an error message to the user
     }
   };
 
