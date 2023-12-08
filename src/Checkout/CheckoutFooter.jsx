@@ -52,6 +52,8 @@ const CheckoutFooter = ({ total, onNextStepClick }) => {
         backgroundColor: "#fff",
         zIndex: 1000,
         rowGap: "100px",
+
+        height: isMobileView ? "60px" : "",
       }}
     >
       {/* Payment icons container */}

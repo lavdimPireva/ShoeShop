@@ -286,15 +286,14 @@ const Checkout = () => {
                   <div className="box " style={{ backgroundColor: "white" }}>
                     {" "}
                     {/* Ensure the box background is white */}
-                    <h2 className="title is-5" style={{ padding: "5px" }}>
-                      Shporta e blerjeve{" "}
-                    </h2>
+                    <h2 className="title is-5">Shporta e blerjeve </h2>
                     {/* cartItems */}
                     <div
                       className="cart-content"
                       style={{
                         overflowY: "auto",
-                        maxHeight: "300px",
+                        maxHeight: "400px",
+                        marginRight: "20px",
                         marginBottom: "20px",
                       }}
                     >
