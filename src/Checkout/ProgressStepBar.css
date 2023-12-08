@@ -1,0 +1,13 @@
+.custom-stepper {
+  background-color: transparent;
+  padding: 24px 0; /* Adjust padding as needed */
+}
+
+.custom-step-icon {
+  color: #eaeaf0; /* Default step icon color */
+}
+
+.custom-step-icon.active,
+.custom-step-icon.completed {
+  color: #1975b5; /* Active and completed step icon color */
+}

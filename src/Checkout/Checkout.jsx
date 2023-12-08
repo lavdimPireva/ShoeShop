@@ -1,32 +1,41 @@
 import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
-import Footer from "../HomePage/Footer";
 import { useCart } from "../context/CartProvider";
 import Select from "react-select";
 
 import "./Checkout.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
-import { loadPayPalScript } from "../helpers/loadPayPalScript";
-import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
+import ProgressStepBar from "./ProgressStepBar";
+import CheckoutFooter from "./CheckoutFooter";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+
   const [delayedLoading, setDelayedLoading] = useState(true);
+  const [isPayPalButtonEnabled, setPayPalButtonEnabled] = useState(false);
+  const [isReadyForPayment, setReadyForPayment] = useState(false);
+
   const { cartItems, subtotal, removeFromCart } = useCart();
   const { isLoading } = useProduct();
 
-  const [formData, setFormData] = useState({
+  const [checkoutForm, setCheckoutForm] = useState({
     name: "",
     surname: "",
     country: "",
     city: "",
     address: "",
     phoneNumber: "",
+    email: "",
     transportCost: 0,
   });
+
+  const [activeStep, setActiveStep] = useState(0); // Start at step 0
 
   useEffect(() => {
     let timeout;
@@ -43,18 +52,16 @@ const Checkout = () => {
 
   // paypal create-order
 
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      intent: "AUTHORIZE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "EUR",
-            value: (parseFloat(subtotal) + formData.transportCost).toFixed(2),
-          },
-        },
-      ],
-    });
+  const handleNextStep = () => {
+    // Logic to determine if it's valid to go to the next step
+    // For example, you might check if the current form data is valid
+    // if (/* form data is valid */) {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setReadyForPayment(true);
+    navigate("/payment", { state: { checkoutFormData: checkoutForm } });
+
+    // } else {
+    // Show an error message or indicate that the form data is incomplete
   };
 
   const countryOptions = [
@@ -92,87 +99,25 @@ const Checkout = () => {
         transportCost = 5;
       }
 
-      setFormData({
-        ...formData,
+      setCheckoutForm({
+        ...checkoutForm,
         country: selectedOption.value,
         transportCost,
       });
     } else {
       // If the selection is cleared, reset the country field and transport cost
-      setFormData({ ...formData, country: "", city: "", transportCost: 0 });
+      setCheckoutForm({
+        ...checkoutForm,
+        country: "",
+        city: "",
+        transportCost: 0,
+      });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Function to handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const endpoint = "https://api.atletjaime.com/api/checkout"; // Replace with your actual backend URL
-
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json", // Ensure this is set correctly
-        },
-        body: JSON.stringify(formData), // Convert the React state to a JSON string
-      });
-
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        console.log("Success:", jsonResponse);
-        // Handle the response data as needed, e.g., redirect to a success page, clear form, etc.
-      } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("Error during the fetch:", error);
-    }
-  };
-
-  const handlePaymentSuccess = async (details, data) => {
-    console.log("Payment Success:", details, data);
-
-    // Extract the necessary data from the payment details
-    const orderID = details.orderID;
-
-    console.log("orderID>>>", orderID);
-
-    const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
-
-    try {
-      const response = await axios.post(captureOrderEndpoint, {
-        orderId: orderID,
-      });
-
-      console.log("Response from backend:", response); // To inspect the structure
-
-      if (response.status === 200) {
-        console.log("Payment verified by backend:", response.data);
-        // Display the important details in the alert
-        alert(
-          "Payment Success: ID - " +
-            response.data.id +
-            ", Status - " +
-            response.data.status
-        );
-      } else {
-        console.error("Payment verification failed:", response.data);
-        alert("Payment verification failed.");
-      }
-    } catch (error) {
-      console.error("Error during payment verification:", error);
-      alert(
-        "Error during payment verification: " +
-          (error.response?.data || error.message)
-      );
-    }
+    setCheckoutForm({ ...checkoutForm, [name]: value });
   };
 
   return (
@@ -194,21 +139,16 @@ const Checkout = () => {
       ) : (
         <div>
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
-            {" "}
             {/* Light gray background for the entire section */}
             <div className="container">
-              <h2
-                className="title is-4 "
-                style={{
-                  borderBottom: "2px solid #dbdbdb",
-                  paddingBottom: "1rem",
-                }}
+              <div
+                className="columns"
+                style={{ gap: "30px", marginTop: "-5px" }}
               >
-                Checkout
-              </h2>
-              <div className="columns">
-                <div className="column is-half">
-                  <form onSubmit={handleSubmit}>
+                <div className="column is-half" style={{}}>
+                  <ProgressStepBar activeStep={activeStep} />
+
+                  <form>
                     <div className="field">
                       <label className="label">Name</label>
                       <div className="control">
@@ -216,7 +156,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="name"
-                          value={formData.name}
+                          value={checkoutForm.name}
                           onChange={handleChange}
                           placeholder="Enter your name"
                           required
@@ -230,7 +170,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="surname"
-                          value={formData.surname}
+                          value={checkoutForm.surname}
                           onChange={handleChange}
                           placeholder="Enter your surname"
                           required
@@ -256,7 +196,7 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="city"
-                          value={formData.city}
+                          value={checkoutForm.city}
                           onChange={handleChange}
                           placeholder="Enter your city"
                           required
@@ -270,9 +210,24 @@ const Checkout = () => {
                           className="input"
                           type="text"
                           name="address"
-                          value={formData.address}
+                          value={checkoutForm.address}
                           onChange={handleChange}
                           placeholder="Enter your address"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="field">
+                      <label className="label">Email</label>
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="email"
+                          name="email"
+                          value={checkoutForm.email}
+                          onChange={handleChange}
+                          placeholder="Enter your email"
                           required
                         />
                       </div>
@@ -284,43 +239,31 @@ const Checkout = () => {
                           className="input"
                           type="tel"
                           name="phoneNumber"
-                          value={formData.phoneNumber}
+                          value={checkoutForm.phoneNumber}
                           onChange={handleChange}
                           placeholder="Enter your phone number"
                           required
                         />
                       </div>
                     </div>
-                    <div className="control">
-                      <button
-                        className="button"
-                        type="submit"
-                        style={{
-                          background: "#1975B5",
-                          marginTop: "10px",
-                          color: "#fff",
-                          fontSize: "15px",
-                        }}
-                      >
-                        Complete Payment
-                      </button>
-                    </div>
                   </form>
                 </div>
 
-                <div className="column is-half">
+                <div
+                  className="column is-half"
+                  style={{ padding: "10px", marginBottom: "20px" }}
+                >
                   <div className="box " style={{ backgroundColor: "white" }}>
                     {" "}
                     {/* Ensure the box background is white */}
-                    <h2 className="title is-5" style={{ padding: "5px" }}>
-                      Shporta e blerjeve{" "}
-                    </h2>
+                    <h2 className="title is-5">Shporta e blerjeve </h2>
                     {/* cartItems */}
                     <div
                       className="cart-content"
                       style={{
                         overflowY: "auto",
-                        maxHeight: "300px",
+                        maxHeight: "400px",
+                        marginRight: "20px",
                         marginBottom: "20px",
                       }}
                     >
@@ -420,9 +363,9 @@ const Checkout = () => {
                         {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                         <p className="is-size-6">
                           <span>Transporti:</span>{" "}
-                          {formData.transportCost === 0
+                          {checkoutForm.transportCost === 0
                             ? "Free"
-                            : `${formData.transportCost.toFixed(2)} €`}
+                            : `${checkoutForm.transportCost.toFixed(2)} €`}
                         </p>
                         <p
                           className="is-size-6"
@@ -434,7 +377,7 @@ const Checkout = () => {
                           <strong>Total:</strong>{" "}
                           <strong>
                             {(
-                              parseFloat(subtotal) + formData.transportCost
+                              parseFloat(subtotal) + checkoutForm.transportCost
                             ).toFixed(2)}{" "}
                             €
                           </strong>
@@ -442,24 +385,12 @@ const Checkout = () => {
                         {/* No shipping fees added for this example */}
                       </div>
                     </div>
-                    {/* PayPal Button */}
-                    <div className="field mt-4">
-                      <PayPalButton
-                        createOrder={createOrder}
-                        onApprove={handlePaymentSuccess}
-                        options={{
-                          clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
-                          currency: "EUR",
-                        }}
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-
-          <Footer />
+          <CheckoutFooter total={subtotal} onNextStepClick={handleNextStep} />
         </div>
       )}
     </>

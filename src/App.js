@@ -8,6 +8,7 @@ import FemaleShoesPage from "./FemaleShoes/FemaleShoesPage";
 import Checkout from "./Checkout/Checkout";
 import { useEffect } from "react";
 import { loadPayPalScript } from "./helpers/loadPayPalScript";
+import PaymentPage from "./Checkout/PaymentPage";
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/Men-shoes" element={<MenShoesPage />} />
         <Route path="/Female-shoes" element={<FemaleShoesPage />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </div>
   );
