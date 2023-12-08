@@ -138,7 +138,10 @@ const PaymentPage = () => {
                 <div className="column is-half">
                   <ProgressStepBar activeStep={1} />
 
-                  <div className="message is-info" style={{ margin: "1rem" }}>
+                  <div
+                    className="message is-info"
+                    style={{ marginTop: "50px" }}
+                  >
                     <div className="message-header">
                       <p className="title is-6">Address Details</p>
                     </div>
@@ -155,6 +158,35 @@ const PaymentPage = () => {
                           <strong>{value}</strong>
                         </div>
                       ))}
+                    </div>
+                  </div>
+
+                  <div
+                    className="message is-info"
+                    style={{ marginTop: "90px" }}
+                  >
+                    <div className="message-header">
+                      <p className="title is-6">Payment Methods</p>
+                    </div>
+                    <div className="message-body">
+                      <p>
+                        You can choose one of the following methods to complete
+                        your purchase:
+                      </p>
+                      <ul>
+                        <li>
+                          <strong>PayPal:</strong> Secure online payment method
+                          that allows you to pay with your PayPal account.
+                        </li>
+                        <li>
+                          <strong>Debit/Credit Card:</strong> Direct payment
+                          with your debit or credit card.
+                        </li>
+                      </ul>
+                      <p>
+                        Please select your preferred payment method during the
+                        checkout process.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -174,6 +206,7 @@ const PaymentPage = () => {
                         overflowY: "auto",
                         maxHeight: "300px",
                         marginBottom: "20px",
+                        marginRight: "20px",
                       }}
                     >
                       {" "}
@@ -267,13 +300,16 @@ const PaymentPage = () => {
                         style={{ marginTop: "20px" }}
                       >
                         <p className="is-size-6">
-                          <span>Subtotal:</span> {formattedSubtotal} €
+                          <span>Subtotal:</span>{" "}
+                          <strong>{formattedSubtotal} € </strong>
                         </p>
                         <p className="is-size-6">
                           <span>Transporti:</span>{" "}
-                          {transportCost === 0
-                            ? "Free"
-                            : `${transportCost.toFixed(2)} €`}
+                          {transportCost === 0 ? (
+                            <strong>Free</strong>
+                          ) : (
+                            `${transportCost.toFixed(2)} €`
+                          )}
                         </p>
                         {/* Assuming shipping is a constant value; replace with appropriate variable if needed */}
                         <p
