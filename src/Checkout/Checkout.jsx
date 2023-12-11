@@ -2,28 +2,23 @@ import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
 import { useCart } from "../context/CartProvider";
 import Select from "react-select";
-
 import "./Checkout.css";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
-import axios from "axios";
 import ProgressStepBar from "./ProgressStepBar";
 import CheckoutFooter from "./CheckoutFooter";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const [delayedLoading, setDelayedLoading] = useState(true);
-  const [isPayPalButtonEnabled, setPayPalButtonEnabled] = useState(false);
-  const [isReadyForPayment, setReadyForPayment] = useState(false);
-
   const { cartItems, subtotal, removeFromCart } = useCart();
   const { isLoading } = useProduct();
-
+  const [activeStep, setActiveStep] = useState(0); // Start at step 0
   const [checkoutForm, setCheckoutForm] = useState({
     name: "",
     surname: "",
@@ -35,7 +30,11 @@ const Checkout = () => {
     transportCost: 0,
   });
 
-  const [activeStep, setActiveStep] = useState(0); // Start at step 0
+  const [validInputs, setValidInputs] = useState({
+    name: { isValid: false, isTouched: false },
+    surname: { isValid: false, isTouched: false },
+    // ... other fields
+  });
 
   useEffect(() => {
     let timeout;
@@ -50,18 +49,29 @@ const Checkout = () => {
     };
   }, [isLoading]);
 
-  // paypal create-order
-
   const handleNextStep = () => {
-    // Logic to determine if it's valid to go to the next step
-    // For example, you might check if the current form data is valid
-    // if (/* form data is valid */) {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setReadyForPayment(true);
-    navigate("/payment", { state: { checkoutFormData: checkoutForm } });
+    setSubmitAttempted(true);
 
-    // } else {
-    // Show an error message or indicate that the form data is incomplete
+    let formIsValid = true;
+
+    const updatedValidInputs = { ...validInputs };
+
+    for (const field in checkoutForm) {
+      const value = checkoutForm[field];
+      const isValid = validateInput(field, value);
+      updatedValidInputs[field] = { ...updatedValidInputs[field], isValid };
+
+      if (!isValid) {
+        formIsValid = false;
+      }
+    }
+
+    setValidInputs(updatedValidInputs);
+
+    if (formIsValid) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      navigate("/payment", { state: { checkoutFormData: checkoutForm } });
+    }
   };
 
   const countryOptions = [
@@ -83,6 +93,20 @@ const Checkout = () => {
       boxShadow: "none",
       border: "1px solid #dbdbdb",
     }),
+  };
+
+  const validateInput = (name, value) => {
+    if (name === "name" || name === "surname") {
+      // For name and surname, check that they are not empty and have at least two characters
+      return (
+        typeof value === "string" &&
+        value.trim().length > 0 &&
+        value.trim().length >= 3
+      );
+    } else {
+      // For other inputs, you can add different validation logic
+      return typeof value === "string" && value.trim().length >= 3;
+    }
   };
 
   const formattedSubtotal =
@@ -117,7 +141,16 @@ const Checkout = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Set the form values
     setCheckoutForm({ ...checkoutForm, [name]: value });
+
+    // Validate the input and update validInputs state
+    const isValid = validateInput(name, value);
+    setValidInputs((prev) => ({
+      ...prev,
+      [name]: { ...prev[name], isValid, isTouched: true },
+    }));
   };
 
   return (
@@ -151,9 +184,13 @@ const Checkout = () => {
                   <form>
                     <div className="field">
                       <label className="label">Name</label>
-                      <div className="control">
+                      <div className="control has-icons-right">
                         <input
-                          className="input"
+                          className={`input ${
+                            !validInputs.name.isValid &&
+                            submitAttempted &&
+                            "is-danger"
+                          }`}
                           type="text"
                           name="name"
                           value={checkoutForm.name}
@@ -161,22 +198,55 @@ const Checkout = () => {
                           placeholder="Enter your name"
                           required
                         />
+
+                        {validInputs.name.isValid &&
+                          validInputs.name.isTouched && (
+                            <span
+                              className="icon is-right"
+                              style={{ color: "#1975B5" }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                size="lg"
+                                style={{ fontSize: "1.5em" }}
+                              />
+                            </span>
+                          )}
                       </div>
                     </div>
                     <div className="field">
                       <label className="label">Surname</label>
-                      <div className="control">
+                      <div className="control has-icons-right">
                         <input
-                          className="input"
+                          className={`input ${
+                            !validInputs.surname.isValid &&
+                            submitAttempted &&
+                            "is-danger"
+                          }`}
                           type="text"
                           name="surname"
                           value={checkoutForm.surname}
                           onChange={handleChange}
-                          placeholder="Enter your surname"
+                          placeholder="Enter your last name"
                           required
                         />
+
+                        {validInputs.surname.isValid &&
+                          validInputs.surname.isTouched && (
+                            <span
+                              className="icon is-right"
+                              style={{ color: "#1975B5" }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                size="lg"
+                                style={{ fontSize: "1.5em" }}
+                              />
+                            </span>
+                          )}
                       </div>
                     </div>
+
                     <div className="field">
                       <label className="label">Country</label>
                       <Select

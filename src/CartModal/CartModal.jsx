@@ -26,6 +26,7 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
 
   const handleCheckout = () => {
     navigate("/checkout"); // This will navigate to the checkout page
+    closeCart();
   };
 
   if (!isCartOpen && !isClosing) return null;

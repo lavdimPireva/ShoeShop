@@ -9,6 +9,7 @@ import Checkout from "./Checkout/Checkout";
 import { useEffect } from "react";
 import { loadPayPalScript } from "./helpers/loadPayPalScript";
 import PaymentPage from "./Checkout/PaymentPage";
+import CartPage from "./CartPage/CartPage";
 
 function App() {
   useEffect(() => {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Female-shoes" element={<FemaleShoesPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/checkout/cart" element={<CartPage />} />
       </Routes>
     </div>
   );

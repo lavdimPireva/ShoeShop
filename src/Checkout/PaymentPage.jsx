@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
-import CheckoutFooter from "./CheckoutFooter";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
 import ProgressStepBar from "./ProgressStepBar";
 import { useCart } from "../context/CartProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
 
 const PaymentPage = () => {
+  const navigate = useNavigate();
+
   const [delayedLoading, setDelayedLoading] = useState(true);
   const [transportCost, setTransportCost] = useState(0);
   const { cartItems, subtotal, removeFromCart } = useCart();
@@ -27,6 +28,12 @@ const PaymentPage = () => {
     city: checkoutFormData.city,
     country: checkoutFormData.country,
   };
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/checkout/cart"); // Redirect to the cart page if cartItems is empty
+    }
+  }, [cartItems]); // Depend on cartItems and navigate function
 
   useEffect(() => {
     // Check the selected country and set the transport cost
@@ -345,6 +352,19 @@ const PaymentPage = () => {
                           <PayPalButton
                             createOrder={createOrder}
                             onApprove={handlePaymentSuccess}
+                            onCancel={(data) => {
+                              // This function is called when the buyer cancels the payment.
+                              console.log("Payment was cancelled!", data);
+                              // You can redirect the user or update the state of your application here.
+                            }}
+                            onError={(err) => {
+                              // This function is called when an error occurs in the payment process.
+                              console.error(
+                                "Error during the payment process!",
+                                err
+                              );
+                              // You can inform the user that an error occurred here.
+                            }}
                             options={{
                               clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
                               currency: "EUR",
