@@ -33,6 +33,8 @@ const Checkout = () => {
   const [validInputs, setValidInputs] = useState({
     name: { isValid: false, isTouched: false },
     surname: { isValid: false, isTouched: false },
+    city: { isValid: false, isTouched: false },
+    address: { isValid: false, isTouched: false },
     // ... other fields
   });
 
@@ -96,7 +98,12 @@ const Checkout = () => {
   };
 
   const validateInput = (name, value) => {
-    if (name === "name" || name === "surname") {
+    if (
+      name === "name" ||
+      name === "surname" ||
+      name === "city" ||
+      name === "address"
+    ) {
       // For name and surname, check that they are not empty and have at least two characters
       return (
         typeof value === "string" &&
@@ -261,9 +268,13 @@ const Checkout = () => {
 
                     <div className="field">
                       <label className="label">City</label>
-                      <div className="control">
+                      <div className="control has-icons-right">
                         <input
-                          className="input"
+                          className={`input ${
+                            !validInputs.city.isValid &&
+                            submitAttempted &&
+                            "is-danger"
+                          }`}
                           type="text"
                           name="city"
                           value={checkoutForm.city}
@@ -271,13 +282,32 @@ const Checkout = () => {
                           placeholder="Enter your city"
                           required
                         />
+
+                        {validInputs.city.isValid &&
+                          validInputs.city.isTouched && (
+                            <span
+                              className="icon is-right"
+                              style={{ color: "#1975B5" }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                size="lg"
+                                style={{ fontSize: "1.5em" }}
+                              />
+                            </span>
+                          )}
                       </div>
                     </div>
+
                     <div className="field">
                       <label className="label">Address</label>
-                      <div className="control">
+                      <div className="control has-icons-right">
                         <input
-                          className="input"
+                          className={`input ${
+                            !validInputs.address.isValid &&
+                            submitAttempted &&
+                            "is-danger"
+                          }`}
                           type="text"
                           name="address"
                           value={checkoutForm.address}
@@ -285,6 +315,20 @@ const Checkout = () => {
                           placeholder="Enter your address"
                           required
                         />
+
+                        {validInputs.address.isValid &&
+                          validInputs.address.isTouched && (
+                            <span
+                              className="icon is-right"
+                              style={{ color: "#1975B5" }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                size="lg"
+                                style={{ fontSize: "1.5em" }}
+                              />
+                            </span>
+                          )}
                       </div>
                     </div>
 
