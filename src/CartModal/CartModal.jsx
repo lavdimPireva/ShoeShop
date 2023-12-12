@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
   const [isClosing, setClosing] = useState(false);
 
+  console.log("cart items", cartItems);
   const { removeFromCart, subtotal } = useCart();
 
   const navigate = useNavigate();
@@ -90,10 +91,7 @@ const CartModal = ({ isCartOpen, closeCart, cartItems }) => {
                           Çmimi:
                         </span>{" "}
                         <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                          {item.discountPrice
-                            ? `${item.discountPrice}`
-                            : item.originalPrice}
-                          €
+                          {item.totalPrice}€
                         </span>
                       </p>
                       <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">

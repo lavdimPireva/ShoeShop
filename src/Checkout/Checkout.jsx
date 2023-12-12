@@ -39,6 +39,12 @@ const Checkout = () => {
   });
 
   useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/checkout/cart"); // Redirect to the cart page if cartItems is empty
+    }
+  }, [cartItems]); // Depend on cartItems and navigate function
+
+  useEffect(() => {
     let timeout;
     if (!isLoading) {
       timeout = setTimeout(() => {
@@ -60,7 +66,13 @@ const Checkout = () => {
 
     for (const field in checkoutForm) {
       const value = checkoutForm[field];
+
+      if (value === checkoutForm.transportCost) {
+        continue;
+      }
+
       const isValid = validateInput(field, value);
+
       updatedValidInputs[field] = { ...updatedValidInputs[field], isValid };
 
       if (!isValid) {

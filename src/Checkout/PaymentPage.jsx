@@ -109,8 +109,8 @@ const PaymentPage = () => {
 
     console.log("orderData >>", orderData);
 
-    const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
-    // const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
+    // const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
+    const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
 
     try {
       const response = await axios.post(captureOrderEndpoint, orderData);
@@ -145,7 +145,19 @@ const PaymentPage = () => {
 
       {/* ... Loading logic ... */}
 
-      {!delayedLoading && (
+      {delayedLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "calc(100vh - 60px)",
+          }}
+        >
+          {/* Adjust the height as per your Navbar's height, here assumed 60px */}
+          <PropagateLoader color={"#1975B5"} />
+        </div>
+      ) : (
         <div>
           <section className="section" style={{ backgroundColor: "#f5f5f5" }}>
             <div className="container">
@@ -174,35 +186,6 @@ const PaymentPage = () => {
                           <strong>{value}</strong>
                         </div>
                       ))}
-                    </div>
-                  </div>
-
-                  <div
-                    className="message is-info"
-                    style={{ marginTop: "90px" }}
-                  >
-                    <div className="message-header">
-                      <p className="title is-6">Payment Methods</p>
-                    </div>
-                    <div className="message-body">
-                      <p>
-                        You can choose one of the following methods to complete
-                        your purchase:
-                      </p>
-                      <ul>
-                        <li>
-                          <strong>PayPal:</strong> Secure online payment method
-                          that allows you to pay with your PayPal account.
-                        </li>
-                        <li>
-                          <strong>Debit/Credit Card:</strong> Direct payment
-                          with your debit or credit card.
-                        </li>
-                      </ul>
-                      <p>
-                        Please select your preferred payment method during the
-                        checkout process.
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -352,19 +335,6 @@ const PaymentPage = () => {
                           <PayPalButton
                             createOrder={createOrder}
                             onApprove={handlePaymentSuccess}
-                            onCancel={(data) => {
-                              // This function is called when the buyer cancels the payment.
-                              console.log("Payment was cancelled!", data);
-                              // You can redirect the user or update the state of your application here.
-                            }}
-                            onError={(err) => {
-                              // This function is called when an error occurs in the payment process.
-                              console.error(
-                                "Error during the payment process!",
-                                err
-                              );
-                              // You can inform the user that an error occurred here.
-                            }}
                             options={{
                               clientId: process.env.REACT_APP_PAYPAL_CLIENT_ID,
                               currency: "EUR",
@@ -383,4 +353,5 @@ const PaymentPage = () => {
     </>
   );
 };
+
 export default PaymentPage;

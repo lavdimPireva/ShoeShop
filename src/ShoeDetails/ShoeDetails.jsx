@@ -40,6 +40,8 @@ const ShoeDetails = () => {
     (shoe) => generateSlug(shoe.name, shoe.id) === slug
   );
 
+  console.log("shoeDetails >> ", shoeDetails);
+
   const handleAddToCart = () => {
     if (selectedSizes.length === 0) {
       setShowSizeWarning(true);
@@ -50,11 +52,14 @@ const ShoeDetails = () => {
 
     const quantity = selectedSizes.length;
 
+    const totalPrice = (shoeDetails.discountPrice * quantity).toFixed(2);
+
     // Create a product object with the necessary properties
     const productToAdd = {
       ...shoeDetails,
       selectedSizes: selectedSizes,
       quantity: quantity,
+      totalPrice: totalPrice,
     };
 
     // Call the addToCart function from your context
