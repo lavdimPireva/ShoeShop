@@ -11,6 +11,8 @@ import { FilterProvider } from "./context/FilterProvider";
 import { BrowserRouter } from "react-router-dom";
 import { ProductProvider } from "./context/ProductProvider";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -54,6 +56,8 @@ const theme = createTheme({
 root.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
+      <ToastContainer />
+
       <ProductProvider>
         <FilterProvider>
           <CartProvider>
