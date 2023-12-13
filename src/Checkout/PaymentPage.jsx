@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import CheckoutNavBar from "./CheckoutNavBar";
-import CheckoutFooter from "./CheckoutFooter";
 import { useProduct } from "../context/ProductProvider";
 import { PropagateLoader } from "react-spinners";
 import ProgressStepBar from "./ProgressStepBar";
 import { useCart } from "../context/CartProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const PaymentPage = () => {
+  const navigate = useNavigate();
+
   const [delayedLoading, setDelayedLoading] = useState(true);
   const [transportCost, setTransportCost] = useState(0);
   const { cartItems, subtotal, removeFromCart } = useCart();
@@ -21,12 +23,29 @@ const PaymentPage = () => {
 
   console.log("CheckoutFormData", checkoutFormData);
 
+  console.log("cart items", cartItems);
+
   const userDetails = {
     fullName: checkoutFormData.name + " " + checkoutFormData.surname,
     address: checkoutFormData.address,
     city: checkoutFormData.city,
     country: checkoutFormData.country,
+    email: checkoutFormData.email,
   };
+
+  const simplifiedCartItems = cartItems.map((item) => ({
+    id: item.id,
+    name: item.name,
+    imageUrl: item.imageUrl,
+    selectedSizes: item.selectedSizes,
+    totalPrice: item.totalPrice,
+  }));
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/checkout/cart"); // Redirect to the cart page if cartItems is empty
+    }
+  }, [cartItems]); // Depend on cartItems and navigate function
 
   useEffect(() => {
     // Check the selected country and set the transport cost
@@ -60,10 +79,6 @@ const PaymentPage = () => {
   const formattedSubtotal =
     subtotal && !isNaN(subtotal) ? parseFloat(subtotal).toFixed(2) : "0.00";
 
-  const handleNextStep = () => {
-    console.log("hello");
-  };
-
   const createOrder = (data, actions) => {
     return actions.order.create({
       intent: "AUTHORIZE",
@@ -87,17 +102,11 @@ const PaymentPage = () => {
     // Combine the order details with user information
     const orderData = {
       orderID: orderID,
-      userDetails: {
-        fullName: checkoutFormData.name + " " + checkoutFormData.surname,
-        address: checkoutFormData.address,
-        city: checkoutFormData.city,
-        country: checkoutFormData.country,
-        // Include any other details you've collected in the checkout form
-      },
-      cartItems: cartItems, // assuming cartItems is an array of items the user is purchasing
-      subtotal: subtotal, // assuming subtotal is the total price of cart items
-      transportCost: checkoutFormData.transportCost, // or however you've calculated this
-      // Include any other relevant order information
+      userDetails: userDetails,
+      cartItems: simplifiedCartItems,
+      subtotal: subtotal,
+      transportCost: checkoutFormData.transportCost,
+      total: checkoutFormData.subtotal + checkoutFormData.transportCost,
     };
 
     console.log("orderData >>", orderData);
@@ -111,12 +120,26 @@ const PaymentPage = () => {
       console.log("Response from backend:", response.data); // To inspect the structure
 
       if (response.status === 200) {
-        console.log(
-          "Payment and order details successfully processed by backend:",
-          response.data
+        toast.success(
+          <div>
+            Payment was made successfully with amount:{" "}
+            <strong>{response.data.amount}€</strong>
+          </div>,
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
         );
+
         // Handle successful response, e.g., redirect to a success page, display a confirmation message, etc.
       } else {
+        toast.error("Payment verification failed.");
+
         console.error(
           "Payment and order details processing failed:",
           response.data
@@ -124,6 +147,8 @@ const PaymentPage = () => {
         // Handle error, e.g., display an error message to the user
       }
     } catch (error) {
+      toast.error("Error during payment verification.");
+
       console.error(
         "Error during payment and order details processing:",
         error
@@ -241,10 +266,7 @@ const PaymentPage = () => {
                                     Çmimi:
                                   </span>{" "}
                                   <span className="has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd">
-                                    {item.discountPrice
-                                      ? `${item.discountPrice}`
-                                      : item.originalPrice}
-                                    €
+                                    {item.totalPrice}€
                                   </span>
                                 </p>
                                 <p className="cart-item-sizes has-text-weight-bold is-size-7-mobile is-size-7-tablet is-size-7-fullhd	">
@@ -346,4 +368,5 @@ const PaymentPage = () => {
     </>
   );
 };
+
 export default PaymentPage;
