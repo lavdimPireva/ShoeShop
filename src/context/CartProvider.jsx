@@ -54,6 +54,13 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const clearCart = () => {
+    // Clear the cart items from state
+    setCartItems([]);
+    // Also clear cart items from localStorage
+    localStorage.removeItem("cartItems");
+  };
+
   const toggleCart = () => {
     // Toggle the cart modal
     setCartOpen(!isCartOpen);
@@ -66,6 +73,7 @@ export const CartProvider = ({ children }) => {
     isCartOpen,
     toggleCart,
     subtotal,
+    clearCart, // Make sure to provide the clearCart method here
   };
 
   // ... rest of your context provider ...

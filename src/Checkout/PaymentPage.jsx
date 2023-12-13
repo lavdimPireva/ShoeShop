@@ -16,7 +16,10 @@ const PaymentPage = () => {
 
   const [delayedLoading, setDelayedLoading] = useState(true);
   const [transportCost, setTransportCost] = useState(0);
-  const { cartItems, subtotal, removeFromCart } = useCart();
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+  const { cartItems, subtotal, removeFromCart, clearCart } = useCart();
+
   const { isLoading } = useProduct();
   const location = useLocation();
   const checkoutFormData = location.state?.checkoutFormData;
@@ -42,10 +45,10 @@ const PaymentPage = () => {
   }));
 
   useEffect(() => {
-    if (cartItems.length === 0) {
-      navigate("/checkout/cart"); // Redirect to the cart page if cartItems is empty
+    if (cartItems.length === 0 && !paymentCompleted) {
+      navigate("/checkout/cart"); // Redirect to the cart page if cartItems is empty and payment not completed
     }
-  }, [cartItems]); // Depend on cartItems and navigate function
+  }, [cartItems, paymentCompleted, navigate]); // Depend on cartItems, paymentCompleted and navigate function
 
   useEffect(() => {
     // Check the selected country and set the transport cost
@@ -94,8 +97,6 @@ const PaymentPage = () => {
   };
 
   const handlePaymentSuccess = async (details, data) => {
-    console.log("Payment Success:", details, data);
-
     // Extract the necessary data from the payment details
     const orderID = details.orderID;
 
@@ -109,15 +110,10 @@ const PaymentPage = () => {
       total: checkoutFormData.subtotal + checkoutFormData.transportCost,
     };
 
-    console.log("orderData >>", orderData);
-
-    // const captureOrderEndpoint = "http://localhost:8081/api/capture-order";
     const captureOrderEndpoint = "https://api.atletjaime.com/api/capture-order";
 
     try {
       const response = await axios.post(captureOrderEndpoint, orderData);
-
-      console.log("Response from backend:", response.data); // To inspect the structure
 
       if (response.status === 200) {
         toast.success(
@@ -135,6 +131,10 @@ const PaymentPage = () => {
             progress: undefined,
           }
         );
+
+        setPaymentCompleted(true); // Set payment as completed
+        clearCart();
+        navigate("/");
 
         // Handle successful response, e.g., redirect to a success page, display a confirmation message, etc.
       } else {

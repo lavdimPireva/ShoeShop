@@ -1,14 +1,9 @@
-import React, { useState } from "react";
-import NavbarBrand from "../Navbar/NavbarBrand";
+import React from "react";
 import logo from "../img/atletja1.svg";
 
 const CheckoutNavBar = () => {
   return (
-    <nav
-      className="navbar is-white has-shadow"
-      role="navigation"
-      aria-label="main navigation"
-    >
+    <nav role="navigation" aria-label="main navigation">
       <a className="navbar-item" href="/">
         <img
           src={logo}
@@ -16,8 +11,6 @@ const CheckoutNavBar = () => {
           style={{
             maxHeight: "93px",
             padding: "10px",
-            textAlign: "center",
-            width: "100%",
           }} // Adjust the size as needed
         />
       </a>
