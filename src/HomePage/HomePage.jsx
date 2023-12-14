@@ -34,6 +34,8 @@ import { useProduct } from "../context/ProductProvider";
 
 const HomePage = () => {
   const [delayedLoading, setDelayedLoading] = useState(true);
+  const [cardWidth, setCardWidth] = useState("210px");
+
   const { isCartOpen, toggleCart, cartItems } = useCart();
 
   const { productsWithSlug, productBestCategory, isLoading } = useProduct();
@@ -53,6 +55,28 @@ const HomePage = () => {
       clearTimeout(timeout);
     };
   }, [isLoading]); // Dependency on the isLoading state
+
+  useEffect(() => {
+    // Function to update the card width based on window size
+    const updateCardWidth = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        // You can adjust the breakpoint as needed
+        setCardWidth("150px");
+      } else {
+        setCardWidth("210px");
+      }
+    };
+
+    // Call the function on mount and add listener for window resize
+    updateCardWidth();
+    window.addEventListener("resize", updateCardWidth);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener("resize", updateCardWidth);
+  }, []);
+
+  // ... res
 
   const scrollFirstContainer = useRef(null);
   const scrollSecondContainer = useRef(null);
@@ -200,7 +224,7 @@ const HomePage = () => {
                         style={{
                           display: "inline-flex",
                           flexDirection: "column",
-                          width: "210px",
+                          width: cardWidth,
                           margin: "0 10px",
                           height: "fit-content", // This makes the card height fit its content
                           boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
@@ -256,7 +280,7 @@ const HomePage = () => {
                         style={{
                           display: "inline-flex",
                           flexDirection: "column",
-                          width: "210px",
+                          width: cardWidth,
                           margin: "0 10px",
                           height: "fit-content", // This makes the card height fit its content
                           boxShadow: "0px 2px 15px rgba(0,0,0,0.1)", // Add shadow to the card
