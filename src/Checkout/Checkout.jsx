@@ -10,6 +10,7 @@ import { PropagateLoader } from "react-spinners";
 import ProgressStepBar from "./ProgressStepBar";
 import CheckoutFooter from "./CheckoutFooter";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -174,6 +175,13 @@ const Checkout = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Checkout - Atletja ime</title>
+        <meta
+          name="description"
+          content="Complete your purchase with Atletja ime. Secure and fast checkout process."
+        />
+      </Helmet>
       <CheckoutNavBar />
 
       {delayedLoading ? (

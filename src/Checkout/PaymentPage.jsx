@@ -10,6 +10,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -159,6 +160,14 @@ const PaymentPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Payment - Atletja ime</title>
+        <meta
+          name="description"
+          content="Proceed with your payment securely. Multiple payment options available."
+        />
+      </Helmet>
+
       <CheckoutNavBar />
 
       {/* ... Loading logic ... */}
